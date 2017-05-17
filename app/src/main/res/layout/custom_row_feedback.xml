@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:padding="3dp"
+    android:background="@color/accent"
+    android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:textStyle="bold|italic"
+                android:paddingRight="3dp"
+                android:textColor="@color/aluminum"
+                android:text="Title" />
+
+            <TextView
+                android:id="@+id/email_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="description" />
+
+            <TextView
+                android:id="@+id/comments_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="description" />
+
+            <TextView
+                android:id="@+id/created_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/dot_dark_screen3"
+                android:text="date"
+                android:textStyle="bold"
+                android:textSize="10dp"
+                android:gravity="right"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:src="@color/primary_darker"/>
+
+        </LinearLayout>

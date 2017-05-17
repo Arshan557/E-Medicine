@@ -1,0 +1,87 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/accent"
+    tools:context="arshan.com.e_medicine.NavigationDrawerFragment">
+
+    <LinearLayout
+        android:id="@+id/containerDrawerImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="1dp"
+        android:orientation="horizontal"
+        android:background="@drawable/bar_bg">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/me"
+            app:border_color="#000000"
+            app:border_width="1dp"/>
+        <!--<ImageView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:paddingRight="3dp"
+            android:src="@drawable/me" />-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="30dp"
+            android:orientation="vertical">
+        <TextView
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:text="Sudarshan Vallepu"
+            android:textStyle="bold|italic"
+            android:textSize="20dp"
+            android:paddingRight="2dp"
+            android:textColor="@color/iron"/>
+
+            <TextView
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:text="Java developer at Accenture"
+                android:textStyle="italic"
+                android:textSize="15dp"
+                android:textColor="@color/iron"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:src="@color/accent"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="8106886588"
+                android:paddingRight="3dp"
+                android:textStyle="italic"
+                android:textSize="15dp"
+                android:textColor="@color/iron"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="vsudarshan57@gmail.com"
+                android:paddingRight="3dp"
+                android:textStyle="italic"
+                android:textSize="15dp"
+                android:textColor="@color/iron"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/drawerList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="6dp"
+        android:layout_below="@+id/containerDrawerImage"/>
+
+</RelativeLayout>
