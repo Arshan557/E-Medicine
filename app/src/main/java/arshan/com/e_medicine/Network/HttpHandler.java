@@ -4,17 +4,24 @@ package arshan.com.e_medicine.Network;
  * Created by Arshan on 19-Mar-2017.
  */
 
+import android.text.TextUtils;
 import android.util.Log;
+import android.webkit.CookieManager;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.CookieHandler;
+import java.net.CookiePolicy;
+import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 
 import cz.msebera.android.httpclient.HttpEntity;
 import cz.msebera.android.httpclient.HttpResponse;
@@ -32,12 +39,13 @@ public class HttpHandler {
 
     public String makeServiceCall(String reqUrl) {
         String response = null;
+
         try {
             URL url = new URL(reqUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            conn.setRequestProperty("Cookie", "__test=2c72a08bffc18c34c2add090de94f663;expires=Friday, January 1, 2038 at 5:25:55 AM;path=/");
+            conn.setRequestProperty("Cookie", "__test=21ebdbeae0b8eff245f40f62df328b14;expires=Friday, January 1, 2038 at 5:25:55 AM;path=/");
             // read the response
             InputStream in = new BufferedInputStream(conn.getInputStream());
             response = convertStreamToString(in);
