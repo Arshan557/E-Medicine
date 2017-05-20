@@ -1,8 +1,11 @@
 package arshan.com.e_medicine;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -23,6 +26,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import arshan.com.e_medicine.Adapters.DrawerAdapter;
@@ -42,8 +46,6 @@ public class NavigationDrawerFragment extends Fragment implements DrawerAdapter.
     private CircleImageView profilePhoto;
     public static final String DEFAULT = "";
     String fname = "", lname = "", profilePic = "";
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -139,14 +141,38 @@ public class NavigationDrawerFragment extends Fragment implements DrawerAdapter.
     @Override
     public void itemClicked(View view, int position) {
         if (position == 0) {
-            startActivity(new Intent(getActivity(), Home.class));
+            mDrawerLayout.closeDrawers();
         } else if (position == 1) {
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_APP_CALCULATOR);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            Toast.makeText(getActivity(), "Opening Calculator", Toast.LENGTH_LONG).show();
+            Log.d("SDK",android.os.Build.VERSION.SDK);
+            if (Integer.valueOf(android.os.Build.VERSION.SDK) >= 15){
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_APP_CALCULATOR);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Toast.makeText(getActivity(), "Opening Calculator", Toast.LENGTH_LONG).show();
+                startActivity(intent);
+            }
+            ArrayList<HashMap<String,Object>> items =new ArrayList<HashMap<String,Object>>();
+            final PackageManager pm = getContext().getPackageManager();
+            List<PackageInfo> packs = pm.getInstalledPackages(0);
+            for (PackageInfo pi : packs) {
+                if( pi.packageName.toString().toLowerCase().contains("calcul")){
+                    HashMap<String, Object> map = new HashMap<String, Object>();
+                    map.put("appName", pi.applicationInfo.loadLabel(pm));
+                    map.put("packageName", pi.packageName);
+                    items.add(map);
+                }
+            }
+            if(items.size()>=1){
+                String packageName = (String) items.get(0).get("packageName");
+                Intent i = pm.getLaunchIntentForPackage(packageName);
+                if (i != null)
+                    Toast.makeText(getActivity(), "Opening Calculator", Toast.LENGTH_LONG).show();
+                    startActivity(i);
+            }
+            else{
+                Toast.makeText(getActivity(), "Calculator not found", Toast.LENGTH_LONG).show();
+            }
         } else if (position == 2) {
             startActivity(new Intent(getActivity(), SettingsActivity.class));
             //Toast.makeText(getActivity(), "Settings", Toast.LENGTH_LONG).show();
