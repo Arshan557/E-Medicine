@@ -2,6 +2,7 @@ package arshan.com.e_medicine;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -16,13 +17,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import arshan.com.e_medicine.Adapters.DrawerAdapter;
 import arshan.com.e_medicine.Models.DrawerPojo;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class NavigationDrawerFragment extends Fragment implements DrawerAdapter.ClickListener{
 
@@ -33,6 +38,11 @@ public class NavigationDrawerFragment extends Fragment implements DrawerAdapter.
     private boolean mFromSavedInstanceState;
     private View containerView;
     private LinearLayout profile;
+    private TextView profileName;
+    private CircleImageView profilePhoto;
+    public static final String DEFAULT = "";
+    String fname = "", lname = "", profilePic = "";
+
 
 
     @Override
@@ -41,6 +51,7 @@ public class NavigationDrawerFragment extends Fragment implements DrawerAdapter.
         if (savedInstanceState != null) {
             mFromSavedInstanceState = true;
         }
+
     }
 
     @Override
@@ -48,6 +59,19 @@ public class NavigationDrawerFragment extends Fragment implements DrawerAdapter.
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View layout = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+
+        // Getting data from Shared preferences
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("UserData", Context.MODE_PRIVATE);
+        fname = sharedPreferences.getString("fname", DEFAULT);
+        lname = sharedPreferences.getString("lname", DEFAULT);
+        profilePic = sharedPreferences.getString("profilePic", DEFAULT);
+
+        profileName = (TextView) layout.findViewById(R.id.profileName);
+        profilePhoto = (CircleImageView) layout.findViewById(R.id.profilePic);
+
+        profileName.setText(fname+" "+lname);
+        Glide.with(NavigationDrawerFragment.this).load(profilePic).into(profilePhoto);
+
         recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
         profile = (LinearLayout) layout.findViewById(R.id.containerDrawerImage);
         myAdapter = new DrawerAdapter(getActivity(), getData());

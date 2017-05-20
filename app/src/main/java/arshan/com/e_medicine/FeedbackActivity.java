@@ -141,7 +141,7 @@ public class FeedbackActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             Toast.makeText(getApplicationContext(),
-                                    "Json parsing error: " + e.getMessage(),
+                                    "Something went wrong. Please try again" + e.getMessage(),
                                     Toast.LENGTH_LONG)
                                     .show();
                         }
@@ -155,7 +155,7 @@ public class FeedbackActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(getApplicationContext(),
-                                "Couldn't get json from server. Check LogCat for possible errors!",
+                                "Something went wrong. Please try again",
                                 Toast.LENGTH_LONG)
                                 .show();
                     }

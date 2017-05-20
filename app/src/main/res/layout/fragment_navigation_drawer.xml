@@ -11,26 +11,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="1dp"
-        android:orientation="horizontal"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="4dp"
         android:background="@drawable/bar_bg">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/me"
-            app:border_color="#000000"
-            app:border_width="1dp"/>
-        <!--<ImageView
             android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="4dp"
+            android:id="@+id/profilePic"
+            app:border_color="@color/white"
+            android:paddingBottom="4dp"
+            app:border_width="1dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:paddingRight="3dp"
-            android:src="@drawable/me" />-->
-        <LinearLayout
+            android:text="Welcome"
+            android:textStyle="italic"
+            android:textSize="14dp"
+            android:textColor="@color/iron"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/profileName"
+            android:textStyle="bold|italic"
+            android:textSize="20dp"
+            android:textColor="@color/iron"/>
+        <!--<LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="30dp"
@@ -38,7 +48,7 @@
         <TextView
             android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:text="Sudarshan Vallepu"
+            android:id="@+id/profileName"
             android:textStyle="bold|italic"
             android:textSize="20dp"
             android:paddingRight="2dp"
@@ -47,7 +57,7 @@
             <TextView
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:text="Java developer at Accenture"
+                android:id="@+id/profileDesig"
                 android:textStyle="italic"
                 android:textSize="15dp"
                 android:textColor="@color/iron"/>
@@ -59,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:text="8106886588"
+                android:id="@+id/profilePhone"
                 android:paddingRight="3dp"
                 android:textStyle="italic"
                 android:textSize="15dp"
@@ -68,13 +78,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:text="vsudarshan57@gmail.com"
+                android:id="@+id/profileMail"
                 android:paddingRight="3dp"
                 android:textStyle="italic"
                 android:textSize="15dp"
                 android:textColor="@color/iron"/>
-
-        </LinearLayout>
+        </LinearLayout>-->
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

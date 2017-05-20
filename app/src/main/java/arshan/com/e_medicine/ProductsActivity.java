@@ -11,9 +11,11 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +31,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -72,6 +75,32 @@ public class ProductsActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.products_recycle);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.productsCoordinate);
+
+        boolean mobileNwInfo = false;
+
+        //Checking internet connection
+        ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        try {
+            mobileNwInfo = conMgr.getActiveNetworkInfo().isConnected();
+        } catch (NullPointerException e) {
+            mobileNwInfo = false;
+        }
+        if (mobileNwInfo == false) {
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "Plz enable WiFi/Mobile data", Snackbar.LENGTH_LONG)
+                    .setAction("SETTINGS", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
+                        }
+                    });
+            View sbView = snackbar.getView();
+            TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.YELLOW);
+
+            snackbar.show();
+        }
+
         com.shamanland.fab.FloatingActionButton fab = (com.shamanland.fab.FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +111,7 @@ public class ProductsActivity extends AppCompatActivity {
         });
 
         //Make call to Async
-        new GetProducts().execute();
+        new GetProducts().execute(Constants.PRODUCTS_URL);
 
         //Recycle view starts
         productsAdapter = new ProductsAdapter(getApplicationContext(), productsPojoList);
@@ -273,9 +302,11 @@ public class ProductsActivity extends AppCompatActivity {
         if (scanningResult != null) {
             String scanContent = scanningResult.getContents();
             String scanFormat = scanningResult.getFormatName();
-            Toast toast = Toast.makeText(getApplicationContext(),"Data:"+scanContent+","+scanFormat, Toast.LENGTH_SHORT);
+            Toast.makeText(getApplicationContext(),"Data:"+scanContent+","+scanFormat, Toast.LENGTH_SHORT).show();
             Log.d("bar code results",scanContent+"....."+scanFormat);
-            toast.show();
+
+            new GetProducts().execute(Constants.BARCODE_SEARCH_URL+"?barcode="+scanContent);
+
         } else {
             Toast toast = Toast.makeText(getApplicationContext(),"No scan data received!", Toast.LENGTH_SHORT);
             Log.d("no data","No scan data received");
@@ -321,7 +352,7 @@ public class ProductsActivity extends AppCompatActivity {
         return true;
     }
 
-    private class GetProducts extends AsyncTask<Void, Void, Void> {
+    private class GetProducts extends AsyncTask<String, String, String> {
 
         @Override
         protected void onPreExecute() {
@@ -333,52 +364,53 @@ public class ProductsActivity extends AppCompatActivity {
             pDialog.show();
         }
         @Override
-        protected Void doInBackground(Void... arg0) {
+        protected String doInBackground(String... f_url) {
             HttpHandler sh = new HttpHandler();
 
             // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(Constants.BARCODE_SEARCH_URL);
+            String jsonStr = sh.makeServiceCall(f_url[0]);
 
             Log.e(TAG, "Response from url: " + jsonStr);
 
             if (jsonStr != null) {
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
-                    // Getting JSON Array node
-                    JSONArray news = jsonObj.getJSONArray("product");
+                    String status = jsonObj.getString("status");
+                    Log.d("status",status);
 
-                    // looping through All News
-                    for (int i = 0; i < news.length(); i++) {
-                        JSONObject c = news.getJSONObject(i);
+                    if ("ok".equalsIgnoreCase(status)) {
+                        // Getting JSON Array node
+                        JSONArray products = jsonObj.getJSONArray("product");
+                        // looping through All News
+                        for (int i = 0; i < products.length(); i++) {
+                            JSONObject c = products.getJSONObject(i);
 
-                        String id = c.getString("id");
-                        String companyid = c.getString("companyid");
-                        String barcode = c.getString("barcode");
-                        String itemname = c.getString("itemname");
-                        String mfgdate = c.getString("mfgdate");
-                        String expdate = c.getString("expdate");
-                        String maxdiscount = c.getString("maxdiscount");
-                        String qty = c.getString("qty");
-                        String mrp = c.getString("mrp");
-                        String batch = c.getString("batch");
-                        String productimage = c.getString("productimage");
+                            String id = c.getString("id");
+                            String companyid = c.getString("companyid");
+                            String barcode = c.getString("barcode");
+                            String itemname = c.getString("itemname");
+                            String mfgdate = c.getString("mfgdate");
+                            String expdate = c.getString("expdate");
+                            String maxdiscount = c.getString("maxdiscount");
+                            String qty = c.getString("qty");
+                            String mrp = c.getString("mrp");
+                            String batch = c.getString("batch");
+                            String productimage = c.getString("productimage");
 
-                        URL url = new URL(productimage);
-                        Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                            URL url = new URL(productimage);
+                            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
-                        ProductsPojo productsPojo = new ProductsPojo(itemname, mfgdate, bmp, qty, mrp);
-                        productsPojoList.add(productsPojo);
+                            ProductsPojo productsPojo = new ProductsPojo(itemname, mfgdate, bmp, qty, mrp);
+                            productsPojoList.add(productsPojo);
 
+                        }
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getApplicationContext(),
-                                    "Json parsing error: " + e.getMessage(),
-                                    Toast.LENGTH_LONG)
-                                    .show();
+                            Toast.makeText(getApplicationContext(), "Something went wrong. Try again" + e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     });
                 } catch (MalformedURLException e) {
@@ -391,10 +423,7 @@ public class ProductsActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(),
-                                "Couldn't get json from server. Check LogCat for possible errors!",
-                                Toast.LENGTH_LONG)
-                                .show();
+                        Toast.makeText(getApplicationContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -402,7 +431,7 @@ public class ProductsActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(String result) {
             super.onPostExecute(result);
             // Dismiss the progress dialog
             if (pDialog.isShowing())

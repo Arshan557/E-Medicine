@@ -1,6 +1,8 @@
 package arshan.com.e_medicine;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -9,6 +11,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +30,11 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
+
+        Bundle data = getIntent().getExtras();
+        if(null != data) {
+            Log.d("data", "" + data.getString("fname") + "," + data.getString("lname") + "," + data.getString("apikey") + "," + data.getString("profilePic"));
+        }
 
         sales = (LinearLayout) findViewById(R.id.sales);
         distributors = (LinearLayout) findViewById(R.id.distributors);
@@ -133,7 +141,12 @@ public class Home extends AppCompatActivity {
             RateMe dailogFragment = new RateMe();
             dailogFragment.show(manager,"dailogFrag");
         } else if(id == R.id.action_logout) {
+            SharedPreferences preferences =getSharedPreferences("UserData", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.commit();
             startActivity(new Intent(Home.this, LoginActivity.class));
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }

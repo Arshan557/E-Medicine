@@ -4,6 +4,8 @@ package arshan.com.e_medicine.Network;
  * Created by Arshan on 19-Mar-2017.
  */
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.CookieManager;
@@ -20,9 +22,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
+import arshan.com.e_medicine.Constants.Constants;
 import cz.msebera.android.httpclient.HttpEntity;
 import cz.msebera.android.httpclient.HttpResponse;
 import cz.msebera.android.httpclient.client.HttpClient;
@@ -37,15 +41,17 @@ public class HttpHandler {
     public HttpHandler() {
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     public String makeServiceCall(String reqUrl) {
         String response = null;
 
         try {
+
             URL url = new URL(reqUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            conn.setRequestProperty("Cookie", "__test=21ebdbeae0b8eff245f40f62df328b14;expires=Friday, January 1, 2038 at 5:25:55 AM;path=/");
+            conn.setRequestProperty("Cookie", "__test=2c72a08bffc18c34c2add090de94f663;expires=Friday, January 1, 2038 at 5:25:55 AM;path=/");
             // read the response
             InputStream in = new BufferedInputStream(conn.getInputStream());
             response = convertStreamToString(in);

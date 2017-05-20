@@ -2,9 +2,13 @@ package arshan.com.e_medicine;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -15,13 +19,24 @@ import android.content.Intent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Method;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import arshan.com.e_medicine.Constants.Constants;
+import arshan.com.e_medicine.Models.ProductsPojo;
+import arshan.com.e_medicine.Network.HttpHandler;
 import butterknife.ButterKnife;
 import butterknife.Bind;
 
@@ -29,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
     private static final int REQUEST_FORGOT = 1;
+    private ProgressDialog pDialog;
 
     @Bind(R.id.input_email) EditText _emailText;
     @Bind(R.id.input_password) EditText _passwordText;
@@ -36,12 +52,18 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.forgot_pwd) TextView _forgotLink;
     @Bind(R.id.link_signup) TextView _signupLink;
     @Bind(R.id.parentRelative) RelativeLayout _parentRelative;
+    private CheckBox _rememberChecked;
+
+    String email = null;
+    String password = null;
+    boolean isRemembered = false;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
         //setTheme(R.style.AppThemeDark);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        _rememberChecked = (CheckBox) findViewById(R.id.rememberCheck);
         ButterKnife.bind(this);
         boolean mobileNwInfo = false;
 
@@ -59,13 +81,6 @@ public class LoginActivity extends AppCompatActivity {
                     .setAction("SETTINGS", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            /*if(mnwI == true) {
-                                Snackbar snackbar1 = Snackbar.make(_parentRelative, "Connected", Snackbar.LENGTH_SHORT);
-                                snackbar1.show();
-                            } else {
-                                Snackbar snackbar = Snackbar.make(_parentRelative, "Sorry! Not yet connected", Snackbar.LENGTH_LONG);
-                                snackbar.show();
-                            }*/
                             startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
                         }
                     });
@@ -124,8 +139,9 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
+        email = _emailText.getText().toString();
+        password = _passwordText.getText().toString();
+        isRemembered = _rememberChecked.isChecked();
 
         // TODO: Implement your own authentication logic here.
         /*if(validate()) {
@@ -197,10 +213,129 @@ public class LoginActivity extends AppCompatActivity {
 
             snackbar.show();
         } else {
-            Intent i = new Intent(LoginActivity.this, Home.class);
-            startActivity(i);
-            finish();
+            String finalUrl = Constants.AUTH_URL+"?uname="+email+"&password="+password;
+            Log.d("final url",finalUrl);
+            new Authenticate().execute(finalUrl);
         }
+    }
+
+    private class Authenticate extends AsyncTask<String, String, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // Showing progress dialog
+            pDialog = new ProgressDialog(LoginActivity.this);
+            pDialog.setMessage("Please wait...");
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+        @Override
+        protected String doInBackground(String... f_url) {
+            HttpHandler sh = new HttpHandler();
+
+            // Making a request to url and getting response
+            String jsonStr = sh.makeServiceCall(f_url[0]);
+
+            Log.e(TAG, "Response from url: " + jsonStr);
+
+            if (jsonStr != null) {
+                String fname = null;
+                String lname= null;
+                String apikey = null;
+                String profilePic = null;
+                String msg = null;
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    String status = jsonObj.getString("status");
+                    Log.d("status",status);
+
+                    if ("ok".equalsIgnoreCase(status)) {
+                        // Getting JSON Array node
+                        JSONArray products = jsonObj.getJSONArray("User");
+                        // looping through All News
+                        for (int i = 0; i < products.length(); i++) {
+                            JSONObject c = products.getJSONObject(i);
+
+                            fname = c.getString("fname");
+                            lname = c.getString("lname");
+                            apikey = c.getString("apikey");
+                            profilePic = c.getString("profilePic");
+                        }
+                        //Shared preferences
+                        SharedPreferences sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("fname", fname);
+                        editor.putString("lname", lname);
+                        editor.putString("apikey", apikey);
+                        editor.putString("profilePic", profilePic);
+                        if (isRemembered) {
+                            editor.putString("rememberFlag", "Y");
+                            Log.d("isRemembered","true");
+                        } else {
+                            editor.putString("rememberFlag", "N");
+                            Log.d("isRemembered","false");
+                        }
+                        editor.commit();
+
+                        Intent i = new Intent(LoginActivity.this, Home.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("fname",fname);
+                        bundle.putString("lname",lname);
+                        bundle.putString("apikey",apikey);
+                        bundle.putString("profilePic",profilePic);
+                        i.putExtras(bundle);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(i);
+                        finish();
+                    } else if ("error".equalsIgnoreCase(status)) {
+                        msg = jsonObj.getString("msg");
+                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+                        Snackbar snackbar = Snackbar.make(_parentRelative, msg, Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                        /*View sbView = snackbar.getView();
+                        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                        textView.setTextColor(Color.RED);*/
+                    }
+                } catch (final JSONException e) {
+                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Something went wrong. Try again" + e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.e(TAG, "MalformedURLException " + e.getMessage());
+                    if (null != msg) {
+                        Snackbar snackbar = Snackbar.make(_parentRelative, msg, Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                    } else {
+                        Snackbar snackbar = Snackbar.make(_parentRelative, "Invalid Username/Password", Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                    }
+                }
+            } else {
+                Log.e(TAG, "Couldn't get json from server.");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(),"Something went wrong. Please try again", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            // Dismiss the progress dialog
+            if (pDialog.isShowing())
+                pDialog.dismiss();
+
+        }
+
     }
 
     public void onLoginFailed() {

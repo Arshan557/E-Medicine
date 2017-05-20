@@ -24,6 +24,8 @@ public class EditProductActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
         Bundle data = getIntent().getExtras();
-        Log.d("data",""+data.getString("title")+","+data.getString("desc")+","+data.getString("mrp"));
+        if (null != data) {
+            Log.d("data", "" + data.getString("title") + "," + data.getString("desc") + "," + data.getString("mrp"));
+        }
     }
 }

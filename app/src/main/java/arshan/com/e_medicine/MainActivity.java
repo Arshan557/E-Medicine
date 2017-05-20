@@ -1,6 +1,8 @@
 package arshan.com.e_medicine;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,6 +10,8 @@ import android.view.MenuItem;
 
 
 public class MainActivity extends ActionBarActivity {
+    public static final String DEFAULT = "";
+    String rememberFlag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,9 +19,18 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
 
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
+        // Getting data from Shared preferences
+        SharedPreferences sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
+        rememberFlag = sharedPreferences.getString("rememberFlag", DEFAULT);
+        if ("Y".equalsIgnoreCase(rememberFlag)) {
+            Intent intent = new Intent(this, Home.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override
