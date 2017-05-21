@@ -7,6 +7,7 @@ package arshan.com.e_medicine;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.os.Bundle;
+import android.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;

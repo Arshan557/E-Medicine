@@ -267,6 +267,8 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("fname", fname);
                         editor.putString("lname", lname);
+                        editor.putString("email", "arshan@gmail.com");
+                        editor.putString("phone", "8106886588");
                         editor.putString("apikey", apikey);
                         editor.putString("profilePic", profilePic);
                         if (isRemembered) {

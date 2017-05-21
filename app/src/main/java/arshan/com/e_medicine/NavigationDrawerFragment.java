@@ -10,6 +10,7 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -64,9 +65,11 @@ public class NavigationDrawerFragment extends Fragment implements DrawerAdapter.
 
         // Getting data from Shared preferences
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("UserData", Context.MODE_PRIVATE);
-        fname = sharedPreferences.getString("fname", DEFAULT);
-        lname = sharedPreferences.getString("lname", DEFAULT);
-        profilePic = sharedPreferences.getString("profilePic", DEFAULT);
+        if (null != sharedPreferences) {
+            fname = sharedPreferences.getString("fname", DEFAULT);
+            lname = sharedPreferences.getString("lname", DEFAULT);
+            profilePic = sharedPreferences.getString("profilePic", DEFAULT);
+        }
 
         profileName = (TextView) layout.findViewById(R.id.profileName);
         profilePhoto = (CircleImageView) layout.findViewById(R.id.profilePic);
@@ -92,8 +95,8 @@ public class NavigationDrawerFragment extends Fragment implements DrawerAdapter.
 
     public static List<DrawerPojo> getData() {
         List<DrawerPojo> data = new ArrayList<>();
-        int[] icons = {R.drawable.home, R.drawable.calculator, R.drawable.settings, R.drawable.about, R.drawable.contact, R.drawable.faq};
-        String[] titles = {"Home", "Calculator", "Settings", "About us", "Contact us","FAQs"};
+        int[] icons = {R.drawable.settings, R.drawable.calculator, R.drawable.rateme, R.drawable.about, R.drawable.contact, R.drawable.logout};
+        String[] titles = {"Settings", "Calculator", "Rate me", "About us", "Contact us","Log out"};
         for (int i = 0; i < titles.length && i < icons.length; i++) {
             DrawerPojo current = new DrawerPojo();
             current.iconId = icons[i];
@@ -141,8 +144,10 @@ public class NavigationDrawerFragment extends Fragment implements DrawerAdapter.
     @Override
     public void itemClicked(View view, int position) {
         if (position == 0) {
+            startActivity(new Intent(getActivity(), SettingsActivity.class));
             mDrawerLayout.closeDrawers();
         } else if (position == 1) {
+            mDrawerLayout.closeDrawers();
             Log.d("SDK",android.os.Build.VERSION.SDK);
             if (Integer.valueOf(android.os.Build.VERSION.SDK) >= 15){
                 Intent intent = new Intent();
@@ -174,17 +179,27 @@ public class NavigationDrawerFragment extends Fragment implements DrawerAdapter.
                 Toast.makeText(getActivity(), "Calculator not found", Toast.LENGTH_LONG).show();
             }
         } else if (position == 2) {
-            startActivity(new Intent(getActivity(), SettingsActivity.class));
-            //Toast.makeText(getActivity(), "Settings", Toast.LENGTH_LONG).show();
+            mDrawerLayout.closeDrawers();
+            Toast.makeText(getActivity(), "Coming soon", Toast.LENGTH_LONG).show();
+            FragmentManager manager = getFragmentManager();
+            /*RateMe dailogFragment = new RateMe();
+            dailogFragment.show(manager,"dailogFrag");*/
         } else if (position == 3) {
+            mDrawerLayout.closeDrawers();
             startActivity(new Intent(getActivity(), AboutUsActivity.class));
             //Toast.makeText(getActivity(), "About us", Toast.LENGTH_LONG).show();
         } else if (position == 4) {
+            mDrawerLayout.closeDrawers();
             startActivity(new Intent(getActivity(), ContactUsActivity.class));
             //Toast.makeText(getActivity(), "Contact us", Toast.LENGTH_LONG).show();
         } else if (position == 5) {
-            startActivity(new Intent(getActivity(), FaqActivity.class));
-            //Toast.makeText(getActivity(), "FAQs", Toast.LENGTH_LONG).show();
+            mDrawerLayout.closeDrawers();
+            SharedPreferences preferences =getContext().getSharedPreferences("UserData", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.commit();
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+            getActivity().finish();
         }
     }
     }
