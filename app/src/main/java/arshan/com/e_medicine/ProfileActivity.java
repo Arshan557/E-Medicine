@@ -1,17 +1,33 @@
 package arshan.com.e_medicine;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -22,6 +38,10 @@ public class ProfileActivity extends AppCompatActivity {
     private CircleImageView pic;
     String firstname, lastname, profilePic, email, phone = "";
     public static final String DEFAULT = "";
+    private static Bitmap Image = null;
+    private static Bitmap rotateImage = null;
+    private static final int GALLERY = 1;
+    private Uri fileUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +77,9 @@ public class ProfileActivity extends AppCompatActivity {
         lname.setText(lastname);
         mail.setText(email);
         mobile.setText(phone);
-        Glide.with(ProfileActivity.this).load(profilePic).into(pic);
+        if (null != profilePic) {
+            Glide.with(ProfileActivity.this).load(profilePic).into(pic);
+        }
 
         fname.setEnabled(false);
         lname.setEnabled(false);
@@ -93,7 +115,32 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pic.setImageBitmap(null);
+                if (Image != null)
+                    Image.recycle();
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY);
+            }
+        });
+    }
 
-
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == GALLERY && resultCode != 0) {
+            Uri mImageUri = data.getData();
+            try {
+                Image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mImageUri);
+                    pic.setImageBitmap(Image);
+                Toast.makeText(ProfileActivity.this,"Profile pic has been changed",Toast.LENGTH_SHORT).show();
+            } catch (FileNotFoundException e) {
+                Log.d("FileNotFoundException",e.getLocalizedMessage());
+            } catch (IOException e) {
+                Log.d("IOException",e.getLocalizedMessage());
+            }
+        }
     }
 }

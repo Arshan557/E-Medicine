@@ -267,7 +267,7 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("fname", fname);
                         editor.putString("lname", lname);
-                        editor.putString("email", "arshan@gmail.com");
+                        editor.putString("email", email);
                         editor.putString("phone", "8106886588");
                         editor.putString("apikey", apikey);
                         editor.putString("profilePic", profilePic);
@@ -285,7 +285,9 @@ public class LoginActivity extends AppCompatActivity {
                         bundle.putString("fname",fname);
                         bundle.putString("lname",lname);
                         bundle.putString("apikey",apikey);
-                        bundle.putString("profilePic",profilePic);
+                        if (!profilePic.equalsIgnoreCase("")) {
+                            bundle.putString("profilePic", profilePic);
+                        }
                         i.putExtras(bundle);
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(i);

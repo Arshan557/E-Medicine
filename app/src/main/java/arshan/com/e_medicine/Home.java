@@ -3,9 +3,12 @@ package arshan.com.e_medicine;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -25,6 +28,7 @@ public class Home extends AppCompatActivity {
     private LinearLayout sales, distributors, categories, purchase, users, products, feedback, mainLinear;
     boolean doubleBackToExitPressedOnce = false;
     NavigationDrawerFragment drawerFragment;
+    private static final int REQUEST_GALLERY = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,14 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
+
+        boolean hasPermission = (ContextCompat.checkSelfPermission(Home.this,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+        if (!hasPermission) {
+            ActivityCompat.requestPermissions(Home.this,
+                    new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.CAMERA},
+                    REQUEST_GALLERY);
+        }
 
         Bundle data = getIntent().getExtras();
         if(null != data) {

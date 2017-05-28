@@ -1,20 +1,12 @@
 package arshan.com.e_medicine;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,24 +18,17 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import arshan.com.e_medicine.Adapters.DrawerAdapter;
-import arshan.com.e_medicine.Models.DrawerPojo;
+import arshan.com.e_medicine.Constants.Constants;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class NavigationDrawerFragment extends Fragment implements DrawerAdapter.ClickListener{
+public class NavigationDrawerFragment extends Fragment{
 
-    private RecyclerView recyclerView;
-    private DrawerAdapter myAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private boolean mFromSavedInstanceState;
     private View containerView;
-    private LinearLayout profile;
-    private TextView profileName;
+    private LinearLayout profile, calcLinear, contactUsLinear, changePwdLinear, rateLinear, aboutUsLinear, logoutLinear, aboutGroup;
+    private TextView profileName, tc, contactDev, faq, help;
     private CircleImageView profilePhoto;
     public static final String DEFAULT = "";
     String fname = "", lname = "", profilePic = "";
@@ -75,35 +60,111 @@ public class NavigationDrawerFragment extends Fragment implements DrawerAdapter.
         profilePhoto = (CircleImageView) layout.findViewById(R.id.profilePic);
 
         profileName.setText(fname+" "+lname);
-        Glide.with(NavigationDrawerFragment.this).load(profilePic).into(profilePhoto);
+        if (null != profilePic) {
+            Glide.with(NavigationDrawerFragment.this).load(profilePic).into(profilePhoto);
+        }
 
-        recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
+        //recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
         profile = (LinearLayout) layout.findViewById(R.id.containerDrawerImage);
-        myAdapter = new DrawerAdapter(getActivity(), getData());
-        myAdapter.setClickListener(this);
-        recyclerView.setAdapter(myAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        calcLinear = (LinearLayout) layout.findViewById(R.id.calcLinear);
+        contactUsLinear = (LinearLayout) layout.findViewById(R.id.contactUsLinear);
+        changePwdLinear = (LinearLayout) layout.findViewById(R.id.changePwdLinear);
+        rateLinear = (LinearLayout) layout.findViewById(R.id.rateLinear);
+        aboutUsLinear = (LinearLayout) layout.findViewById(R.id.aboutUsLinear);
+        logoutLinear = (LinearLayout) layout.findViewById(R.id.logoutLinear);
+        aboutGroup = (LinearLayout) layout.findViewById(R.id.aboutGroup);
+        faq =  (TextView) layout.findViewById(R.id.faq);
+        tc =  (TextView) layout.findViewById(R.id.tc);
+        contactDev =  (TextView) layout.findViewById(R.id.contactDev);
+        help =  (TextView) layout.findViewById(R.id.help);
+
+        aboutGroup.setVisibility(View.GONE);
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mDrawerLayout.closeDrawers();
                 startActivity(new Intent(getActivity(), ProfileActivity.class));
                 Log.d("profile","profile updating");
             }
         });
+        calcLinear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDrawerLayout.closeDrawers();
+                Log.d("SDK",android.os.Build.VERSION.SDK);
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_MAIN);
+                    intent.addCategory(Intent.CATEGORY_APP_CALCULATOR);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    /*intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                    intent.setComponent(new ComponentName("com.android.calculator2", "com.android.calculator2.Calculator"));*/
+                    startActivity(intent);
+            }
+        });
+        contactUsLinear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDrawerLayout.closeDrawers();
+                startActivity(new Intent(getActivity(), ContactUsActivity.class));
+            }
+        });
+        changePwdLinear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), SettingsActivity.class));
+                mDrawerLayout.closeDrawers();
+            }
+        });
+        rateLinear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDrawerLayout.closeDrawers();
+                Toast.makeText(getActivity(), "Coming soon", Toast.LENGTH_LONG).show();
+            }
+        });
+        aboutUsLinear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (aboutGroup.getVisibility() == View.GONE) {
+                    aboutGroup.setVisibility(View.VISIBLE);
+                } else {
+                    aboutGroup.setVisibility(View.GONE);
+                }
+                /*mDrawerLayout.closeDrawers();
+                startActivity(new Intent(getActivity(), AboutUsActivity.class));*/
+            }
+        });
+        logoutLinear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDrawerLayout.closeDrawers();
+                SharedPreferences preferences =getContext().getSharedPreferences("UserData", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.clear();
+                editor.commit();
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+                getActivity().finish();
+            }
+        });
+        faq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), AboutUsActivity.class);
+                i.putExtra("postUrl", Constants.FAQ_URL);
+                i.putExtra("label", "FAQs");
+                startActivity(i);
+            }
+        });
+        tc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), AboutUsActivity.class);
+                i.putExtra("postUrl", Constants.ABOUT_URL);
+                i.putExtra("label", "Terms & Conditions");
+                startActivity(i);
+            }
+        });
         return layout;
-    }
-
-    public static List<DrawerPojo> getData() {
-        List<DrawerPojo> data = new ArrayList<>();
-        int[] icons = {R.drawable.settings, R.drawable.calculator, R.drawable.rateme, R.drawable.about, R.drawable.contact, R.drawable.logout};
-        String[] titles = {"Settings", "Calculator", "Rate me", "About us", "Contact us","Log out"};
-        for (int i = 0; i < titles.length && i < icons.length; i++) {
-            DrawerPojo current = new DrawerPojo();
-            current.iconId = icons[i];
-            current.title = titles[i];
-            data.add(current);
-        }
-        return data;
     }
 
     public void setUp(int fragmentId, DrawerLayout drawerLayout, final Toolbar toolbar) {
@@ -140,67 +201,5 @@ public class NavigationDrawerFragment extends Fragment implements DrawerAdapter.
             }
         });
     }
-
-    @Override
-    public void itemClicked(View view, int position) {
-        if (position == 0) {
-            startActivity(new Intent(getActivity(), SettingsActivity.class));
-            mDrawerLayout.closeDrawers();
-        } else if (position == 1) {
-            mDrawerLayout.closeDrawers();
-            Log.d("SDK",android.os.Build.VERSION.SDK);
-            if (Integer.valueOf(android.os.Build.VERSION.SDK) >= 15){
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_APP_CALCULATOR);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                Toast.makeText(getActivity(), "Opening Calculator", Toast.LENGTH_LONG).show();
-                startActivity(intent);
-            }
-            ArrayList<HashMap<String,Object>> items =new ArrayList<HashMap<String,Object>>();
-            final PackageManager pm = getContext().getPackageManager();
-            List<PackageInfo> packs = pm.getInstalledPackages(0);
-            for (PackageInfo pi : packs) {
-                if( pi.packageName.toString().toLowerCase().contains("calcul")){
-                    HashMap<String, Object> map = new HashMap<String, Object>();
-                    map.put("appName", pi.applicationInfo.loadLabel(pm));
-                    map.put("packageName", pi.packageName);
-                    items.add(map);
-                }
-            }
-            if(items.size()>=1){
-                String packageName = (String) items.get(0).get("packageName");
-                Intent i = pm.getLaunchIntentForPackage(packageName);
-                if (i != null)
-                    Toast.makeText(getActivity(), "Opening Calculator", Toast.LENGTH_LONG).show();
-                    startActivity(i);
-            }
-            else{
-                Toast.makeText(getActivity(), "Calculator not found", Toast.LENGTH_LONG).show();
-            }
-        } else if (position == 2) {
-            mDrawerLayout.closeDrawers();
-            Toast.makeText(getActivity(), "Coming soon", Toast.LENGTH_LONG).show();
-            FragmentManager manager = getFragmentManager();
-            /*RateMe dailogFragment = new RateMe();
-            dailogFragment.show(manager,"dailogFrag");*/
-        } else if (position == 3) {
-            mDrawerLayout.closeDrawers();
-            startActivity(new Intent(getActivity(), AboutUsActivity.class));
-            //Toast.makeText(getActivity(), "About us", Toast.LENGTH_LONG).show();
-        } else if (position == 4) {
-            mDrawerLayout.closeDrawers();
-            startActivity(new Intent(getActivity(), ContactUsActivity.class));
-            //Toast.makeText(getActivity(), "Contact us", Toast.LENGTH_LONG).show();
-        } else if (position == 5) {
-            mDrawerLayout.closeDrawers();
-            SharedPreferences preferences =getContext().getSharedPreferences("UserData", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.commit();
-            startActivity(new Intent(getActivity(), LoginActivity.class));
-            getActivity().finish();
-        }
-    }
-    }
+}
 

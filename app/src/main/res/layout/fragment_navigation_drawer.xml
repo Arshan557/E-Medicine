@@ -1,9 +1,10 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/accent"
+    android:orientation="vertical"
     tools:context="arshan.com.e_medicine.NavigationDrawerFragment">
 
     <LinearLayout
@@ -23,6 +24,7 @@
             android:id="@+id/profilePic"
             app:border_color="@color/white"
             android:paddingBottom="4dp"
+            android:src="@drawable/defaultpic"
             app:border_width="1dp"/>
 
         <TextView
@@ -40,57 +42,244 @@
             android:textStyle="bold|italic"
             android:textSize="20dp"
             android:textColor="@color/iron"/>
-        <!--<LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="30dp"
-            android:orientation="vertical">
-        <TextView
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/profileName"
-            android:textStyle="bold|italic"
-            android:textSize="20dp"
-            android:paddingRight="2dp"
-            android:textColor="@color/iron"/>
-
-            <TextView
-                android:layout_width="180dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/profileDesig"
-                android:textStyle="italic"
-                android:textSize="15dp"
-                android:textColor="@color/iron"/>
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:src="@color/accent"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:id="@+id/profilePhone"
-                android:paddingRight="3dp"
-                android:textStyle="italic"
-                android:textSize="15dp"
-                android:textColor="@color/iron"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:id="@+id/profileMail"
-                android:paddingRight="3dp"
-                android:textStyle="italic"
-                android:textSize="15dp"
-                android:textColor="@color/iron"/>
-        </LinearLayout>-->
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/drawerList"
+    <ScrollView android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="6dp"
-        android:layout_below="@+id/containerDrawerImage"/>
+        android:clickable="true"
+        android:paddingRight="6dp"
+        android:id="@+id/calcLinear"
+        android:orientation="horizontal">
 
-</RelativeLayout>
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:src="@drawable/calculator" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:textStyle="bold|italic"
+            android:text="Calculator"
+            android:textColor="@color/primary" />
+
+    </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/iron"
+                android:layout_height="2dp" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:paddingRight="6dp"
+        android:id="@+id/contactUsLinear"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:src="@drawable/contact" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:textStyle="bold|italic"
+            android:text="Contact Us"
+            android:textColor="@color/primary" />
+
+    </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/iron"
+                android:layout_height="2dp" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:paddingRight="6dp"
+        android:id="@+id/changePwdLinear"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:src="@drawable/settings" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:textStyle="bold|italic"
+            android:text="Change Passwword"
+            android:textColor="@color/primary" />
+
+    </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/iron"
+                android:layout_height="2dp" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:paddingRight="6dp"
+        android:id="@+id/rateLinear"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:src="@drawable/rateme" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:textStyle="bold|italic"
+            android:text="Rate me"
+            android:textColor="@color/primary" />
+
+    </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/iron"
+                android:layout_height="2dp" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:paddingRight="6dp"
+        android:id="@+id/aboutUsLinear"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:src="@drawable/about" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:textStyle="bold|italic"
+            android:text="About Us"
+            android:textColor="@color/primary" />
+
+    </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/iron"
+                android:layout_height="2dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/aboutGroup"
+        android:paddingLeft="8dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:id="@+id/tc"
+            android:background="@drawable/shape"
+            android:textStyle="italic"
+            android:text=" T and C"
+            android:textColor="@color/black" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:id="@+id/contactDev"
+            android:background="@drawable/shape"
+            android:textStyle="italic"
+            android:text="Contact developers"
+            android:textColor="@color/black" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/shape"
+            android:padding="8dp"
+            android:id="@+id/faq"
+            android:textStyle="italic"
+            android:text="FAQ's"
+            android:textColor="@color/black" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:background="@drawable/shape"
+            android:id="@+id/help"
+            android:textStyle="italic"
+            android:text="Help"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/iron"
+                android:layout_height="2dp" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:paddingRight="6dp"
+        android:id="@+id/logoutLinear"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:src="@drawable/logout" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:textStyle="bold|italic"
+            android:text="Log Out"
+            android:textColor="@color/primary" />
+
+    </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

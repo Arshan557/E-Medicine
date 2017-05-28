@@ -50,6 +50,7 @@ import arshan.com.e_medicine.Models.ProductsPojo;
 import arshan.com.e_medicine.Network.HttpHandler;
 import arshan.com.e_medicine.Scanner.IntentIntegrator;
 import arshan.com.e_medicine.Scanner.IntentResult;
+import arshan.com.e_medicine.Views.CustomProgressDialog;
 
 public class ProductsActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -59,7 +60,7 @@ public class ProductsActivity extends AppCompatActivity {
     private ProductsAdapter productsAdapter;
     public static final int progress_bar_type = 0;
     private String TAG = MainActivity.class.getSimpleName();
-    private ProgressDialog pDialog;
+    private CustomProgressDialog customProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -358,10 +359,7 @@ public class ProductsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             // Showing progress dialog
-            pDialog = new ProgressDialog(ProductsActivity.this);
-            pDialog.setMessage("Loading Products...");
-            pDialog.setCancelable(false);
-            pDialog.show();
+            customProgressDialog = CustomProgressDialog.show(ProductsActivity.this);
         }
         @Override
         protected String doInBackground(String... f_url) {
@@ -434,8 +432,7 @@ public class ProductsActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             // Dismiss the progress dialog
-            if (pDialog.isShowing())
-                pDialog.dismiss();
+            customProgressDialog.cancel();
             /**
              * Updating parsed JSON data into ListView
              * */

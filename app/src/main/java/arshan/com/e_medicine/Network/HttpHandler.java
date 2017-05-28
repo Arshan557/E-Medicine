@@ -41,7 +41,7 @@ public class HttpHandler {
     public HttpHandler() {
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
+    @TargetApi(Build.VERSION_CODES.M)
     public String makeServiceCall(String reqUrl) {
         String response = null;
 
@@ -51,7 +51,12 @@ public class HttpHandler {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            conn.setRequestProperty("Cookie", "__test=2c72a08bffc18c34c2add090de94f663;expires=Friday, January 1, 2038 at 5:25:55 AM;path=/");
+            conn.setRequestProperty("Content-length", "0");
+            conn.setUseCaches(false);
+            conn.setAllowUserInteraction(false);
+            conn.setConnectTimeout(100000);
+            conn.setReadTimeout(100000);
+            conn.setRequestProperty("Cookie", "__test=92a268e37d6506f2de854acbdaf84ca6");
             // read the response
             InputStream in = new BufferedInputStream(conn.getInputStream());
             response = convertStreamToString(in);

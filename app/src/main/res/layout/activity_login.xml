@@ -15,9 +15,9 @@
         android:focusableInTouchMode="true"
         android:paddingRight="24dp">
 
-        <ImageView android:src="@drawable/logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView android:src="@drawable/distributors"
+            android:layout_width="@dimen/logo_dimen"
+            android:layout_height="@dimen/logo_dimen"
             android:layout_marginBottom="10dp"
             android:layout_gravity="center_horizontal" />
 
@@ -30,7 +30,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:text="arshan@gmail.com"
                 android:hint="Email" />
         </android.support.design.widget.TextInputLayout>
 
@@ -43,7 +42,6 @@
             <EditText android:id="@+id/input_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="sud123"
                 android:inputType="textPassword"
                 android:hint="Password"/>
         </android.support.design.widget.TextInputLayout>

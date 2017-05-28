@@ -3,19 +3,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/parentRelative"
     tools:context="arshan.com.e_medicine.SettingsActivity">
 
     <include
         android:id="@+id/app_bar"
         layout="@layout/app_bar" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/mainLinear"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:gravity="center"
+        android:layout_below="@+id/app_bar">
+
+        <!-- Password Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+            <EditText android:id="@+id/input_current_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="Current Password"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- Password Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+            <EditText android:id="@+id/input_new_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="New Password"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- Password Re-enter Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+            <EditText android:id="@+id/input_reEnternewPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="Re-enter new Password"/>
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_changepwd"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Under Construcion"
-        android:textStyle="bold"
-        android:layout_centerInParent="true"
-        android:textColor="@color/white"
-        android:textSize="20dp"/>
+        android:layout_marginTop="24dp"
+        android:layout_alignParentBottom="true"
+        android:text="Change Password"/>
 
 </RelativeLayout>
