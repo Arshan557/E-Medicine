@@ -25,7 +25,7 @@ import arshan.com.e_medicine.EditProductActivity;
 import arshan.com.e_medicine.Models.ProductsPojo;
 import arshan.com.e_medicine.R;
 
-public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyViewHolder> {
+public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductViewHolder> {
 
     private List<ProductsPojo> productsList = new ArrayList<>();;
     private ProductsClickListener productsClickListener;
@@ -36,12 +36,12 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
     HashMap<ProductsPojo, Runnable> pendingRunnables = new HashMap<>(); // map of items to pending runnables, so we can cancel a removal if need be
 
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView newTitle, newsDesc, publishedAt;
         public ImageView bmp;
         public Button undoButton;
 
-        public MyViewHolder(View view) {
+        public ProductViewHolder(View view) {
             super(view);
             newTitle = (TextView) view.findViewById(R.id.news_title);
             newsDesc = (TextView) view.findViewById(R.id.news_desc);
@@ -115,15 +115,15 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
         };
     }
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.custom_row_products, parent, false);
 
-        return new MyViewHolder(itemView);
+        return new ProductViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(ProductViewHolder holder, int position) {
         final ProductsPojo product = productsList.get(position);
 
         if (itemsPendingRemoval.contains(product)) {

@@ -211,28 +211,25 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center"
             android:padding="8dp"
             android:id="@+id/tc"
-            android:background="@drawable/shape"
             android:textStyle="italic"
             android:text=" T and C"
             android:textColor="@color/black" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center"
             android:padding="8dp"
             android:id="@+id/contactDev"
-            android:background="@drawable/shape"
             android:textStyle="italic"
             android:text="Contact developers"
             android:textColor="@color/black" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/shape"
+            android:layout_gravity="center"
             android:padding="8dp"
             android:id="@+id/faq"
             android:textStyle="italic"
@@ -241,9 +238,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center"
             android:padding="8dp"
-            android:background="@drawable/shape"
             android:id="@+id/help"
             android:textStyle="italic"
             android:text="Help"

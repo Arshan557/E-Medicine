@@ -19,7 +19,7 @@
         android:focusableInTouchMode="true"
         android:paddingRight="24dp">
 
-        <ImageView android:src="@drawable/distributors"
+        <ImageView android:src="@drawable/ic_launcher"
             android:layout_width="@dimen/logo_dimen"
             android:layout_height="@dimen/logo_dimen"
             android:layout_marginBottom="10dp"

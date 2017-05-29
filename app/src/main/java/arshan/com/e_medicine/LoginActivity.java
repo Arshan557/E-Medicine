@@ -143,14 +143,6 @@ public class LoginActivity extends AppCompatActivity {
         password = _passwordText.getText().toString();
         isRemembered = _rememberChecked.isChecked();
 
-        // TODO: Implement your own authentication logic here.
-        /*if(validate()) {
-            Intent i = new Intent(LoginActivity.this,Home.class);
-            startActivity(i);
-        } else {
-            Toast.makeText(LoginActivity.this,"Try again",Toast.LENGTH_LONG);
-        }*/
-
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
@@ -167,9 +159,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SIGNUP) {
             if (resultCode == RESULT_OK) {
-
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
                 this.finish();
             }
         }
@@ -245,6 +234,8 @@ public class LoginActivity extends AppCompatActivity {
                 String apikey = null;
                 String profilePic = null;
                 String msg = null;
+                String phone = null;
+                String gender = null;
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     String status = jsonObj.getString("status");
@@ -261,6 +252,8 @@ public class LoginActivity extends AppCompatActivity {
                             lname = c.getString("lname");
                             apikey = c.getString("apikey");
                             profilePic = c.getString("profilePic");
+                            phone = c.getString("phone");
+                            gender = c.getString("gender");
                         }
                         //Shared preferences
                         SharedPreferences sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
@@ -268,9 +261,10 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("fname", fname);
                         editor.putString("lname", lname);
                         editor.putString("email", email);
-                        editor.putString("phone", "8106886588");
                         editor.putString("apikey", apikey);
                         editor.putString("profilePic", profilePic);
+                        editor.putString("phone", phone);
+                        editor.putString("apigenderkey", gender);
                         if (isRemembered) {
                             editor.putString("rememberFlag", "Y");
                             Log.d("isRemembered","true");

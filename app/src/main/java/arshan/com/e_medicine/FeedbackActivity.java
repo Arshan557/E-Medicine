@@ -141,7 +141,7 @@ public class FeedbackActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             Toast.makeText(getApplicationContext(),
-                                    "Something went wrong. Please try again" + e.getMessage(),
+                                    "Something went wrong. Please try again",
                                     Toast.LENGTH_LONG)
                                     .show();
                         }
