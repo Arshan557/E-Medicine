@@ -111,7 +111,6 @@ public class DistributorsActivity extends AppCompatActivity {
                     if ("ok".equalsIgnoreCase(status)) {
                         // Getting JSON Array node
                         JSONArray distributors = jsonObj.getJSONArray("distributors");
-
                         // looping through All News
                         for (int i = 0; i < distributors.length(); i++) {
                             JSONObject c = distributors.getJSONObject(i);
@@ -125,13 +124,12 @@ public class DistributorsActivity extends AppCompatActivity {
                             String mobile = c.getString("mobile");
                             String isActive = c.getString("isActive");
                             String picURL = c.getString("picURL");
-                            String activeStatus = c.getString("Comments");
-                            Log.d("response", name + "," + picURL + "," + activeStatus + "::");
+                            Log.d("response", name + "," + picURL );
 
                             URL url = new URL(picURL);
                             Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
-                            DistributorPojo distributorsPojo = new DistributorPojo(name, bmp, activeStatus);
+                            DistributorPojo distributorsPojo = new DistributorPojo(name, bmp, isActive);
                             distributorPojoList.add(distributorsPojo);
                         }
                     } else {

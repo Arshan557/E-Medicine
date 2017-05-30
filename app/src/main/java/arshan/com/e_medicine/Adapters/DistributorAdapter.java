@@ -110,6 +110,10 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
 
             holder.distributorName.setText(distributor.getName());
             holder.distributorPic.setImageBitmap(distributor.getPic());
+            if ("1".equalsIgnoreCase(distributor.getActive()))
+                holder.simpleSwitch.setChecked(true);
+            else
+                holder.simpleSwitch.setChecked(false);
 
 
     }

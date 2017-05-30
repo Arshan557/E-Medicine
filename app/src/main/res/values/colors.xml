@@ -4,6 +4,8 @@
   <color name="primary_dark">#00897b</color>
   <color name="primary_darker">#00796b</color>
   <color name="accent">#FFFFFF</color>
+  <color name="colorControlActivated">#20d2bb</color>
+  <color name="colorSwitchThumbNormal">#777777</color>
 
   <color name="black">#000000</color>
   <color name="jet">#222222</color>

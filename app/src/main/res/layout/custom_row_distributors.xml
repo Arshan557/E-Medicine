@@ -1,34 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:background="@drawable/shape"
     android:layout_height="wrap_content">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="4dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_gravity="center_horizontal"
         android:id="@+id/distributorPic"
         android:src="@drawable/defaultpic"
         app:border_color="@color/white"
-        android:paddingBottom="4dp"
         app:border_width="1dp"/>
 
     <TextView android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Distributor name"
         android:id="@+id/distributorName"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:paddingLeft="10dp"
         android:layout_gravity="center_vertical"
         android:textSize="16dip"/>
+    </LinearLayout>
 
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="true"
-        android:gravity="right"
+        android:background="@color/iron"
+        android:paddingRight="6dp"
+        android:layout_alignParentRight="true"
         android:id="@+id/activeSwitch" />
 
-</LinearLayout>
+</RelativeLayout>

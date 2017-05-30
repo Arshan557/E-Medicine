@@ -79,10 +79,6 @@
             android:textColor="@color/primary" />
 
     </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:background="@color/iron"
-                android:layout_height="2dp" />
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -108,11 +104,6 @@
             android:textColor="@color/primary" />
 
     </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:background="@color/iron"
-                android:layout_height="2dp" />
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -138,11 +129,6 @@
             android:textColor="@color/primary" />
 
     </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:background="@color/iron"
-                android:layout_height="2dp" />
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -168,10 +154,6 @@
             android:textColor="@color/primary" />
 
     </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:background="@color/iron"
-                android:layout_height="2dp" />
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -197,60 +179,75 @@
             android:textColor="@color/primary" />
 
     </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:background="@color/iron"
-                android:layout_height="2dp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/aboutGroup"
         android:paddingLeft="8dp"
+        android:background="@color/iron"
         android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/aluminum"
+            android:layout_height="1dp" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="8dp"
+            android:gravity="center"
             android:id="@+id/tc"
-            android:textStyle="italic"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:textSize="15dp"
             android:text=" T and C"
             android:textColor="@color/black" />
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/aluminum"
+            android:layout_height="1dp" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="8dp"
+            android:gravity="center"
             android:id="@+id/contactDev"
-            android:textStyle="italic"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:textSize="15dp"
             android:text="Contact developers"
             android:textColor="@color/black" />
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/aluminum"
+            android:layout_height="1dp" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="8dp"
+            android:gravity="center"
             android:id="@+id/faq"
-            android:textStyle="italic"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:textSize="15dp"
             android:text="FAQ's"
             android:textColor="@color/black" />
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/aluminum"
+            android:layout_height="1dp" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="8dp"
+            android:gravity="center"
             android:id="@+id/help"
-            android:textStyle="italic"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:textSize="15dp"
             android:text="Help"
             android:textColor="@color/black" />
-
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/aluminum"
+            android:layout_height="1dp" />
     </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:background="@color/iron"
-                android:layout_height="2dp" />
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
