@@ -6,8 +6,14 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
-    <uses-feature android:name="android.hardware.camera" android:required="false"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:required="false"/>
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:required="false" />
 
     <supports-screens
         android:anyDensity="true"
@@ -17,7 +23,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher2"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
@@ -56,14 +62,6 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark">
-
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
         </activity>
         <activity
             android:name=".SalesActivity"
@@ -195,7 +193,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="arshan.com.e_medicine.ProductsActivity" />
         </activity>
-        <activity android:name=".EditProductActivity"
+        <activity
+            android:name=".EditProductActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="Edit Product"
             android:screenOrientation="portrait"
@@ -203,6 +202,16 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="arshan.com.e_medicine.ProductsActivity" />
+        </activity>
+        <activity
+            android:name=".EditDistributorActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="Distributor"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Dark">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="arshan.com.e_medicine.DistributorsActivity" />
         </activity>
     </application>
 

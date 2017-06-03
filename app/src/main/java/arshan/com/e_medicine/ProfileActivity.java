@@ -37,7 +37,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Button edit, save;
     private CircleImageView pic;
     String firstname, lastname, profilePic, email, phone = "";
-    public static final String DEFAULT = "";
+    public static final String DEFAULT = "N/A";
     private static Bitmap Image = null;
     private static Bitmap rotateImage = null;
     private static final int GALLERY = 1;
@@ -77,9 +77,10 @@ public class ProfileActivity extends AppCompatActivity {
         lname.setText(lastname);
         mail.setText(email);
         mobile.setText(phone);
-        if (null != profilePic) {
+        if (null != profilePic)
             Glide.with(ProfileActivity.this).load(profilePic).into(pic);
-        }
+        else
+            pic.setImageResource(R.drawable.defaultpic);
 
         fname.setEnabled(false);
         lname.setEnabled(false);
@@ -104,7 +105,7 @@ public class ProfileActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ProfileActivity.this,"saving details",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileActivity.this,"Saving profile",Toast.LENGTH_SHORT).show();
                 fname.setEnabled(false);
                 lname.setEnabled(false);
                 mobile.setEnabled(false);

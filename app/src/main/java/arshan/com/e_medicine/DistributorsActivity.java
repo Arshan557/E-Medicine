@@ -121,15 +121,22 @@ public class DistributorsActivity extends AppCompatActivity {
                             String email = c.getString("email");
                             String uname = c.getString("uname");
                             String password = c.getString("password");
+                            String phone = c.getString("phone");
                             String mobile = c.getString("mobile");
                             String isActive = c.getString("isActive");
                             String picURL = c.getString("picURL");
+                            String createdBy = c.getString("createdBy");
+                            String modifiedBy = c.getString("modifiedBy");
+                            String createdOn = c.getString("createdOn");
+                            String modifiedOn = c.getString("modifiedOn");
+
                             Log.d("response", name + "," + picURL );
 
                             URL url = new URL(picURL);
                             Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
-                            DistributorPojo distributorsPojo = new DistributorPojo(name, bmp, isActive);
+                            DistributorPojo distributorsPojo = new DistributorPojo(name, bmp, isActive, id, companyid, email,
+                                    uname, password, mobile, phone, createdBy, modifiedBy, createdOn, modifiedOn, picURL);
                             distributorPojoList.add(distributorsPojo);
                         }
                     } else {
@@ -144,7 +151,7 @@ public class DistributorsActivity extends AppCompatActivity {
                         }
                     });
                 } catch (Exception e) {
-                    Log.e(TAG, "MalformedURLException " + e.getMessage());
+                    Log.e(TAG, "Exception " + e.getMessage());
                 }
             } else {
                 Log.e(TAG, "Couldn't get json from server.");

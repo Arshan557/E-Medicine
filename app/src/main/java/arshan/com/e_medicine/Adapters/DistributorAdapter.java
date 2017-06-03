@@ -1,11 +1,18 @@
 package arshan.com.e_medicine.Adapters;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +21,24 @@ import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import arshan.com.e_medicine.Constants.Constants;
+import arshan.com.e_medicine.DistributorsActivity;
+import arshan.com.e_medicine.EditDistributorActivity;
 import arshan.com.e_medicine.EditProductActivity;
+import arshan.com.e_medicine.LoginActivity;
 import arshan.com.e_medicine.Models.DistributorPojo;
 import arshan.com.e_medicine.Models.ProductsPojo;
+import arshan.com.e_medicine.Network.HttpHandler;
 import arshan.com.e_medicine.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -33,11 +50,13 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
     private List<DistributorPojo> distributorsList = new ArrayList<>();;
     private DistributorsClickListener distributorsClickListener;
     private Context context;
+    private static final String TAG = "DistributorAdapter";
 
     public class DistributorViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView distributorName;
         public CircleImageView distributorPic;
         public Switch  simpleSwitch;
+        private String apikey;
 
         public DistributorViewHolder(View view) {
             super(view);
@@ -45,15 +64,47 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
             distributorPic = (CircleImageView) view.findViewById(R.id.distributorPic);
             simpleSwitch = (Switch) view.findViewById(R.id.activeSwitch);
 
+            // Getting data from Shared preferences
+            SharedPreferences sharedPreferences = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
+            if (null != sharedPreferences) {
+                apikey = sharedPreferences.getString("apikey", "");
+            }
+
             view.setOnClickListener(this);
             distributorName.setOnClickListener(this);
             distributorPic.setOnClickListener(this);
-            simpleSwitch.setOnClickListener(this);
+            simpleSwitch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DistributorPojo distributorPojo = distributorsList.get(getPosition());
+
+                    Log.d("switch",distributorPojo.getActive()+","+distributorPojo.getId()+","+apikey);
+                    if ("1".equalsIgnoreCase(distributorPojo.getActive()))  distributorPojo.setActive("0");
+                    else distributorPojo.setActive("1");
+                    String finalUrl = Constants.CHANGE_ACTIVATION_URL+"?DID="+distributorPojo.getId()+"&status="+distributorPojo.getActive()+"&apikey="+apikey;
+                    Log.d("final url",finalUrl);
+                    new changeActivationStatus().execute(finalUrl);
+                }
+            });
         }
 
         @Override
         public void onClick(View v) {
-            final DistributorPojo distributorPojo = distributorsList.get(getPosition());
+            DistributorPojo distributorPojo = distributorsList.get(getPosition());
+            Intent i = new Intent(context, EditDistributorActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("name", distributorPojo.getName());
+            bundle.putString("email", distributorPojo.getEmail());
+            bundle.putString("uname", distributorPojo.getUname());
+            bundle.putString("mobile", distributorPojo.getMobile());
+            bundle.putString("phone", distributorPojo.getPhone());
+            bundle.putString("picUrl", distributorPojo.getPicUrl());
+            i.putExtras(bundle);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(i);
+            if (distributorsClickListener != null) {
+                distributorsClickListener.itemClicked(v, getPosition());
+            }
         }
     }
 
@@ -96,6 +147,7 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
             }
         };
     }
+
     @Override
     public DistributorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -114,7 +166,62 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
                 holder.simpleSwitch.setChecked(true);
             else
                 holder.simpleSwitch.setChecked(false);
+    }
 
+    private class changeActivationStatus extends AsyncTask<String, String, String> {
+        String msg = "Error occured";
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // Showing progress dialog
+            /*pDialog = new ProgressDialog(context);
+            pDialog.setMessage("Please wait...");
+            pDialog.setCancelable(false);
+            pDialog.show();*/
+        }
+        @Override
+        protected String doInBackground(String... f_url) {
+            HttpHandler sh = new HttpHandler();
+
+            // Making a request to url and getting response
+            String jsonStr = sh.makeServiceCall(f_url[0]);
+
+            Log.e(TAG, "Response from url: " + jsonStr);
+
+            if (jsonStr != null) {
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    String status = jsonObj.getString("status");
+                    Log.d("status",status);
+                    msg = jsonObj.getString("msg");
+                    if ("ok".equalsIgnoreCase(status)) {
+                        //Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+                    } else if ("error".equalsIgnoreCase(status)) {
+                        //Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (final JSONException e) {
+                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                    Toast.makeText(context, "Something went wrong. Try again", Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    Log.e(TAG, "Exception " + e.getMessage());
+                    if (null != msg) {
+                        //Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+                    }
+                }
+            } else {
+                Log.e(TAG, "Couldn't get json from server.");
+                //Toast.makeText(context,"Something went wrong. Please try again", Toast.LENGTH_LONG).show();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            // Dismiss the progress dialog
+            /*if (pDialog.isShowing())
+                pDialog.dismiss();*/
+        }
 
     }
 
