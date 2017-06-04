@@ -61,8 +61,7 @@
             android:name=".Home"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Dark">
-        </activity>
+            android:theme="@style/AppTheme.Dark"></activity>
         <activity
             android:name=".SalesActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -212,6 +211,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="arshan.com.e_medicine.DistributorsActivity" />
+        </activity>
+        <activity android:name=".HelpActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="Help"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Dark">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="arshan.com.e_medicine.Home" />
         </activity>
     </application>
 

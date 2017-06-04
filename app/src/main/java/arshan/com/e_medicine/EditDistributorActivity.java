@@ -38,6 +38,7 @@ public class EditDistributorActivity extends AppCompatActivity {
             Log.d("data",data.getString("name") + "," + data.getString("email")+","+data.getString("uname")
                     +","+data.getString("mobile")+","+data.getString("phone")+","+data.getString("picUrl"));
         }
+        getSupportActionBar().setTitle(data.getString("name"));
 
         dist_name = (EditText) findViewById(R.id.dist_name);
         dist_uname = (EditText) findViewById(R.id.dist_uname);

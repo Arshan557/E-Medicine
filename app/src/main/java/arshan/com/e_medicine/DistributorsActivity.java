@@ -130,7 +130,7 @@ public class DistributorsActivity extends AppCompatActivity {
                             String createdOn = c.getString("createdOn");
                             String modifiedOn = c.getString("modifiedOn");
 
-                            Log.d("response", name + "," + picURL );
+                            //Log.d("response", name + "," + picURL );
 
                             URL url = new URL(picURL);
                             Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());

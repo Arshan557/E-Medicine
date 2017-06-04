@@ -56,7 +56,7 @@ public class HttpHandler {
             conn.setAllowUserInteraction(false);
             conn.setConnectTimeout(100000);
             conn.setReadTimeout(100000);
-            conn.setRequestProperty("Cookie", "__test=92a268e37d6506f2de854acbdaf84ca6");
+            conn.setRequestProperty("Cookie", "__test=cc827140af9823c2634a445c76d67fcb");
             // read the response
             InputStream in = new BufferedInputStream(conn.getInputStream());
             response = convertStreamToString(in);

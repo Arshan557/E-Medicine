@@ -75,6 +75,7 @@
             android:layout_gravity="center_vertical"
             android:padding="8dp"
             android:textStyle="bold|italic"
+            android:id="@+id/nav_calc"
             android:text="Calculator"
             android:textColor="@color/primary" />
 
@@ -99,6 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:padding="8dp"
+            android:id="@+id/nav_contact"
             android:textStyle="bold|italic"
             android:text="Contact Us"
             android:textColor="@color/primary" />
@@ -124,6 +126,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:padding="8dp"
+            android:id="@+id/nav_pwd"
             android:textStyle="bold|italic"
             android:text="Change Passwword"
             android:textColor="@color/primary" />
@@ -149,6 +152,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:padding="8dp"
+            android:id="@+id/nav_rate"
             android:textStyle="bold|italic"
             android:text="Rate me"
             android:textColor="@color/primary" />
@@ -174,6 +178,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:padding="8dp"
+            android:id="@+id/nav_about"
             android:textStyle="bold|italic"
             android:text="About Us"
             android:textColor="@color/primary" />
@@ -184,7 +189,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/aboutGroup"
         android:paddingLeft="8dp"
-        android:background="@color/iron"
+        android:background="#BDBDBD"
         android:orientation="vertical">
         <View
             android:layout_width="match_parent"
@@ -195,11 +200,11 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:id="@+id/tc"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:textSize="15dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textSize="16dp"
             android:text=" T and C"
-            android:textColor="@color/black" />
+            android:textColor="@color/white" />
         <View
             android:layout_width="match_parent"
             android:background="@color/aluminum"
@@ -209,11 +214,11 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:id="@+id/contactDev"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:textSize="15dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textSize="16dp"
             android:text="Contact developers"
-            android:textColor="@color/black" />
+            android:textColor="@color/white" />
         <View
             android:layout_width="match_parent"
             android:background="@color/aluminum"
@@ -223,11 +228,11 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:id="@+id/faq"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:textSize="15dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textSize="16dp"
             android:text="FAQ's"
-            android:textColor="@color/black" />
+            android:textColor="@color/white" />
         <View
             android:layout_width="match_parent"
             android:background="@color/aluminum"
@@ -237,11 +242,11 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:id="@+id/help"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:textSize="15dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textSize="16dp"
             android:text="Help"
-            android:textColor="@color/black" />
+            android:textColor="@color/white" />
         <View
             android:layout_width="match_parent"
             android:background="@color/aluminum"
@@ -268,6 +273,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:padding="8dp"
+            android:id="@+id/nav_logout"
             android:textStyle="bold|italic"
             android:text="Log Out"
             android:textColor="@color/primary" />

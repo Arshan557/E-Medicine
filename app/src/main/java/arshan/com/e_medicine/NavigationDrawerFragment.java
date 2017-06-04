@@ -3,6 +3,7 @@ package arshan.com.e_medicine;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -28,7 +29,7 @@ public class NavigationDrawerFragment extends Fragment{
     private boolean mFromSavedInstanceState;
     private View containerView;
     private LinearLayout profile, calcLinear, contactUsLinear, changePwdLinear, rateLinear, aboutUsLinear, logoutLinear, aboutGroup;
-    private TextView profileName, tc, contactDev, faq, help;
+    private TextView profileName, tc, contactDev, faq, help, calc, contact, pwd, rate, about, logout;
     private CircleImageView profilePhoto;
     public static final String DEFAULT = "";
     String fname = "", lname = "", profilePic = "";
@@ -77,6 +78,27 @@ public class NavigationDrawerFragment extends Fragment{
         tc =  (TextView) layout.findViewById(R.id.tc);
         contactDev =  (TextView) layout.findViewById(R.id.contactDev);
         help =  (TextView) layout.findViewById(R.id.help);
+        calc =  (TextView) layout.findViewById(R.id.nav_calc);
+        contact =  (TextView) layout.findViewById(R.id.nav_contact);
+        pwd =  (TextView) layout.findViewById(R.id.nav_pwd);
+        rate =  (TextView) layout.findViewById(R.id.nav_rate);
+        about =  (TextView) layout.findViewById(R.id.nav_about);
+        logout =  (TextView) layout.findViewById(R.id.nav_logout);
+
+        Typeface nav_items_font = Typeface.createFromAsset(getContext().getAssets(), "nav_items.ttf");
+        Typeface nav_subitems_font = Typeface.createFromAsset(getContext().getAssets(), "nav_subitems.ttf");
+        calc.setTypeface(nav_items_font);
+        contact.setTypeface(nav_items_font);
+        pwd.setTypeface(nav_items_font);
+        rate.setTypeface(nav_items_font);
+        about.setTypeface(nav_items_font);
+        logout.setTypeface(nav_items_font);
+
+        faq.setTypeface(nav_subitems_font);
+        tc.setTypeface(nav_subitems_font);
+        contactDev.setTypeface(nav_subitems_font);
+        help.setTypeface(nav_subitems_font);
+
 
         aboutGroup.setVisibility(View.GONE);
         profile.setOnClickListener(new View.OnClickListener() {
@@ -151,7 +173,7 @@ public class NavigationDrawerFragment extends Fragment{
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), AboutUsActivity.class);
                 i.putExtra("postUrl", Constants.FAQ_URL);
-                i.putExtra("label", "FAQs");
+                i.putExtra("label", "FAQ's");
                 startActivity(i);
             }
         });
@@ -159,8 +181,26 @@ public class NavigationDrawerFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), AboutUsActivity.class);
-                i.putExtra("postUrl", Constants.ABOUT_URL);
+                i.putExtra("postUrl", Constants.TC_URL);
                 i.putExtra("label", "Terms & Conditions");
+                startActivity(i);
+            }
+        });
+        contactDev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), AboutUsActivity.class);
+                i.putExtra("postUrl", Constants.ABOUT_URL);
+                i.putExtra("label", "Developers");
+                startActivity(i);
+            }
+        });
+        help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), HelpActivity.class);
+                /*i.putExtra("postUrl", Constants.ABOUT_URL);
+                i.putExtra("label", "Help");*/
                 startActivity(i);
             }
         });
@@ -186,7 +226,6 @@ public class NavigationDrawerFragment extends Fragment{
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
-                //((MainActivity) getActivity()).onDrawerSlide(slideOffset);
                 /*if (slideOffset < 0.6) {
                     toolbar.setAlpha(1 - slideOffset);
                 }*/

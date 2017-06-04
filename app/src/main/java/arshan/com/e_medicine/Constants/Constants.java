@@ -12,6 +12,7 @@ public class Constants {
         //public static final String APP_UTIL_URL = "http://health.ultimatefreehost.in/E-H/production/mobile/AppUtils";
         public static final String ABOUT_URL = "http://health.ultimatefreehost.in/E-H/production/AppUtils/AboutUs.html";
         public static final String FAQ_URL = "http://health.ultimatefreehost.in/E-H/production/AppUtils/FAQ.html";
+        public static final String TC_URL = "http://health.ultimatefreehost.in/E-H/production/AppUtils/TermsConditions.html";
         public static final String CHANGE_PWD_URL = "http://health.ultimatefreehost.in/E-H/production/mobile/changePassword";
         public static final String DISTRIBUTORS_URL = "http://health.ultimatefreehost.in/E-H/production/mobile/DistributorsList";
         public static final String CHANGE_ACTIVATION_URL = "http://health.ultimatefreehost.in/E-H/production/mobile/DistributorsStatus";
