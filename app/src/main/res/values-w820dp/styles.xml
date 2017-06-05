@@ -16,6 +16,10 @@
         <item name="color">@android:color/white</item>
     </style>
 
+    <style name="SwitchTheme" parent="Theme.AppCompat.Light">
+
+    </style>
+
     <style name="newDialog" parent="android:Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowBackground">@android:color/transparent</item>

@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:clickable="true"
     android:padding="3dp"
-    android:background="@color/accent"
+    android:layout_marginBottom="2dp"
+    android:background="@drawable/shape"
     android:orientation="vertical">
 
             <TextView
@@ -39,10 +40,5 @@
                 android:textStyle="bold"
                 android:textSize="10dp"
                 android:gravity="right"/>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:src="@color/primary_darker"/>
 
         </LinearLayout>

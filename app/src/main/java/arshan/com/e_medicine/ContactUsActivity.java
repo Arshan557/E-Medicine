@@ -7,14 +7,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public class ContactUsActivity extends AppCompatActivity {
+public class ContactUsActivity extends AppCompatActivity implements Animation.AnimationListener {
     private Toolbar toolbar;
     private EditText name, mail, subject, message;
     private Button submit;
+    private LinearLayout feedBackText;
+    Animation slideDown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +33,21 @@ public class ContactUsActivity extends AppCompatActivity {
         //upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
+        // load the animation
+        slideDown = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.slide_down);
+
+        // set animation listener
+        slideDown.setAnimationListener(this);
+
         name = (EditText) findViewById(R.id.name);
         mail = (EditText) findViewById(R.id.email);
         subject = (EditText) findViewById(R.id.subject);
         message = (EditText) findViewById(R.id.msg);
         submit = (Button) findViewById(R.id.submit);
+        feedBackText = (LinearLayout) findViewById(R.id.feedback_text);
+
+        feedBackText.setAnimation(slideDown);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +88,21 @@ public class ContactUsActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    @Override
+    public void onAnimationStart(Animation animation) {
+
+    }
+
+    @Override
+    public void onAnimationEnd(Animation animation) {
+
+    }
+
+    @Override
+    public void onAnimationRepeat(Animation animation) {
 
     }
 }

@@ -15,6 +15,9 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
 
+    <style name="SwitchTheme" parent="Theme.AppCompat.Light">
+    </style>
+
     <style name="newDialog" parent="android:Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -38,10 +41,10 @@
 
         <item name="android:itemTextAppearance">@style/TextAppearance</item>
 
-        <item name="colorControlNormal">@color/iron</item>
-        <item name="colorControlActivated">@color/white</item>
-        <item name="colorControlHighlight">@color/white</item>
-        <item name="android:textColorHint">@color/iron</item>
+        <item name="colorSwitchThumbNormal">@color/colorAccent</item>
+        <item name="colorControlActivated">@color/dot_dark_screen2</item>
+        <item name="colorControlHighlight">@color/aluminum</item>
+        <item name="android:textColorHint">@color/aluminum</item>
 
         <item name="colorButtonNormal">@color/primary_darker</item>
 

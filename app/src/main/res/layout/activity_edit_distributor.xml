@@ -33,20 +33,17 @@
                 android:src="@drawable/defaultpic"
                 app:border_color="@color/white"
                 android:paddingBottom="4dp"
+                android:layout_marginBottom="8dp"
                 app:border_width="1dp"/>
-
-            <TextView android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Name"
-                android:gravity="left"
-                android:textSize="16dip"/>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp">
+                android:background="@drawable/shape"
+                android:layout_marginBottom="1dp">
                 <EditText android:id="@+id/dist_name"
                     android:layout_width="match_parent"
+                    android:textColor="@color/aluminum"
                     android:layout_height="wrap_content" />
             </android.support.design.widget.TextInputLayout>
 
@@ -59,9 +56,11 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp">
+                android:background="@drawable/shape"
+                android:layout_marginBottom="1dp">
                 <EditText android:id="@+id/dist_uname"
                     android:layout_width="match_parent"
+                    android:textColor="@color/aluminum"
                     android:layout_height="wrap_content" />
             </android.support.design.widget.TextInputLayout>
 
@@ -74,9 +73,11 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp">
+                android:background="@drawable/shape"
+                android:layout_marginBottom="1dp">
                 <EditText android:id="@+id/dist_email"
                     android:layout_width="match_parent"
+                    android:textColor="@color/aluminum"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress" />
             </android.support.design.widget.TextInputLayout>
@@ -90,10 +91,12 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp">
+                android:background="@drawable/shape"
+                android:layout_marginBottom="1dp">
                 <EditText android:id="@+id/dist_mobile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/aluminum"
                     android:inputType="number" />
             </android.support.design.widget.TextInputLayout>
 

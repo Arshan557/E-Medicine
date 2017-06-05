@@ -33,21 +33,17 @@
             android:id="@+id/pic"
             android:src="@drawable/defaultpic"
             app:border_color="@color/white"
-            android:paddingBottom="4dp"
+            android:paddingBottom="8dp"
+            android:layout_marginBottom="8dp"
             app:border_width="1dp"/>
-
-        <TextView android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="First name"
-            android:gravity="left"
-            android:textSize="16dip"/>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp">
+            android:background="@drawable/shape">
             <EditText android:id="@+id/first_name"
                 android:layout_width="match_parent"
+                android:textColor="@color/aluminum"
                 android:layout_height="wrap_content" />
         </android.support.design.widget.TextInputLayout>
 
@@ -60,9 +56,10 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp">
+            android:background="@drawable/shape">
             <EditText android:id="@+id/last_name"
                 android:layout_width="match_parent"
+                android:textColor="@color/aluminum"
                 android:layout_height="wrap_content" />
         </android.support.design.widget.TextInputLayout>
 
@@ -75,10 +72,11 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp">
+            android:background="@drawable/shape">
             <EditText android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/aluminum"
                 android:inputType="textEmailAddress" />
         </android.support.design.widget.TextInputLayout>
 
@@ -91,10 +89,11 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp">
+            android:background="@drawable/shape">
             <EditText android:id="@+id/mobile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/aluminum"
                 android:inputType="number" />
         </android.support.design.widget.TextInputLayout>
 

@@ -77,7 +77,7 @@
             android:textStyle="bold|italic"
             android:id="@+id/nav_calc"
             android:text="Calculator"
-            android:textColor="@color/primary" />
+            android:textColor="@color/colorSecondaryText" />
 
     </LinearLayout>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -103,7 +103,7 @@
             android:id="@+id/nav_contact"
             android:textStyle="bold|italic"
             android:text="Contact Us"
-            android:textColor="@color/primary" />
+            android:textColor="@color/colorSecondaryText" />
 
     </LinearLayout>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -129,7 +129,7 @@
             android:id="@+id/nav_pwd"
             android:textStyle="bold|italic"
             android:text="Change Passwword"
-            android:textColor="@color/primary" />
+            android:textColor="@color/colorSecondaryText" />
 
     </LinearLayout>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -155,7 +155,7 @@
             android:id="@+id/nav_rate"
             android:textStyle="bold|italic"
             android:text="Rate me"
-            android:textColor="@color/primary" />
+            android:textColor="@color/colorSecondaryText" />
 
     </LinearLayout>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -181,7 +181,7 @@
             android:id="@+id/nav_about"
             android:textStyle="bold|italic"
             android:text="About Us"
-            android:textColor="@color/primary" />
+            android:textColor="@color/colorSecondaryText" />
 
     </LinearLayout>
     <LinearLayout
@@ -200,9 +200,9 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:id="@+id/tc"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:textSize="16dp"
+            android:paddingTop="11dp"
+            android:paddingBottom="11dp"
+            android:textSize="17dp"
             android:text=" T and C"
             android:textColor="@color/white" />
         <View
@@ -214,9 +214,9 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:id="@+id/contactDev"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:textSize="16dp"
+            android:paddingTop="11dp"
+            android:paddingBottom="11dp"
+            android:textSize="17dp"
             android:text="Contact developers"
             android:textColor="@color/white" />
         <View
@@ -228,9 +228,9 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:id="@+id/faq"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:textSize="16dp"
+            android:paddingTop="11dp"
+            android:paddingBottom="11dp"
+            android:textSize="17dp"
             android:text="FAQ's"
             android:textColor="@color/white" />
         <View
@@ -242,9 +242,9 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:id="@+id/help"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:textSize="16dp"
+            android:paddingTop="11dp"
+            android:paddingBottom="11dp"
+            android:textSize="17dp"
             android:text="Help"
             android:textColor="@color/white" />
         <View
@@ -276,7 +276,7 @@
             android:id="@+id/nav_logout"
             android:textStyle="bold|italic"
             android:text="Log Out"
-            android:textColor="@color/primary" />
+            android:textColor="@color/colorSecondaryText" />
 
     </LinearLayout>
         </LinearLayout>

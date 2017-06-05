@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="primary">#009688</color>
+  <color name="primary">#FFFFFF</color>
   <color name="primary_dark">#00897b</color>
   <color name="primary_darker">#00796b</color>
   <color name="accent">#FFFFFF</color>
+  <color name="colorAccent">#f64c73</color>
   <color name="colorControlActivated">#20d2bb</color>
   <color name="colorSwitchThumbNormal">#777777</color>
 
