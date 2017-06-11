@@ -27,7 +27,7 @@ public class HttpHandler {
 
     @TargetApi(Build.VERSION_CODES.M)
     public String makeServiceCall(String reqUrl, String cookie) {
-
+        Log.d("URL and cookie",reqUrl+"::"+cookie);
         String response = null;
 
         try {

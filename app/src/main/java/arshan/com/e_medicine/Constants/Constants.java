@@ -15,4 +15,5 @@ public class Constants {
         public static final String CHANGE_PWD_URL = "http://health.ultimatefreehost.in/E-H/production/mobile/changePassword";
         public static final String DISTRIBUTORS_URL = "http://health.ultimatefreehost.in/E-H/production/mobile/DistributorsList";
         public static final String CHANGE_ACTIVATION_URL = "http://health.ultimatefreehost.in/E-H/production/mobile/DistributorsStatus";
+        public static final String ADD_DISTRIBUTOR_URL = "http://health.ultimatefreehost.in/E-H/production/mobile/DistributorAdd";
 }

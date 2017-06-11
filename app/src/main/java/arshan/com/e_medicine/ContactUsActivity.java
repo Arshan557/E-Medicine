@@ -3,13 +3,12 @@ package arshan.com.e_medicine;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -17,9 +16,9 @@ import android.widget.Toast;
 public class ContactUsActivity extends AppCompatActivity implements Animation.AnimationListener {
     private Toolbar toolbar;
     private EditText name, mail, subject, message;
-    private Button submit;
+    //private Button submit;
     private LinearLayout feedBackText;
-    Animation slideDown;
+    Animation slideDown, bounce;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,23 +32,27 @@ public class ContactUsActivity extends AppCompatActivity implements Animation.An
         //upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
+        com.shamanland.fab.FloatingActionButton fab = (com.shamanland.fab.FloatingActionButton) findViewById(R.id.fabContact);
+
         // load the animation
-        slideDown = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.slide_down);
+        slideDown = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down);
+        bounce = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.bounce);
 
         // set animation listener
         slideDown.setAnimationListener(this);
+        bounce.setAnimationListener(this);
 
         name = (EditText) findViewById(R.id.name);
         mail = (EditText) findViewById(R.id.email);
         subject = (EditText) findViewById(R.id.subject);
         message = (EditText) findViewById(R.id.msg);
-        submit = (Button) findViewById(R.id.submit);
+        //submit = (Button) findViewById(R.id.submit);
         feedBackText = (LinearLayout) findViewById(R.id.feedback_text);
 
         feedBackText.setAnimation(slideDown);
+        fab.setAnimation(bounce);
 
-        submit.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!name.getText().toString().isEmpty() && !mail.getText().toString().isEmpty()
@@ -85,10 +88,8 @@ public class ContactUsActivity extends AppCompatActivity implements Animation.An
                 } else {
                     Toast.makeText(ContactUsActivity.this, "Please fill all details", Toast.LENGTH_LONG).show();
                 }
-
             }
         });
-
     }
 
     @Override
