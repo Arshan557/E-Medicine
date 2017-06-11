@@ -2,22 +2,16 @@ package arshan.com.e_medicine;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
-import android.content.Intent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -29,16 +23,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import arshan.com.e_medicine.Constants.Constants;
-import arshan.com.e_medicine.Models.ProductsPojo;
 import arshan.com.e_medicine.Network.HttpHandler;
-import butterknife.ButterKnife;
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
@@ -53,6 +41,8 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.link_signup) TextView _signupLink;
     @Bind(R.id.parentRelative) RelativeLayout _parentRelative;
     private CheckBox _rememberChecked;
+
+    @Bind(R.id.clearCookie) TextView clearCookie;
 
     String email = null;
     String password = null;
@@ -99,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        _signupLink.setOnClickListener(new View.OnClickListener() {
+        /*_signupLink.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -109,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
-        });
+        });*/
 
         _forgotLink.setOnClickListener(new View.OnClickListener() {
 
@@ -119,6 +109,18 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), ForgotActivity.class);
                 startActivityForResult(intent, REQUEST_SIGNUP);
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+            }
+        });
+
+        clearCookie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences preferences = getSharedPreferences("CookieData", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.clear();
+                editor.commit();
+                startActivity(new Intent(LoginActivity.this, CookieActivity.class));
+                finish();
             }
         });
     }
@@ -133,25 +135,27 @@ public class LoginActivity extends AppCompatActivity {
 
         _loginButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
+        /*final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
-        progressDialog.show();
+        progressDialog.show();*/
 
         email = _emailText.getText().toString();
         password = _passwordText.getText().toString();
         isRemembered = _rememberChecked.isChecked();
 
-        new android.os.Handler().postDelayed(
+        onLoginSuccess();
+
+       /* new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
                         // On complete call either onLoginSuccess or onLoginFailed
                         onLoginSuccess();
                         // onLoginFailed();
-                        progressDialog.dismiss();
+                        pDialog.dismiss();
                     }
-                }, 3000);
+                }, 2000);*/
     }
 
 
@@ -215,7 +219,7 @@ public class LoginActivity extends AppCompatActivity {
             super.onPreExecute();
             // Showing progress dialog
             pDialog = new ProgressDialog(LoginActivity.this);
-            pDialog.setMessage("Please wait...");
+            pDialog.setMessage("Authenticating...");
             pDialog.setCancelable(false);
             pDialog.show();
         }
@@ -223,8 +227,15 @@ public class LoginActivity extends AppCompatActivity {
         protected String doInBackground(String... f_url) {
             HttpHandler sh = new HttpHandler();
 
+            String cookie;
+            SharedPreferences sharedPreferencesCookie = getSharedPreferences("CookieData", Context.MODE_PRIVATE);
+            cookie = sharedPreferencesCookie.getString("cookieString", "");
+            Log.d("cookie",cookie);
+            if (null == cookie || cookie.equalsIgnoreCase("")) {
+                Toast.makeText(getApplicationContext(),"Cookie empty", Toast.LENGTH_LONG).show();
+            }
             // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(f_url[0]);
+            String jsonStr = sh.makeServiceCall(f_url[0],cookie);
 
             Log.e(TAG, "Response from url: " + jsonStr);
 

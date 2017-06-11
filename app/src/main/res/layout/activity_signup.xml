@@ -24,6 +24,7 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/aluminum"
             android:layout_marginTop="8dp">
             <EditText android:id="@+id/input_name"
                 android:layout_width="match_parent"
@@ -32,24 +33,11 @@
                 android:hint="Name" />
         </android.support.design.widget.TextInputLayout>
 
-        <!-- Address Label -->
-        <!--<android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-            <EditText android:id="@+id/input_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPostalAddress"
-                android:hint="Address" />
-        </android.support.design.widget.TextInputLayout>-->
-
-
-
         <!--  Email Label -->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/aluminum"
             android:layout_marginTop="8dp">
             <EditText android:id="@+id/input_email"
                 android:layout_width="match_parent"
@@ -63,6 +51,7 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/aluminum"
             android:layout_marginTop="8dp">
             <EditText android:id="@+id/input_mobile"
                 android:layout_width="match_parent"
@@ -75,6 +64,7 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/aluminum"
             android:layout_marginTop="8dp">
             <EditText android:id="@+id/input_password"
                 android:layout_width="match_parent"
@@ -87,6 +77,7 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/aluminum"
             android:layout_marginTop="8dp">
             <EditText android:id="@+id/input_reEnterPassword"
                 android:layout_width="match_parent"
@@ -109,6 +100,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
+            android:textColor="@color/aluminum"
             android:text="Already a member? Login"
             android:gravity="center"
             android:textSize="16dip"/>

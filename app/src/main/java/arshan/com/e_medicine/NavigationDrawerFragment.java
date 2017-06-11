@@ -1,6 +1,7 @@
 package arshan.com.e_medicine;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -160,12 +162,30 @@ public class NavigationDrawerFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 mDrawerLayout.closeDrawers();
-                SharedPreferences preferences =getContext().getSharedPreferences("UserData", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.clear();
-                editor.commit();
-                startActivity(new Intent(getActivity(), LoginActivity.class));
-                getActivity().finish();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                //builder.setTitle("Sample Alert");
+                builder.setMessage("Do you really want to Logout?");
+                builder.setNegativeButton("NO",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                //Toast.makeText(getContext(),"No is clicked",Toast.LENGTH_LONG).show();
+                            }
+                        });
+                builder.setPositiveButton("YES",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+                                //Toast.makeText(getContext(),"Yes is clicked",Toast.LENGTH_LONG).show();
+                                SharedPreferences preferences =getContext().getSharedPreferences("UserData", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = preferences.edit();
+                                editor.clear();
+                                editor.commit();
+                                startActivity(new Intent(getActivity(), LoginActivity.class));
+                                getActivity().finish();
+                            }
+                        });
+                builder.show();
+
             }
         });
         faq.setOnClickListener(new View.OnClickListener() {

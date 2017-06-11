@@ -3,12 +3,13 @@ package arshan.com.e_medicine;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -109,8 +110,14 @@ public class FeedbackActivity extends AppCompatActivity {
         protected Void doInBackground(Void... arg0) {
             HttpHandler sh = new HttpHandler();
 
+            String cookie;
+            SharedPreferences sharedPreferencesCookie = getSharedPreferences("CookieData", Context.MODE_PRIVATE);
+            cookie = sharedPreferencesCookie.getString("cookieString", "");
+            if (null == cookie || cookie.equalsIgnoreCase("")) {
+                Toast.makeText(getApplicationContext(),"Cookie empty", Toast.LENGTH_LONG).show();
+            }
             // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(Constants.FEEDBACK_URL);
+            String jsonStr = sh.makeServiceCall(Constants.FEEDBACK_URL,cookie);
 
             Log.e(TAG, "Response from url: " + jsonStr);
 

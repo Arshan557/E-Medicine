@@ -3,30 +3,13 @@ package arshan.com.e_medicine;
 /**
  * Created by Arshan on 09-Oct-2016.
  */
+
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.SyncStateContract;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import arshan.com.e_medicine.Constants.Constants;
-import arshan.com.e_medicine.Network.HttpHandler;
 
 public class SplashScreen extends Activity {
 
@@ -55,7 +38,7 @@ public class SplashScreen extends Activity {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-                Intent i = new Intent(SplashScreen.this, MainActivity.class);
+                Intent i = new Intent(SplashScreen.this, CookieActivity.class);
                 startActivity(i);
 
                 // close this activity

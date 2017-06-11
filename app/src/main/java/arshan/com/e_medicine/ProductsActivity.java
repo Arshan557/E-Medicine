@@ -1,9 +1,9 @@
 package arshan.com.e_medicine;
 
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -13,13 +13,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,7 +29,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +45,7 @@ import java.util.List;
 import arshan.com.e_medicine.Adapters.ProductsAdapter;
 import arshan.com.e_medicine.Constants.Constants;
 import arshan.com.e_medicine.Models.ProductsPojo;
+import arshan.com.e_medicine.Models.ProductsSQLite;
 import arshan.com.e_medicine.Network.HttpHandler;
 import arshan.com.e_medicine.Scanner.IntentIntegrator;
 import arshan.com.e_medicine.Scanner.IntentResult;
@@ -61,6 +60,7 @@ public class ProductsActivity extends AppCompatActivity {
     public static final int progress_bar_type = 0;
     private String TAG = MainActivity.class.getSimpleName();
     private CustomProgressDialog customProgressDialog;
+    Bitmap bmp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +73,51 @@ public class ProductsActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(this);
+
+        /**
+         * CRUD Operations
+         * */
+        // Inserting products
+        Log.d("Insert: ", "Inserting ..");
+        //db.addProduct(new ProductsSQLite("3-cnC1Ot", "3-1XRoRH", "8901314010728", "Colgate Strong Teeth Super Shakti Dental Cream", "2017-02-01", "2018-04-30", "5", "10", "100", "code1", "http:\\/\\/www.ranchibazaar.com\\/1017-thickbox_default\\/colgate-strong-teeth-toothpaste-500-g.jpg"));
+       /* db.addProduct(new ProductsSQLite("5-cnC1Oo", "3-1XRoRH", "8901314010728", "Maxfreh", "2017-02-01", "2018-04-30", "5", "10", "100", "code1", "http:\\/\\/www.ranchibazaar.com\\/1017-thickbox_default\\/colgate-strong-teeth-toothpaste-500-g.jpg"));
+        db.addProduct(new ProductsSQLite("6-cnC1Oo", "3-1XRoRH", "8901314010728", "Active salt", "2017-02-01", "2018-04-30", "5", "10", "100", "code1", "http:\\/\\/www.ranchibazaar.com\\/1017-thickbox_default\\/colgate-strong-teeth-toothpaste-500-g.jpg"));
+        db.addProduct(new ProductsSQLite("7-cnC1Oo", "3-1XRoRH", "8901314010728", "Pepsodent", "2017-02-01", "2018-04-30", "5", "10", "100", "code1", "http:\\/\\/www.ranchibazaar.com\\/1017-thickbox_default\\/colgate-strong-teeth-toothpaste-500-g.jpg"));
+        db.addProduct(new ProductsSQLite("8-cnC1Oo", "3-1XRoRH", "8901314010728", "Dabur", "2017-02-01", "2018-04-30", "5", "10", "100", "code1", "http:\\/\\/www.ranchibazaar.com\\/1017-thickbox_default\\/colgate-strong-teeth-toothpaste-500-g.jpg"));
+        db.addProduct(new ProductsSQLite("9-cnC1Oo", "3-1XRoRH", "8901314010728", "Haldiram", "2017-02-01", "2018-04-30", "5", "10", "100", "code1", "http:\\/\\/www.ranchibazaar.com\\/1017-thickbox_default\\/colgate-strong-teeth-toothpaste-500-g.jpg"));
+        db.addProduct(new ProductsSQLite("10-cnC1Oo", "3-1XRoRH", "8901314010728", "Red MI", "2017-02-01", "2018-04-30", "5", "10", "100", "code1", "http:\\/\\/www.ranchibazaar.com\\/1017-thickbox_default\\/colgate-strong-teeth-toothpaste-500-g.jpg"));
+        db.addProduct(new ProductsSQLite("11-cnC1Oo", "3-1XRoRH", "8901314010728", "ASUS", "2017-02-01", "2018-04-30", "5", "10", "100", "code1", "http:\\/\\/www.ranchibazaar.com\\/1017-thickbox_default\\/colgate-strong-teeth-toothpaste-500-g.jpg"));
+        db.addProduct(new ProductsSQLite("12-cnC1Oo", "3-1XRoRH", "8901314010728", "DELL", "2017-02-01", "2018-04-30", "5", "10", "100", "code1", "http:\\/\\/www.ranchibazaar.com\\/1017-thickbox_default\\/colgate-strong-teeth-toothpaste-500-g.jpg"));
+        db.addProduct(new ProductsSQLite("13-cnC1Oo", "3-1XRoRH", "8901314010728", "Anand Bhavan", "2017-02-01", "2018-04-30", "5", "10", "100", "code1", "http:\\/\\/www.ranchibazaar.com\\/1017-thickbox_default\\/colgate-strong-teeth-toothpaste-500-g.jpg"));
+*/
+        try {
+            String imgUrl = "http://www.ranchibazaar.com/1017-thickbox_default/colgate-strong-teeth-toothpaste-500-g.jpg";
+            URL url = new URL(imgUrl);
+            bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+        } catch (Exception e) {
+            Log.d("Exception", "" + e.getLocalizedMessage());
+        }
+
+        // Reading all products
+        Log.d("Reading: ", "Reading all contacts..");
+        List<ProductsSQLite> products = db.getAllProducts();
+
+        for (int i=products.size()-1; i >= 0; i--) {
+            String log = "Id: "+products.get(i).getId()+" ,companyid: " + products.get(i).getCompanyid() + " ,barcode: " + products.get(i).getBarcode() + " ,itemname: " + products.get(i).getItemname() + " ,mfgdate: " + products.get(i).getMfgdate()
+                    + " ,expdate: " + products.get(i).getExpdate() + " ,maxdiscount: " + products.get(i).getMaxdiscount() + " ,qty: " + products.get(i).getQty() + " ,mrp: " + products.get(i).getMrp() + " ,batch: " + products.get(i).getBatch() + " ,productimage: " + products.get(i).getProductimage();
+            Log.d("product: ", log);
+            try {
+                /*URL url = new URL(products.get(i).getProductimage());
+                bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());*/
+                ProductsPojo productsPojo = new ProductsPojo(products.get(i).getItemname(), products.get(i).getMfgdate(), bmp,
+                        products.get(i).getQty(), products.get(i).getMrp());
+                productsPojoList.add(productsPojo);
+            } catch (Exception e) {
+                Log.d("Exception", ""+e.getMessage());
+            }
+        }
 
         recyclerView = (RecyclerView) findViewById(R.id.products_recycle);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.productsCoordinate);
@@ -112,7 +157,7 @@ public class ProductsActivity extends AppCompatActivity {
         });
 
         //Make call to Async
-        new GetProducts().execute(Constants.PRODUCTS_URL);
+        //new GetProducts().execute(Constants.PRODUCTS_URL);
 
         //Recycle view starts
         productsAdapter = new ProductsAdapter(getApplicationContext(), productsPojoList);
@@ -330,13 +375,14 @@ public class ProductsActivity extends AppCompatActivity {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
                         Log.w("myApp", "onQueryTextSubmit::"+query);
+                        new GetProducts().execute(Constants.PRODUCTNAME_SEARCH_URL+"?name="+query);
                         return false;
                     }
                     @Override
                     public boolean onQueryTextChange(String newText) {
                         Log.w("myApp", "onQueryTextChange::"+newText);
-                        productsAdapter.getFilter().filter(newText);
-                        recyclerView.invalidate();
+                        /*productsAdapter.getFilter().filter(newText);
+                        recyclerView.invalidate();*/
                         return true;
                     }
                 });
@@ -355,6 +401,8 @@ public class ProductsActivity extends AppCompatActivity {
 
     private class GetProducts extends AsyncTask<String, String, String> {
 
+        String status = null;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -365,15 +413,22 @@ public class ProductsActivity extends AppCompatActivity {
         protected String doInBackground(String... f_url) {
             HttpHandler sh = new HttpHandler();
 
+            String cookie;
+
+            SharedPreferences sharedPreferencesCookie = getSharedPreferences("CookieData", Context.MODE_PRIVATE);
+            cookie = sharedPreferencesCookie.getString("cookieString", "");
+            if (null == cookie || cookie.equalsIgnoreCase("")) {
+                Toast.makeText(getApplicationContext(),"Cookie empty", Toast.LENGTH_LONG).show();
+            }
             // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(f_url[0]);
+            String jsonStr = sh.makeServiceCall(f_url[0],cookie);
 
             Log.e(TAG, "Response from url: " + jsonStr);
 
             if (jsonStr != null) {
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
-                    String status = jsonObj.getString("status");
+                    status = jsonObj.getString("status");
                     Log.d("status",status);
 
                     if ("ok".equalsIgnoreCase(status)) {
@@ -395,12 +450,26 @@ public class ProductsActivity extends AppCompatActivity {
                             String batch = c.getString("batch");
                             String productimage = c.getString("productimage");
 
+                            Log.d("productimage",productimage);
                             URL url = new URL(productimage);
                             Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
+                            productsPojoList.clear();
                             ProductsPojo productsPojo = new ProductsPojo(itemname, mfgdate, bmp, qty, mrp);
                             productsPojoList.add(productsPojo);
 
+                            //In
+                            SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(ProductsActivity.this);
+                            db.addProduct(new ProductsSQLite(id, companyid, barcode, itemname, mfgdate, expdate, maxdiscount, qty, mrp, batch, productimage));
+
+                        }
+                    } else {
+                        productsPojoList.clear();
+                        SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(ProductsActivity.this);
+                        List<ProductsSQLite> products = db.getAllProducts();
+                        for (ProductsSQLite pr : products) {
+                            ProductsPojo productsPojo = new ProductsPojo(pr.getItemname(), pr.getMfgdate(), bmp, pr.getQty(), pr.getMrp());
+                            productsPojoList.add(productsPojo);
                         }
                     }
                 } catch (final JSONException e) {
@@ -433,6 +502,8 @@ public class ProductsActivity extends AppCompatActivity {
             super.onPostExecute(result);
             // Dismiss the progress dialog
             customProgressDialog.cancel();
+            if (null == status || status.equalsIgnoreCase("error"))
+                Toast.makeText(getApplicationContext(), "Product not found. Search again", Toast.LENGTH_LONG).show();
             /**
              * Updating parsed JSON data into ListView
              * */

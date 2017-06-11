@@ -6,33 +6,17 @@ package arshan.com.e_medicine.Network;
 
 import android.annotation.TargetApi;
 import android.os.Build;
-import android.text.TextUtils;
 import android.util.Log;
-import android.webkit.CookieManager;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.CookieHandler;
-import java.net.CookiePolicy;
-import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
-
-import arshan.com.e_medicine.Constants.Constants;
-import cz.msebera.android.httpclient.HttpEntity;
-import cz.msebera.android.httpclient.HttpResponse;
-import cz.msebera.android.httpclient.client.HttpClient;
-import cz.msebera.android.httpclient.client.entity.UrlEncodedFormEntity;
-import cz.msebera.android.httpclient.client.methods.HttpPost;
-import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
 
 public class HttpHandler {
 
@@ -42,7 +26,8 @@ public class HttpHandler {
     }
 
     @TargetApi(Build.VERSION_CODES.M)
-    public String makeServiceCall(String reqUrl) {
+    public String makeServiceCall(String reqUrl, String cookie) {
+
         String response = null;
 
         try {
@@ -56,7 +41,7 @@ public class HttpHandler {
             conn.setAllowUserInteraction(false);
             conn.setConnectTimeout(100000);
             conn.setReadTimeout(100000);
-            conn.setRequestProperty("Cookie", "__test=cc827140af9823c2634a445c76d67fcb");
+            conn.setRequestProperty("Cookie", "__test="+cookie);
             // read the response
             InputStream in = new BufferedInputStream(conn.getInputStream());
             response = convertStreamToString(in);

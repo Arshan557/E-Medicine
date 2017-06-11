@@ -25,6 +25,7 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/aluminum"
             android:layout_marginTop="8dp">
             <EditText android:id="@+id/input_email"
                 android:layout_width="match_parent"
@@ -37,6 +38,7 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/aluminum"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp">
             <EditText android:id="@+id/input_password"
@@ -53,10 +55,12 @@
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:buttonTint="@color/aluminum"
                 android:id="@+id/rememberCheck"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/aluminum"
                 android:id="@+id/remember"
                 android:text="Remember password"/>
         </LinearLayout>
@@ -79,12 +83,14 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
+                android:textColor="@color/aluminum"
                 android:text="Forgot password?"
                 android:textSize="16dip"/>
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
+                android:textColor="@color/aluminum"
                 android:text=" | "
                 android:textStyle="bold"
                 android:textSize="20dip"/>
@@ -92,9 +98,22 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
+            android:textColor="@color/aluminum"
             android:text="New user? Sign up"
             android:textSize="16dip"/>
         </LinearLayout>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:gravity="center"
+            android:id="@+id/clearCookie"
+            android:textColor="@color/aluminum"
+            android:layout_alignParentBottom="true"
+            android:text="clear cookie"
+            android:textSize="12dip"/>
 
     </LinearLayout>
         <TextView
@@ -104,6 +123,7 @@
             android:paddingLeft="24dp"
             android:paddingRight="24dp"
             android:gravity="center"
+            android:textColor="@color/aluminum"
             android:layout_alignParentBottom="true"
             android:text="@string/terms"
             android:textSize="12dip"/>

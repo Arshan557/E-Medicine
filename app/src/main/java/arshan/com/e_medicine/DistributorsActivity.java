@@ -8,10 +8,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,12 +31,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import arshan.com.e_medicine.Adapters.DistributorAdapter;
-import arshan.com.e_medicine.Adapters.FeedbackAdapter;
 import arshan.com.e_medicine.Constants.Constants;
 import arshan.com.e_medicine.Models.DistributorPojo;
-import arshan.com.e_medicine.Models.FeedbackPojo;
 import arshan.com.e_medicine.Network.HttpHandler;
-import arshan.com.e_medicine.Scanner.IntentIntegrator;
 
 public class DistributorsActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -98,8 +95,14 @@ public class DistributorsActivity extends AppCompatActivity {
         protected String doInBackground(String... f_url) {
             HttpHandler sh = new HttpHandler();
 
+            String cookie;
+            SharedPreferences sharedPreferencesCookie = getSharedPreferences("CookieData", Context.MODE_PRIVATE);
+            cookie = sharedPreferencesCookie.getString("cookieString", "");
+            if (null == cookie || cookie.equalsIgnoreCase("")) {
+                Toast.makeText(getApplicationContext(),"Cookie empty", Toast.LENGTH_LONG).show();
+            }
             // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(f_url[0]);
+            String jsonStr = sh.makeServiceCall(f_url[0],cookie);
 
             Log.e(TAG, "Response from url: " + jsonStr);
 
