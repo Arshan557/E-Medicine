@@ -4,6 +4,10 @@
     android:id="@+id/distributorCoordinate"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/app_bar">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -22,7 +26,14 @@
         android:layout_below="@+id/app_bar"
         android:padding="5dp" />
 
+    <View
+        android:id="@+id/justView"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@+id/distributor_recycle" />
+
 </RelativeLayout>
+    </ScrollView>
     <com.shamanland.fab.FloatingActionButton
         android:id="@+id/fabDist"
         android:layout_width="wrap_content"

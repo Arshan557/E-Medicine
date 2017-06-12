@@ -50,7 +50,7 @@ public class ContactUsActivity extends AppCompatActivity implements Animation.An
         feedBackText = (LinearLayout) findViewById(R.id.feedback_text);
 
         feedBackText.setAnimation(slideDown);
-        fab.setAnimation(bounce);
+        //fab.setAnimation(bounce);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

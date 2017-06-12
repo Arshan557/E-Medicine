@@ -1,10 +1,12 @@
 package arshan.com.e_medicine.Adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +29,7 @@ import arshan.com.e_medicine.EditDistributorActivity;
 import arshan.com.e_medicine.Models.DistributorPojo;
 import arshan.com.e_medicine.Network.HttpHandler;
 import arshan.com.e_medicine.R;
+import arshan.com.e_medicine.Views.CustomProgressDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -35,7 +39,11 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
 
     private List<DistributorPojo> distributorsList = new ArrayList<>();;
     private DistributorsClickListener distributorsClickListener;
+    private CustomProgressDialog customProgressDialog;
+    DistributorPojo distributorPojo;
     private Context context;
+    DistributorViewHolder holder;
+
     private static final String TAG = "DistributorAdapter";
 
     public class DistributorViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -62,14 +70,37 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
             simpleSwitch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    DistributorPojo distributorPojo = distributorsList.get(getPosition());
+                    final View v = view;
+                   distributorPojo = distributorsList.get(getPosition());
 
-                    Log.d("switch",distributorPojo.getActive()+","+distributorPojo.getId()+","+apikey);
-                    if ("1".equalsIgnoreCase(distributorPojo.getActive()))  distributorPojo.setActive("0");
-                    else distributorPojo.setActive("1");
-                    String finalUrl = Constants.CHANGE_ACTIVATION_URL+"?DID="+distributorPojo.getId()+"&status="+distributorPojo.getActive()+"&apikey="+apikey;
-                    Log.d("final url",finalUrl);
-                    new changeActivationStatus().execute(finalUrl);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                    //builder.setTitle("Sample Alert");
+                    if ("1".equalsIgnoreCase(distributorPojo.getActive())) builder.setMessage("Do you want to deactivate "+distributorPojo.getName()+"?");
+                    else builder.setMessage("Do you want to activate "+distributorPojo.getName()+"?");
+
+                    builder.setNegativeButton("NO",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //Toast.makeText(getContext(),"No is clicked",Toast.LENGTH_LONG).show();
+                                    if (simpleSwitch.isChecked()) simpleSwitch.setChecked(false);
+                                    else simpleSwitch.setChecked(true);
+                                }
+                            });
+                    builder.setPositiveButton("YES",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    //Toast.makeText(getContext(),"Yes is clicked",Toast.LENGTH_LONG).show();
+                                    Log.d("switch",distributorPojo.getActive()+","+distributorPojo.getId()+","+apikey);
+                                    if ("1".equalsIgnoreCase(distributorPojo.getActive()))  distributorPojo.setActive("0");
+                                    else distributorPojo.setActive("1");
+                                    String finalUrl = Constants.CHANGE_ACTIVATION_URL+"?DID="+distributorPojo.getId()+"&status="+distributorPojo.getActive()+"&apikey="+apikey;
+                                    Log.d("final url",finalUrl);
+                                    new changeActivationStatus(v).execute(finalUrl);
+                                }
+                            });
+                    builder.show();
+
                 }
             });
         }
@@ -145,7 +176,7 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
     @Override
     public void onBindViewHolder(DistributorViewHolder holder, int position) {
         final DistributorPojo distributor = distributorsList.get(position);
-
+            this.holder = holder;
             holder.distributorName.setText(distributor.getName());
             holder.distributorPic.setImageBitmap(distributor.getPic());
             if ("1".equalsIgnoreCase(distributor.getActive()))
@@ -155,15 +186,20 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
     }
 
     private class changeActivationStatus extends AsyncTask<String, String, String> {
-        String msg = "Error occured";
+        String status = "", msg = "Error occured";
+        private WeakReference vRef;
+        View v;
+
+        public changeActivationStatus (View v) {
+            vRef = new WeakReference(v);
+            this.v = v;
+        }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            // Showing progress dialog
-            /*pDialog = new ProgressDialog(context);
-            pDialog.setMessage("Please wait...");
-            pDialog.setCancelable(false);
-            pDialog.show();*/
+            customProgressDialog = CustomProgressDialog.show(v.getContext());
+
         }
         @Override
         protected String doInBackground(String... f_url) {
@@ -183,14 +219,9 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
             if (jsonStr != null) {
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
-                    String status = jsonObj.getString("status");
+                    status = jsonObj.getString("status");
                     Log.d("status",status);
                     msg = jsonObj.getString("msg");
-                    if ("ok".equalsIgnoreCase(status)) {
-                        //Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
-                    } else if ("error".equalsIgnoreCase(status)) {
-                        //Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
-                    }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
                     Toast.makeText(context, "Something went wrong. Try again", Toast.LENGTH_LONG).show();
@@ -210,9 +241,15 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            // Dismiss the progress dialog
-            /*if (pDialog.isShowing())
-                pDialog.dismiss();*/
+            customProgressDialog.cancel();
+            if ("ok".equalsIgnoreCase(status)) {
+                if ("1".equalsIgnoreCase(distributorPojo.getActive())) Toast.makeText(context, distributorPojo.getName()+" activated", Toast.LENGTH_LONG).show();
+                else Toast.makeText(context, distributorPojo.getName()+" deactivated", Toast.LENGTH_LONG).show();
+            } else if ("error".equalsIgnoreCase(status)) {
+                Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+                if (holder.simpleSwitch.isChecked()) holder.simpleSwitch.setChecked(false);
+                else holder.simpleSwitch.setChecked(true);
+            }
         }
 
     }

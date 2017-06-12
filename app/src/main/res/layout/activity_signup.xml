@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="56dp"
+        android:background="#26a69a"
         android:paddingLeft="24dp"
         android:focusableInTouchMode="true"
         android:paddingRight="24dp">

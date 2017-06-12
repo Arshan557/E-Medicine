@@ -145,8 +145,13 @@ public class DistributorsActivity extends AppCompatActivity {
                             String modifiedOn = c.getString("modifiedOn");
 
                             //Log.d("response", name + "," + picURL );
-
-                            URL url = new URL(picURL);
+                            URL url = null;
+                            if (null != picURL && !"".equalsIgnoreCase(picURL)) {
+                                url = new URL(picURL);
+                            } else {
+                                picURL = "http://www.provo2.com/health-fitness/wp-content/uploads/2010/11/default-avatar.jpg";
+                                url = new URL(picURL);
+                            }
                             Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
                             DistributorPojo distributorsPojo = new DistributorPojo(name, bmp, isActive, id, companyid, email,

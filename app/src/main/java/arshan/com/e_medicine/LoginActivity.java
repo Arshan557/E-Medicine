@@ -213,6 +213,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private class Authenticate extends AsyncTask<String, String, String> {
+        String status = "", msg = "";
+        String fname,lname,apikey,profilePic,phone,gender = null;
 
         @Override
         protected void onPreExecute() {
@@ -240,16 +242,11 @@ public class LoginActivity extends AppCompatActivity {
             Log.e(TAG, "Response from url: " + jsonStr);
 
             if (jsonStr != null) {
-                String fname = null;
-                String lname= null;
-                String apikey = null;
-                String profilePic = null;
-                String msg = null;
-                String phone = null;
-                String gender = null;
+
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
-                    String status = jsonObj.getString("status");
+                    status = jsonObj.getString("status");
+
                     Log.d("status",status);
 
                     if ("ok".equalsIgnoreCase(status)) {
@@ -284,27 +281,8 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("isRemembered","false");
                         }
                         editor.commit();
-
-                        Intent i = new Intent(LoginActivity.this, Home.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("fname",fname);
-                        bundle.putString("lname",lname);
-                        bundle.putString("apikey",apikey);
-                        if (!profilePic.equalsIgnoreCase("")) {
-                            bundle.putString("profilePic", profilePic);
-                        }
-                        i.putExtras(bundle);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(i);
-                        finish();
-                    } else if ("error".equalsIgnoreCase(status)) {
+                    } else {
                         msg = jsonObj.getString("msg");
-                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
-                        Snackbar snackbar = Snackbar.make(_parentRelative, msg, Snackbar.LENGTH_LONG);
-                        snackbar.show();
-                        /*View sbView = snackbar.getView();
-                        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-                        textView.setTextColor(Color.RED);*/
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -342,6 +320,27 @@ public class LoginActivity extends AppCompatActivity {
             // Dismiss the progress dialog
             if (pDialog.isShowing())
                 pDialog.dismiss();
+            if (null != status && !status.isEmpty() && "ok".equalsIgnoreCase(status)) {
+                Intent i = new Intent(LoginActivity.this, Home.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("fname",fname);
+                bundle.putString("lname",lname);
+                bundle.putString("apikey",apikey);
+                if (!profilePic.equalsIgnoreCase("")) {
+                    bundle.putString("profilePic", profilePic);
+                }
+                i.putExtras(bundle);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+                finish();
+            } else if ("error".equalsIgnoreCase(status)) {
+                //Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+                Snackbar snackbar = Snackbar.make(_parentRelative, msg, Snackbar.LENGTH_LONG);
+                snackbar.show();
+                View sbView = snackbar.getView();
+                TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.RED);
+            }
 
         }
 
