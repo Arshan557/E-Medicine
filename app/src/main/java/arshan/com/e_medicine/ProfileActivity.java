@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -26,7 +25,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ProfileActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private EditText fname, lname, mail, mobile;
-    private Button edit, save;
     private CircleImageView pic;
     String firstname, lastname, profilePic, email, phone = "";
     public static final String DEFAULT = "N/A";

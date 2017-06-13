@@ -1,12 +1,13 @@
 package arshan.com.e_medicine;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.AppCompatActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -17,9 +18,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class EditDistributorActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private EditText dist_name, dist_uname, dist_mail, dist_mobile;
-    private Button dist_edit, dist_save;
     private CircleImageView dist_pic;
     public static final String DEFAULT = "N/A";
+    com.shamanland.fab.FloatingActionButton fabSave;
+    com.shamanland.fab.FloatingActionButton fabEdit;
+    com.shamanland.fab.FloatingActionButton fabCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +47,9 @@ public class EditDistributorActivity extends AppCompatActivity {
         dist_uname = (EditText) findViewById(R.id.dist_uname);
         dist_mail = (EditText) findViewById(R.id.dist_email);
         dist_mobile = (EditText) findViewById(R.id.dist_mobile);
-        dist_edit = (Button) findViewById(R.id.dist_edit);
-        dist_save = (Button) findViewById(R.id.dist_save);
+        fabSave = (com.shamanland.fab.FloatingActionButton) findViewById(R.id.dist_save);
+        fabEdit = (com.shamanland.fab.FloatingActionButton) findViewById(R.id.dist_edit);
+        fabCall = (com.shamanland.fab.FloatingActionButton) findViewById(R.id.dist_call);
         dist_pic = (CircleImageView) findViewById(R.id.dist_pic);
 
         if (null != data.getString("name")) dist_name.setText(data.getString("name"));
@@ -66,9 +70,9 @@ public class EditDistributorActivity extends AppCompatActivity {
         dist_mobile.setEnabled(false);
         dist_mail.setEnabled(false);
         dist_pic.setEnabled(false);
-        dist_save.setVisibility(View.GONE);
+        fabSave.setVisibility(View.GONE);
 
-        dist_edit.setOnClickListener(new View.OnClickListener() {
+        fabEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dist_name.setEnabled(true);
@@ -76,12 +80,12 @@ public class EditDistributorActivity extends AppCompatActivity {
                 dist_mobile.setEnabled(true);
                 dist_mail.setEnabled(true);
                 dist_pic.setEnabled(true);
-                dist_edit.setVisibility(View.GONE);
-                dist_save.setVisibility(View.VISIBLE);
+                fabEdit.setVisibility(View.GONE);
+                fabSave.setVisibility(View.VISIBLE);
             }
         });
 
-        dist_save.setOnClickListener(new View.OnClickListener() {
+        fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(EditDistributorActivity.this,"Saving details",Toast.LENGTH_SHORT).show();
@@ -90,8 +94,21 @@ public class EditDistributorActivity extends AppCompatActivity {
                 dist_mobile.setEnabled(false);
                 dist_mail.setEnabled(false);
                 dist_pic.setEnabled(false);
-                dist_edit.setVisibility(View.VISIBLE);
-                dist_save.setVisibility(View.GONE);
+                fabEdit.setVisibility(View.VISIBLE);
+                fabSave.setVisibility(View.GONE);
+            }
+        });
+
+        fabCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(EditDistributorActivity.this,"Calling "+dist_name.getText().toString(),Toast.LENGTH_SHORT).show();
+                Intent in = new Intent(Intent.ACTION_CALL, Uri.parse("tel:+91"+dist_mobile.getText().toString()));
+                try {
+                    startActivity(in);
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(getApplicationContext(), "your Activity is not found", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

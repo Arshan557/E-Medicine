@@ -101,6 +101,11 @@
                 android:inputType="number" />
         </android.support.design.widget.TextInputLayout>
 
+        <View
+            android:id="@+id/justView"
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
     </LinearLayout>
 </ScrollView>
     </RelativeLayout>

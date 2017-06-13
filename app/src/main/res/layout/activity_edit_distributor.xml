@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/profileCoordinate"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -100,9 +105,15 @@
                     android:inputType="number" />
             </android.support.design.widget.TextInputLayout>
 
+            <View
+                android:id="@+id/justView"
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+
         </LinearLayout>
     </ScrollView>
-    <android.support.v7.widget.AppCompatButton
+</RelativeLayout>
+ <!--   <android.support.v7.widget.AppCompatButton
         android:id="@+id/dist_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -113,6 +124,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="Edit"/>
+        android:text="Edit"/>-->
 
-</RelativeLayout>
+    <com.shamanland.fab.FloatingActionButton
+        android:id="@+id/dist_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/profilesave"
+        android:layout_margin="@dimen/fab_margin"
+        app:floatingActionButtonColor="@color/bg_screen3"
+        app:floatingActionButtonSize="normal" />
+
+    <com.shamanland.fab.FloatingActionButton
+        android:id="@+id/dist_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/profileedit"
+        android:layout_margin="@dimen/fab_margin"
+        app:floatingActionButtonColor="@color/bg_screen3"
+        app:floatingActionButtonSize="normal" />
+
+    <com.shamanland.fab.FloatingActionButton
+        android:id="@+id/dist_call"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|left"
+        android:src="@drawable/phone"
+        android:layout_margin="@dimen/fab_margin"
+        app:floatingActionButtonColor="#00c853"
+        app:floatingActionButtonSize="normal" />
+
+
+    </android.support.design.widget.CoordinatorLayout>
