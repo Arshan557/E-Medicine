@@ -269,6 +269,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("fname", fname);
                         editor.putString("lname", lname);
                         editor.putString("email", email);
+                        editor.putString("password", password);
                         editor.putString("apikey", apikey);
                         editor.putString("profilePic", profilePic);
                         editor.putString("phone", phone);

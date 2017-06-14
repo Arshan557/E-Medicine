@@ -1,6 +1,5 @@
 package arshan.com.e_medicine;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -68,12 +67,6 @@ public class CookieActivity extends AppCompatActivity {
 
     public void storeCookie() {
         cookieSubmit.setEnabled(false);
-
-        final ProgressDialog progressDialog = new ProgressDialog(CookieActivity.this,
-                R.style.AppTheme_Dark_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
-        progressDialog.show();
 
         String cookieString = cookie.getText().toString();
 

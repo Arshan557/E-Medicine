@@ -99,6 +99,13 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
                                     new changeActivationStatus(v).execute(finalUrl);
                                 }
                             });
+                    builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialogInterface) {
+                            if (simpleSwitch.isChecked()) simpleSwitch.setChecked(false);
+                            else simpleSwitch.setChecked(true);
+                        }
+                    });
                     builder.show();
 
                 }

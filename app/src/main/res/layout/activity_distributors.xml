@@ -4,43 +4,51 @@
     android:id="@+id/distributorCoordinate"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/app_bar">
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="arshan.com.e_medicine.DistributorsActivity">
-    <include
-        android:id="@+id/app_bar"
-        layout="@layout/app_bar" />
+        tools:context="arshan.com.e_medicine.DistributorsActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/distributor_recycle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/app_bar"
-        android:padding="5dp" />
+        <include
+            android:id="@+id/app_bar"
+            layout="@layout/app_bar" />
 
-    <View
-        android:id="@+id/justView"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_below="@+id/distributor_recycle" />
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/app_bar">
 
-</RelativeLayout>
-    </ScrollView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/distributor_recycle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/app_bar"
+                    android:padding="5dp" />
+
+                <View
+                    android:id="@+id/justView"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" />
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
     <com.shamanland.fab.FloatingActionButton
         android:id="@+id/fabDist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:src="@drawable/adddistributor"
         android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/adddistributor"
         app:floatingActionButtonColor="@color/bg_screen3"
         app:floatingActionButtonSize="normal" />
 </android.support.design.widget.CoordinatorLayout>

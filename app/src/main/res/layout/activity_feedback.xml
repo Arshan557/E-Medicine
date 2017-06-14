@@ -3,6 +3,7 @@
     android:id="@+id/feedbackCoordinate"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -13,14 +14,31 @@
             android:id="@+id/app_bar"
             layout="@layout/app_bar" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/feedback_recycle"
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/app_bar"
-            android:padding="5dp" />
+            android:layout_height="match_parent"
+            android:layout_below="@+id/app_bar">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/feedback_recycle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/app_bar"
+                    android:padding="5dp" />
+
+                <View
+                    android:id="@+id/justView"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/feedback_recycle" />
+            </LinearLayout>
+        </ScrollView>
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

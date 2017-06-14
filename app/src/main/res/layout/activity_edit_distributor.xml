@@ -4,135 +4,157 @@
     android:id="@+id/profileCoordinate"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".EditDistributorActivity">
-    <include
-        android:id="@+id/app_bar"
-        layout="@layout/app_bar" />
-    <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/app_bar"
-        android:fitsSystemWindows="true">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="26dp"
-            android:paddingLeft="24dp"
-            android:focusableInTouchMode="true"
-            android:paddingRight="24dp">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".EditDistributorActivity">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_marginTop="4dp"
-                android:layout_gravity="center_horizontal"
-                android:id="@+id/dist_pic"
-                android:src="@drawable/defaultpic"
-                app:border_color="@color/white"
-                android:paddingBottom="4dp"
-                android:layout_marginBottom="8dp"
-                app:border_width="1dp"/>
+        <include
+            android:id="@+id/app_bar"
+            layout="@layout/app_bar" />
 
-            <android.support.design.widget.TextInputLayout
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/app_bar"
+            android:fitsSystemWindows="true">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape"
-                android:layout_marginBottom="1dp">
-                <EditText android:id="@+id/dist_name"
-                    android:layout_width="match_parent"
-                    android:textColor="@color/aluminum"
-                    android:layout_height="wrap_content" />
-            </android.support.design.widget.TextInputLayout>
+                android:focusableInTouchMode="true"
+                android:orientation="vertical"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
+                android:paddingTop="26dp">
 
-            <TextView android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="User name"
-                android:gravity="left"
-                android:textSize="16dip"/>
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/dist_pic"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:src="@drawable/defaultpic"
+                    app:border_color="@color/white"
+                    app:border_width="1dp" />
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape"
-                android:layout_marginBottom="1dp">
-                <EditText android:id="@+id/dist_uname"
-                    android:layout_width="match_parent"
-                    android:textColor="@color/aluminum"
-                    android:layout_height="wrap_content" />
-            </android.support.design.widget.TextInputLayout>
-
-            <TextView android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="E-Mail"
-                android:gravity="left"
-                android:textSize="16dip"/>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape"
-                android:layout_marginBottom="1dp">
-                <EditText android:id="@+id/dist_email"
-                    android:layout_width="match_parent"
-                    android:textColor="@color/aluminum"
-                    android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress" />
-            </android.support.design.widget.TextInputLayout>
-
-            <TextView android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Mobile"
-                android:gravity="left"
-                android:textSize="16dip"/>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape"
-                android:layout_marginBottom="1dp">
-                <EditText android:id="@+id/dist_mobile"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/aluminum"
-                    android:inputType="number" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_marginBottom="1dp"
+                    android:background="@drawable/shape">
 
-            <View
-                android:id="@+id/justView"
-                android:layout_width="match_parent"
-                android:layout_height="30dp" />
+                    <EditText
+                        android:id="@+id/dist_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/aluminum" />
+                </android.support.design.widget.TextInputLayout>
 
-        </LinearLayout>
-    </ScrollView>
-</RelativeLayout>
- <!--   <android.support.v7.widget.AppCompatButton
-        android:id="@+id/dist_save"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="Save"/>
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/dist_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="Edit"/>-->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:background="@drawable/shape">
+
+                    <EditText
+                        android:id="@+id/dist_uname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/aluminum" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:background="@drawable/shape">
+
+                    <EditText
+                        android:id="@+id/dist_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/aluminum" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:background="@drawable/shape">
+
+                    <EditText
+                        android:id="@+id/dist_mobile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:textColor="@color/aluminum" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:background="@drawable/shape">
+
+                    <EditText
+                        android:id="@+id/dist_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:textColor="@color/aluminum" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    android:id="@+id/justView"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" />
+
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+    <!--   <android.support.v7.widget.AppCompatButton
+           android:id="@+id/dist_save"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_alignParentBottom="true"
+           android:text="Save"/>
+       <android.support.v7.widget.AppCompatButton
+           android:id="@+id/dist_edit"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_alignParentBottom="true"
+           android:text="Edit"/>-->
 
     <com.shamanland.fab.FloatingActionButton
         android:id="@+id/dist_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:src="@drawable/profilesave"
         android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/profilesave"
         app:floatingActionButtonColor="@color/bg_screen3"
         app:floatingActionButtonSize="normal" />
 
@@ -141,8 +163,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:src="@drawable/profileedit"
         android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/profileedit"
         app:floatingActionButtonColor="@color/bg_screen3"
         app:floatingActionButtonSize="normal" />
 
@@ -151,10 +173,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|left"
-        android:src="@drawable/phone"
         android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/phone"
         app:floatingActionButtonColor="#00c853"
         app:floatingActionButtonSize="normal" />
 
 
-    </android.support.design.widget.CoordinatorLayout>
+</android.support.design.widget.CoordinatorLayout>
