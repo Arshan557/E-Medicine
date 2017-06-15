@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@drawable/shape_dailog"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".DailogEditCategory">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Category"
+        android:textSize="30dp"
+        android:textColor="@color/white"
+        android:textStyle="italic"
+        android:id="@+id/header"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <View
+        android:id="@+id/justView"
+        android:layout_below="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/justView"
+        android:id="@+id/tb1"
+        android:background="@drawable/shape">
+        <EditText
+            android:id="@+id/cat_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:hint="Category name"
+            android:textColor="@color/black" />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape"
+        android:textColor="@color/dot_dark_screen2"
+        android:layout_marginTop="30dp"
+        android:text="EDIT"
+        android:layout_below="@+id/tb1"
+        android:layout_alignLeft="@+id/tb1"
+        android:layout_alignStart="@+id/tb1" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape"
+        android:textColor="@color/dot_dark_screen2"
+        android:text="CANCEL"
+        android:layout_alignTop="@+id/btnEdit"
+        android:layout_alignRight="@+id/tb1"
+        android:layout_alignEnd="@+id/tb1" />
+
+</RelativeLayout>

@@ -1,8 +1,10 @@
 package arshan.com.e_medicine;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -33,6 +35,32 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
+
+        mainLinear = (LinearLayout) findViewById(R.id.mainLinear);
+        boolean mobileNwInfo = false;
+
+        //Checking internet connection
+        ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        try {
+            mobileNwInfo = conMgr.getActiveNetworkInfo().isConnected();
+        } catch (NullPointerException e) {
+            mobileNwInfo = false;
+        }
+        if (mobileNwInfo == false) {
+            Snackbar snackbar = Snackbar
+                    .make(mainLinear, "Plz enable WiFi/Mobile data", Snackbar.LENGTH_LONG)
+                    .setAction("SETTINGS", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
+                        }
+                    });
+            View sbView = snackbar.getView();
+            TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.YELLOW);
+
+            snackbar.show();
+        }
 
         boolean hasPermissionToGallery = (ContextCompat.checkSelfPermission(Home.this,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);

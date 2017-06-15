@@ -43,7 +43,6 @@ public class DistributorsActivity extends AppCompatActivity {
     private CoordinatorLayout coordinatorLayout;
     private RecyclerView recyclerView;
     private List<DistributorPojo> distributorPojoList = new ArrayList<>();
-    public static final int progress_bar_type = 0;
     private String TAG = DistributorsActivity.class.getSimpleName(), apikey="";
     private ProgressDialog pDialog;
     public static final String DEFAULT = "";

@@ -1,20 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/categoryCoordinate"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="arshan.com.e_medicine.CategoriesActivity">
-    <include
-        android:id="@+id/app_bar"
-        layout="@layout/app_bar" />
+    android:layout_height="match_parent">
 
-    <TextView
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="arshan.com.e_medicine.CategoriesActivity">
+
+        <include
+            android:id="@+id/app_bar"
+            layout="@layout/app_bar" />
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/app_bar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/category_recycle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/app_bar"
+                    android:padding="5dp" />
+
+                <View
+                    android:id="@+id/justView"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" />
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+    <com.shamanland.fab.FloatingActionButton
+        android:id="@+id/fabCat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Under Construcion"
-        android:textStyle="bold"
-        android:layout_centerInParent="true"
-        android:textColor="@color/white"
-        android:textSize="20dp"/>
-
-</RelativeLayout>
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/addicon"
+        app:floatingActionButtonColor="@color/bg_screen3"
+        app:floatingActionButtonSize="normal" />
+</android.support.design.widget.CoordinatorLayout>

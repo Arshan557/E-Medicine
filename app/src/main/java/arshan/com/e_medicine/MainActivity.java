@@ -3,6 +3,7 @@ package arshan.com.e_medicine;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -28,10 +29,33 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-// Getting data from Shared preferences
+        boolean mobileNwInfo = false;
+
+        // Getting data from Shared preferences
         sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
 
         rememberFlag = sharedPreferences.getString("rememberFlag", DEFAULT);
+
+        //Checking internet connection
+        ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        try {
+            mobileNwInfo = conMgr.getActiveNetworkInfo().isConnected();
+        } catch (NullPointerException e) {
+            mobileNwInfo = false;
+        }
+        if (mobileNwInfo == false) {
+            Toast.makeText(getApplicationContext(),"Check internet settings", Toast.LENGTH_LONG).show();
+            if ("Y".equalsIgnoreCase(rememberFlag)) {
+                Intent intent = new Intent(MainActivity.this, Home.class);
+                startActivity(intent);
+                finish();
+            } else {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }
+
         email = sharedPreferences.getString("email", DEFAULT);
         password = sharedPreferences.getString("password", DEFAULT);
         if ("Y".equalsIgnoreCase(rememberFlag)) {
@@ -58,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
     private class AuthenticateAgain extends AsyncTask<String, String, String> {
         String status = "", msg = "";
-        String fname,lname,apikey,profilePic,phone,gender = null;
+        String fname,lname,apikey,profilePic,phone,gender,id,uname,mobile,addressId,companyid = null;
 
         @Override
         protected void onPreExecute() {
@@ -97,17 +121,29 @@ public class MainActivity extends AppCompatActivity {
                         for (int i = 0; i < products.length(); i++) {
                             JSONObject c = products.getJSONObject(i);
 
+                            id = c.getString("id");
                             fname = c.getString("fname");
                             lname = c.getString("lname");
-                            apikey = c.getString("apikey");
-                            profilePic = c.getString("profilePic");
-                            phone = c.getString("phone");
+                            uname = c.getString("uname");
                             gender = c.getString("gender");
+                            mobile = c.getString("mobile");
+                            phone = c.getString("phone");
+                            apikey = c.getString("apikey");
+                            addressId = c.getString("addressId");
+                            profilePic = c.getString("profilePic");
+                            companyid = c.getString("companyid");
+
                         }
                         //Shared preferences
                         SharedPreferences sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("fname", fname);
+                        editor.putString("id", id);
+                        editor.putString("uname", uname);
+                        editor.putString("gender", gender);
+                        editor.putString("mobile", mobile);
+                        editor.putString("addressId", addressId);
+                        editor.putString("companyid", companyid);
                         editor.putString("lname", lname);
                         editor.putString("email", email);
                         editor.putString("password", password);
@@ -153,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
             bundle.putString("fname",fname);
             bundle.putString("lname",lname);
             bundle.putString("apikey",apikey);
-            if (!profilePic.equalsIgnoreCase("")) {
+            if (null != profilePic && !profilePic.equalsIgnoreCase("")) {
                 bundle.putString("profilePic", profilePic);
             }
             i.putExtras(bundle);

@@ -59,7 +59,7 @@ public class EditDistributorActivity extends AppCompatActivity {
         data = getIntent().getExtras();
         if (null != data) {
             Log.d("data",data.getString("name") + "," + data.getString("email")+","+data.getString("uname")
-                    +","+data.getString("mobile")+","+data.getString("phone")+","+data.getString("picUrl"));
+                    +","+data.getString("mobile")+","+data.getString("phone")+","+data.getString("picUrl")+","+data.getString("id"));
         }
         getSupportActionBar().setTitle(data.getString("name"));
 
@@ -129,7 +129,7 @@ public class EditDistributorActivity extends AppCompatActivity {
                         && dist_mail.getText().toString().equalsIgnoreCase(data.getString("email")))) {
 
                     String finalUrl = Constants.EDIT_DISTRIBUTOR_URL+"?name="+dist_name.getText().toString()+"&mobile="+dist_mobile.getText().toString()
-                            +"&phone="+dist_phone.getText().toString()+"&apikey="+apikey;
+                            +"&phone="+dist_phone.getText().toString()+"&apikey="+apikey+"&id="+data.getString("id");
                     Log.d("final url",finalUrl);
                     //Make call to Async
                     new editDistributor().execute(finalUrl);

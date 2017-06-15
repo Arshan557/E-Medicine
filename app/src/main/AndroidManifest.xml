@@ -237,9 +237,9 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Dark">
-        </activity>
-        <activity android:name=".AddDistributorActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".AddDistributorActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="Add Distributor"
             android:screenOrientation="portrait"

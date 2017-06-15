@@ -117,6 +117,7 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
             DistributorPojo distributorPojo = distributorsList.get(getPosition());
             Intent i = new Intent(context, EditDistributorActivity.class);
             Bundle bundle = new Bundle();
+            bundle.putString("id", distributorPojo.getId());
             bundle.putString("name", distributorPojo.getName());
             bundle.putString("email", distributorPojo.getEmail());
             bundle.putString("uname", distributorPojo.getUname());
