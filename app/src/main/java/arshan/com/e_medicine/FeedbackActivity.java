@@ -3,6 +3,7 @@ package arshan.com.e_medicine;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -110,6 +111,7 @@ public class FeedbackActivity extends AppCompatActivity {
     }
 
     private class GetFeedbacks extends AsyncTask<String, String, String> {
+        String status, msg = "";
 
         @Override
         protected void onPreExecute() {
@@ -138,23 +140,29 @@ public class FeedbackActivity extends AppCompatActivity {
             if (jsonStr != null) {
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
-                    // Getting JSON Array node
-                    JSONArray feedbacks = jsonObj.getJSONArray("feeds");
+                    status = jsonObj.getString("status");
+                    Log.d("status",status);
+                    if ("ok".equalsIgnoreCase(status)) {
+                        // Getting JSON Array node
+                        JSONArray feedbacks = jsonObj.getJSONArray("feeds");
 
-                    // looping through All News
-                    for (int i = 0; i < feedbacks.length(); i++) {
-                        JSONObject c = feedbacks.getJSONObject(i);
+                        // looping through All News
+                        for (int i = 0; i < feedbacks.length(); i++) {
+                            JSONObject c = feedbacks.getJSONObject(i);
 
-                        String name = c.getString("Name");
-                        String mail = c.getString("Email");
-                        String comments = c.getString("Comments");
-                        String created = c.getString("CreatedDate");
+                            String name = c.getString("Name");
+                            String mail = c.getString("Email");
+                            String comments = c.getString("Comments");
+                            String created = c.getString("CreatedDate");
 
-                        Log.d("response",name+","+mail+","+comments+","+created+"::");
+                            Log.d("response", name + "," + mail + "," + comments + "," + created + "::");
 
-                        FeedbackPojo feedbackPojo = new FeedbackPojo(name, mail, comments, created);
-                        feedbackPojoList.add(feedbackPojo);
+                            FeedbackPojo feedbackPojo = new FeedbackPojo(name, mail, comments, created);
+                            feedbackPojoList.add(feedbackPojo);
 
+                        }
+                    } else {
+                        msg = jsonObj.getString("msg");
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -165,10 +173,20 @@ public class FeedbackActivity extends AppCompatActivity {
                                     "Something went wrong. Please try again",
                                     Toast.LENGTH_LONG)
                                     .show();
+                            Intent i = new Intent(FeedbackActivity.this, Home.class);
+                            startActivity(i);
+                            finish();
                         }
                     });
                 } catch (Exception e) {
-                    Log.e(TAG, "MalformedURLException " + e.getMessage());
+                    Log.e(TAG, "Exception " + e.getMessage());
+                    Toast.makeText(getApplicationContext(),
+                            "Something went wrong. Please try again",
+                            Toast.LENGTH_LONG)
+                            .show();
+                    Intent i = new Intent(FeedbackActivity.this, Home.class);
+                    startActivity(i);
+                    finish();
                 }
             } else {
                 Log.e(TAG, "Couldn't get json from server.");
@@ -179,6 +197,9 @@ public class FeedbackActivity extends AppCompatActivity {
                                 "Something went wrong. Please try again",
                                 Toast.LENGTH_LONG)
                                 .show();
+                        Intent i = new Intent(FeedbackActivity.this, Home.class);
+                        startActivity(i);
+                        finish();
                     }
                 });
             }
@@ -191,9 +212,13 @@ public class FeedbackActivity extends AppCompatActivity {
             // Dismiss the progress dialog
             if (pDialog.isShowing())
                 pDialog.dismiss();
-            /**
-             * Updating parsed JSON data into ListView
-             * */
+
+            if (!"".equalsIgnoreCase(msg)) {
+                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(FeedbackActivity.this, Home.class);
+                startActivity(intent);
+                finish();
+            }
 
             feedbackAdapter.notifyDataSetChanged();
         }

@@ -3,8 +3,8 @@ package arshan.com.e_medicine;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -75,14 +75,6 @@ public class ForgotActivity extends AppCompatActivity {
         progressDialog.show();
 
         String email = _forgotEmailText.getText().toString();
-
-        // TODO: Implement your own authentication logic here.
-        /*if(validate()) {
-            Intent i = new Intent(LoginActivity.this,Home.class);
-            startActivity(i);
-        } else {
-            Toast.makeText(LoginActivity.this,"Try again",Toast.LENGTH_LONG);
-        }*/
 
         new android.os.Handler().postDelayed(
                 new Runnable() {

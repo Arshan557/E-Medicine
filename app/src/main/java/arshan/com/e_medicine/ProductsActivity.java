@@ -401,7 +401,7 @@ public class ProductsActivity extends AppCompatActivity {
 
     private class GetProducts extends AsyncTask<String, String, String> {
 
-        String status = null;
+        String status, msg = null;
 
         @Override
         protected void onPreExecute() {
@@ -464,6 +464,8 @@ public class ProductsActivity extends AppCompatActivity {
 
                         }
                     } else {
+                        msg = jsonObj.getString("msg");
+                        Log.d("status",status);
                         productsPojoList.clear();
                         SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(ProductsActivity.this);
                         List<ProductsSQLite> products = db.getAllProducts();
@@ -478,12 +480,23 @@ public class ProductsActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             Toast.makeText(getApplicationContext(), "Something went wrong. Try again" + e.getMessage(), Toast.LENGTH_LONG).show();
+                            Intent i = new Intent(ProductsActivity.this, Home.class);
+                            startActivity(i);
+                            finish();
                         }
                     });
                 } catch (MalformedURLException e) {
                     Log.e(TAG, "MalformedURLException " + e.getMessage());
+                    Toast.makeText(getApplicationContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(ProductsActivity.this, Home.class);
+                    startActivity(i);
+                    finish();
                 } catch (IOException e) {
                     Log.e(TAG, "IOException.. " + e.getMessage());
+                    Toast.makeText(getApplicationContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(ProductsActivity.this, Home.class);
+                    startActivity(i);
+                    finish();
                 }
             } else {
                 Log.e(TAG, "Couldn't get json from server.");
@@ -491,6 +504,9 @@ public class ProductsActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(getApplicationContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(ProductsActivity.this, Home.class);
+                        startActivity(i);
+                        finish();
                     }
                 });
             }
@@ -502,8 +518,8 @@ public class ProductsActivity extends AppCompatActivity {
             super.onPostExecute(result);
             // Dismiss the progress dialog
             customProgressDialog.cancel();
-            if (null == status || status.equalsIgnoreCase("error"))
-                Toast.makeText(getApplicationContext(), "Product not found. Search again", Toast.LENGTH_LONG).show();
+            if (null != msg)
+                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
             /**
              * Updating parsed JSON data into ListView
              * */

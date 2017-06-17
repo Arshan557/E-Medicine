@@ -206,10 +206,17 @@ public class EditDistributorActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             Toast.makeText(getApplicationContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
+                            Intent i = new Intent(EditDistributorActivity.this, DistributorsActivity.class);
+                            startActivity(i);
+                            finish();
                         }
                     });
                 } catch (Exception e) {
                     Log.e(TAG, "Exception " + e.getMessage());
+                    Toast.makeText(getApplicationContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(EditDistributorActivity.this, DistributorsActivity.class);
+                    startActivity(i);
+                    finish();
                 }
             } else {
                 Log.e(TAG, "Couldn't get json from server.");
@@ -220,6 +227,9 @@ public class EditDistributorActivity extends AppCompatActivity {
                                 "Something went wrong. Please try again",
                                 Toast.LENGTH_LONG)
                                 .show();
+                        Intent i = new Intent(EditDistributorActivity.this, DistributorsActivity.class);
+                        startActivity(i);
+                        finish();
                     }
                 });
             }
@@ -234,6 +244,7 @@ public class EditDistributorActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
             Intent i = new Intent(EditDistributorActivity.this, DistributorsActivity.class);
             startActivity(i);
+            finish();
 
 
         }

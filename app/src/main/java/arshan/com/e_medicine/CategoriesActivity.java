@@ -3,6 +3,7 @@ package arshan.com.e_medicine;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -93,6 +94,7 @@ public class CategoriesActivity extends AppCompatActivity {
     }
 
     private class getCategories extends AsyncTask<String, String, String> {
+        String status, msg = "";
 
         @Override
         protected void onPreExecute() {
@@ -121,7 +123,7 @@ public class CategoriesActivity extends AppCompatActivity {
             if (jsonStr != null) {
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
-                    String status = jsonObj.getString("status");
+                    status = jsonObj.getString("status");
                     Log.d("status",status);
                     if ("ok".equalsIgnoreCase(status)) {
                         // Getting JSON Array node
@@ -154,7 +156,7 @@ public class CategoriesActivity extends AppCompatActivity {
                             categoryPojoList.add(categoriesPojo);
                         }
                     } else {
-                        Toast.makeText(getApplicationContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
+                        msg = jsonObj.getString("msg");
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -162,10 +164,16 @@ public class CategoriesActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             Toast.makeText(getApplicationContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(CategoriesActivity.this, Home.class);
+                            startActivity(intent);
+                            finish();
                         }
                     });
                 } catch (Exception e) {
                     Log.e(TAG, "Exception " + e.getMessage());
+                    Intent intent = new Intent(CategoriesActivity.this, Home.class);
+                    startActivity(intent);
+                    finish();
                 }
             } else {
                 Log.e(TAG, "Couldn't get json from server.");
@@ -176,6 +184,9 @@ public class CategoriesActivity extends AppCompatActivity {
                                 "Something went wrong. Please try again",
                                 Toast.LENGTH_LONG)
                                 .show();
+                        Intent intent = new Intent(CategoriesActivity.this, Home.class);
+                        startActivity(intent);
+                        finish();
                     }
                 });
             }
@@ -188,6 +199,13 @@ public class CategoriesActivity extends AppCompatActivity {
             // Dismiss the progress dialog
             if (pDialog.isShowing())
                 pDialog.dismiss();
+
+            if (null != msg) {
+                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(CategoriesActivity.this, Home.class);
+                startActivity(intent);
+                finish();
+            }
             /**
              * Updating parsed JSON data into ListView
              * */

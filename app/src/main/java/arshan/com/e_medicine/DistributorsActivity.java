@@ -91,6 +91,7 @@ public class DistributorsActivity extends AppCompatActivity {
     }
 
     private class getDistributors extends AsyncTask<String, String, String> {
+        String status, msg = "";
 
         @Override
         protected void onPreExecute() {
@@ -119,7 +120,7 @@ public class DistributorsActivity extends AppCompatActivity {
             if (jsonStr != null) {
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
-                    String status = jsonObj.getString("status");
+                    status = jsonObj.getString("status");
                     Log.d("status",status);
                     if ("ok".equalsIgnoreCase(status)) {
                         // Getting JSON Array node
@@ -158,7 +159,7 @@ public class DistributorsActivity extends AppCompatActivity {
                             distributorPojoList.add(distributorsPojo);
                         }
                     } else {
-                        Toast.makeText(getApplicationContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
+                        msg = jsonObj.getString("msg");
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -166,6 +167,9 @@ public class DistributorsActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             Toast.makeText(getApplicationContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
+                            Intent i = new Intent(DistributorsActivity.this, Home.class);
+                            startActivity(i);
+                            finish();
                         }
                     });
                 } catch (Exception e) {
@@ -176,10 +180,10 @@ public class DistributorsActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(),
-                                "Something went wrong. Please try again",
-                                Toast.LENGTH_LONG)
-                                .show();
+                        Toast.makeText(getApplicationContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(DistributorsActivity.this, Home.class);
+                        startActivity(i);
+                        finish();
                     }
                 });
             }
@@ -192,9 +196,13 @@ public class DistributorsActivity extends AppCompatActivity {
             // Dismiss the progress dialog
             if (pDialog.isShowing())
                 pDialog.dismiss();
-            /**
-             * Updating parsed JSON data into ListView
-             * */
+
+            if (null != msg) {
+                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+                Intent i = new Intent(DistributorsActivity.this, Home.class);
+                startActivity(i);
+                finish();
+            }
 
             distributorAdapter.notifyDataSetChanged();
         }
