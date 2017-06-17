@@ -1,6 +1,7 @@
 package arshan.com.e_medicine;
 
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -9,12 +10,16 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -40,6 +45,8 @@ public class CategoriesActivity extends AppCompatActivity {
     private String TAG = CategoriesActivity.class.getSimpleName(), apikey="";
     private ProgressDialog pDialog;
     public static final String DEFAULT = "";
+    private static Bundle mBundleRecyclerViewState;
+    private final String KEY_RECYCLER_STATE = "recycler_state";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,5 +194,38 @@ public class CategoriesActivity extends AppCompatActivity {
 
             categoriesAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_category, menu);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        MenuItem search = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(search);
+        searchView.setSearchableInfo( searchManager.getSearchableInfo(getComponentName()));
+        searchView.setQueryHint(getResources().getString(R.string.search_hint));
+
+        searchView.setOnQueryTextListener(
+                new SearchView.OnQueryTextListener(){
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        Log.w("myApp", "onQueryTextSubmit::"+query);
+                        return false;
+                    }
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        Log.w("myApp", "onQueryTextChange::"+newText);
+                        if (newText.isEmpty()){
+                            categoriesAdapter = new CategoriesAdapter(CategoriesActivity.this, categoryPojoList);
+                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                            recyclerView.setLayoutManager(mLayoutManager);
+                            recyclerView.setAdapter(categoriesAdapter);
+                        }
+                        categoriesAdapter.getFilter().filter(newText);
+                        recyclerView.invalidate();
+                        return true;
+                    }
+                });
+        return true;
     }
 }

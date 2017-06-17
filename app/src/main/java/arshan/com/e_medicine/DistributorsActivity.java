@@ -219,6 +219,12 @@ public class DistributorsActivity extends AppCompatActivity {
                     @Override
                     public boolean onQueryTextChange(String newText) {
                         Log.w("myApp", "onQueryTextChange::"+newText);
+                        if (newText.isEmpty()){
+                            distributorAdapter = new DistributorAdapter(DistributorsActivity.this, distributorPojoList);
+                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                            recyclerView.setLayoutManager(mLayoutManager);
+                            recyclerView.setAdapter(distributorAdapter);
+                        }
                         distributorAdapter.getFilter().filter(newText);
                         recyclerView.invalidate();
                         return true;

@@ -214,7 +214,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private class Authenticate extends AsyncTask<String, String, String> {
         String status = "", msg = "";
-        String fname,lname,apikey,profilePic,phone,gender = null;
+        String fname,lname,apikey,profilePic,phone,gender,id,uname,mobile,addressId,companyid = null;
 
         @Override
         protected void onPreExecute() {
@@ -256,23 +256,35 @@ public class LoginActivity extends AppCompatActivity {
                         for (int i = 0; i < products.length(); i++) {
                             JSONObject c = products.getJSONObject(i);
 
+                            id = c.getString("id");
                             fname = c.getString("fname");
                             lname = c.getString("lname");
-                            apikey = c.getString("apikey");
-                            profilePic = c.getString("profilePic");
-                            phone = c.getString("phone");
+                            uname = c.getString("uname");
                             gender = c.getString("gender");
+                            mobile = c.getString("mobile");
+                            phone = c.getString("phone");
+                            apikey = c.getString("apikey");
+                            addressId = c.getString("addressId");
+                            profilePic = c.getString("profilePic");
+                            companyid = c.getString("companyid");
                         }
                         //Shared preferences
                         SharedPreferences sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("fname", fname);
+                        editor.putString("id", id);
+                        editor.putString("uname", uname);
+                        editor.putString("gender", gender);
+                        editor.putString("mobile", mobile);
+                        editor.putString("addressId", addressId);
+                        editor.putString("companyid", companyid);
                         editor.putString("lname", lname);
                         editor.putString("email", email);
                         editor.putString("password", password);
                         editor.putString("apikey", apikey);
                         editor.putString("profilePic", profilePic);
                         editor.putString("phone", phone);
+                        editor.putString("apigenderkey", gender);
                         editor.putString("apigenderkey", gender);
                         if (isRemembered) {
                             editor.putString("rememberFlag", "Y");

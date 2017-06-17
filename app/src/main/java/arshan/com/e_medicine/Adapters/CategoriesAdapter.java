@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -39,12 +40,14 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         public TextView categoryName;
         public CircleImageView categoryPic;
         private String apikey;
+        Typeface cat_names_font = Typeface.createFromAsset(context.getAssets(), "categorynamefont.otf");
 
         public CategoryViewHolder(View view) {
             super(view);
             categoryName = (TextView) view.findViewById(R.id.categoryName);
             categoryPic = (CircleImageView) view.findViewById(R.id.categoryPic);
 
+            categoryName.setTypeface(cat_names_font);
             // Getting data from Shared preferences
             SharedPreferences sharedPreferences = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
             if (null != sharedPreferences) {

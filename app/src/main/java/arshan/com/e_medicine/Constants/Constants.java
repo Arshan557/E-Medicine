@@ -20,4 +20,5 @@ public class Constants {
         public static final String CATEGORIES_URL = "http://health.ultimatefreehost.in/E-H/production/mobile/CategoryList";
         public static final String ADD_CATEGORIES_URL = "http://health.ultimatefreehost.in/E-H/production/mobile/CategoryAdd";
         public static final String EDIT_CATEGORIES_URL = "http://health.ultimatefreehost.in/E-H/production/mobile/CategoryEdit";
+        public static final String PROFILE_EDIT_URL = "http://health.ultimatefreehost.in/E-H/production/mobile/ProfileEdit";
 }

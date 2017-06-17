@@ -107,6 +107,23 @@
                 <View
                     android:id="@+id/justView"
                     android:layout_width="match_parent"
+                    android:layout_height="20dp" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape">
+
+                    <EditText
+                        android:id="@+id/phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:textColor="@color/aluminum" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    android:layout_width="match_parent"
                     android:layout_height="50dp" />
 
             </LinearLayout>

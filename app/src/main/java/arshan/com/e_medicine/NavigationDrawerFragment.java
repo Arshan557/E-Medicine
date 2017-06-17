@@ -88,7 +88,7 @@ public class NavigationDrawerFragment extends Fragment{
         logout =  (TextView) layout.findViewById(R.id.nav_logout);
 
         Typeface nav_items_font = Typeface.createFromAsset(getContext().getAssets(), "nav_items.ttf");
-        Typeface nav_subitems_font = Typeface.createFromAsset(getContext().getAssets(), "nav_subitems.ttf");
+        Typeface nav_subitems_font = Typeface.createFromAsset(getContext().getAssets(), "nav_sub_item_font.otf");
         calc.setTypeface(nav_items_font);
         contact.setTypeface(nav_items_font);
         pwd.setTypeface(nav_items_font);

@@ -87,6 +87,12 @@ public class FeedbackActivity extends AppCompatActivity {
                     @Override
                     public boolean onQueryTextChange(String newText) {
                         Log.w("myApp", "onQueryTextChange::"+newText);
+                        if (newText.isEmpty()){
+                            feedbackAdapter = new FeedbackAdapter(FeedbackActivity.this, feedbackPojoList);
+                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                            recyclerView.setLayoutManager(mLayoutManager);
+                            recyclerView.setAdapter(feedbackAdapter);
+                        }
                         feedbackAdapter.getFilter().filter(newText);
                         recyclerView.invalidate();
                         return true;
