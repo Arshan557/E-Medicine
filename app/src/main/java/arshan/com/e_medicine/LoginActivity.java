@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.parentRelative) RelativeLayout _parentRelative;
     private CheckBox _rememberChecked;
 
-    @Bind(R.id.clearCookie) TextView clearCookie;
+    //@Bind(R.id.clearCookie) TextView clearCookie;
 
     String email = null;
     String password = null;
@@ -112,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        clearCookie.setOnClickListener(new View.OnClickListener() {
+        /*clearCookie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SharedPreferences preferences = getSharedPreferences("CookieData", Context.MODE_PRIVATE);
@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, CookieActivity.class));
                 finish();
             }
-        });
+        });*/
     }
 
     public void login() {
@@ -229,13 +229,13 @@ public class LoginActivity extends AppCompatActivity {
         protected String doInBackground(String... f_url) {
             HttpHandler sh = new HttpHandler();
 
-            String cookie;
-            SharedPreferences sharedPreferencesCookie = getSharedPreferences("CookieData", Context.MODE_PRIVATE);
+            String cookie="";
+            /*SharedPreferences sharedPreferencesCookie = getSharedPreferences("CookieData", Context.MODE_PRIVATE);
             cookie = sharedPreferencesCookie.getString("cookieString", "");
             Log.d("cookie",cookie);
             if (null == cookie || cookie.equalsIgnoreCase("")) {
                 Toast.makeText(getApplicationContext(),"Cookie empty", Toast.LENGTH_LONG).show();
-            }
+            }*/
             // Making a request to url and getting response
             String jsonStr = sh.makeServiceCall(f_url[0],cookie);
 

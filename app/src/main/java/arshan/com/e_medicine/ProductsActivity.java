@@ -3,7 +3,6 @@ package arshan.com.e_medicine;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -413,13 +412,12 @@ public class ProductsActivity extends AppCompatActivity {
         protected String doInBackground(String... f_url) {
             HttpHandler sh = new HttpHandler();
 
-            String cookie;
-
-            SharedPreferences sharedPreferencesCookie = getSharedPreferences("CookieData", Context.MODE_PRIVATE);
+            String cookie="";
+            /*SharedPreferences sharedPreferencesCookie = getSharedPreferences("CookieData", Context.MODE_PRIVATE);
             cookie = sharedPreferencesCookie.getString("cookieString", "");
             if (null == cookie || cookie.equalsIgnoreCase("")) {
                 Toast.makeText(getApplicationContext(),"Cookie empty", Toast.LENGTH_LONG).show();
-            }
+            }*/
             // Making a request to url and getting response
             String jsonStr = sh.makeServiceCall(f_url[0],cookie);
 

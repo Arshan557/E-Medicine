@@ -128,12 +128,12 @@ public class SettingsActivity extends AppCompatActivity {
         protected String doInBackground(String... f_url) {
             HttpHandler sh = new HttpHandler();
 
-            String cookie;
-            SharedPreferences sharedPreferencesCookie = getSharedPreferences("CookieData", Context.MODE_PRIVATE);
+            String cookie="";
+            /*SharedPreferences sharedPreferencesCookie = getSharedPreferences("CookieData", Context.MODE_PRIVATE);
             cookie = sharedPreferencesCookie.getString("cookieString", "");
             if (null == cookie || cookie.equalsIgnoreCase("")) {
                 Toast.makeText(getApplicationContext(),"Cookie empty", Toast.LENGTH_LONG).show();
-            }
+            }*/
             // Making a request to url and getting response
             String jsonStr = sh.makeServiceCall(f_url[0],cookie);
 
