@@ -26,4 +26,28 @@
 
     <string name="feedback_text">Tell us what you love and what you want us to improve about the app or services. We also welcome you to suggest some features you would like to see in this app.</string>
 
+    <string-array name="skillTitles">
+        <item>Android Development</item>
+        <item>Web services</item>
+        <item>Java</item>
+        <item>Spring framework</item>
+        <item>Web development</item>
+        <item>Dependency Injection</item>
+        <item>PHP</item>
+        <item>JavaScript</item>
+        <item>HTML</item>
+        <item>C</item>
+        <item>My SQL</item>
+    </string-array>
+
+    <string-array name="toolTitles">
+        <item>Android Studio</item>
+        <item>Eclipse</item>
+        <item>SoapUI</item>
+        <item>Dreamweaver</item>
+        <item>XAMPP</item>
+        <item>SQL developer</item>
+        <item>PhoneGap</item>
+    </string-array>
+
 </resources>

@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@drawable/shape"
     android:layout_marginBottom="2dp"
+    android:layout_marginLeft="7dp"
     android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:id="@+id/mainLinear"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="50dp"
+
+        <TextView android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_gravity="center_horizontal"
+            android:text="A"
+            android:textSize="25dp"
             android:id="@+id/categoryPic"
-            android:src="@drawable/defaultpic"
-            app:border_color="@color/white"
-            app:border_width="1dp"/>
+            android:textColor="@color/white"
+            android:background="@drawable/shape_circle"
+            android:layout_gravity="center_vertical"/>
 
         <TextView android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,10 +26,13 @@
             android:id="@+id/categoryName"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="15dp"
             android:paddingLeft="10dp"
             android:layout_gravity="center_vertical"
             android:textSize="16dip"/>
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_below="@+id/mainLinear"
+        android:layout_height="7dp" />
 </RelativeLayout>

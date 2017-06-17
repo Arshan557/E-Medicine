@@ -39,7 +39,7 @@ public class FeedbackActivity extends AppCompatActivity {
     private List<FeedbackPojo> feedbackPojoList = new ArrayList<>();
     private FeedbackAdapter feedbackAdapter;
     public static final int progress_bar_type = 0;
-    private String TAG = MainActivity.class.getSimpleName();
+    private String TAG = MainActivity.class.getSimpleName(), apikey, DEFAULT = "";
     private ProgressDialog pDialog;
 
     @Override
@@ -54,11 +54,19 @@ public class FeedbackActivity extends AppCompatActivity {
         //upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
+        // Getting data from Shared preferences
+        SharedPreferences sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
+        if (null != sharedPreferences) {
+            apikey = sharedPreferences.getString("apikey", DEFAULT);
+        }
+
         recyclerView = (RecyclerView) findViewById(R.id.feedback_recycle);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.feedbackCoordinate);
 
+        String finalUrl = Constants.FEEDBACK_URL+"?apikey="+apikey;
+        Log.d("final url",finalUrl);
         //Make call to Async
-        new GetFeedbacks().execute();
+        new GetFeedbacks().execute(finalUrl);
 
         //Recycle view starts
         feedbackAdapter = new FeedbackAdapter(getApplicationContext(), feedbackPojoList);
@@ -101,7 +109,7 @@ public class FeedbackActivity extends AppCompatActivity {
         return true;
     }
 
-    private class GetFeedbacks extends AsyncTask<Void, Void, Void> {
+    private class GetFeedbacks extends AsyncTask<String, String, String> {
 
         @Override
         protected void onPreExecute() {
@@ -113,7 +121,7 @@ public class FeedbackActivity extends AppCompatActivity {
             pDialog.show();
         }
         @Override
-        protected Void doInBackground(Void... arg0) {
+        protected String doInBackground(String... f_url) {
             HttpHandler sh = new HttpHandler();
 
             String cookie;
@@ -123,7 +131,7 @@ public class FeedbackActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"Cookie empty", Toast.LENGTH_LONG).show();
             }
             // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(Constants.FEEDBACK_URL,cookie);
+            String jsonStr = sh.makeServiceCall(f_url[0],cookie);
 
             Log.e(TAG, "Response from url: " + jsonStr);
 
@@ -178,7 +186,7 @@ public class FeedbackActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(String result) {
             super.onPostExecute(result);
             // Dismiss the progress dialog
             if (pDialog.isShowing())

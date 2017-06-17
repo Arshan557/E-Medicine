@@ -15,12 +15,12 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import arshan.com.e_medicine.DailogEditCategory;
 import arshan.com.e_medicine.Models.CategoriesPojo;
 import arshan.com.e_medicine.R;
 import arshan.com.e_medicine.Views.CustomProgressDialog;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Arshan on 15-Jun-2017.
@@ -38,16 +38,22 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
 
     public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView categoryName;
-        public CircleImageView categoryPic;
+        public TextView categoryPic;
         private String apikey;
         Typeface cat_names_font = Typeface.createFromAsset(context.getAssets(), "categorynamefont.otf");
+        Typeface cat_pic_font = Typeface.createFromAsset(context.getAssets(), "nav_sub_item_font.otf");
+
+        int[] androidColors = context.getResources().getIntArray(R.array.androidcolors);
+        int categoryPicColor = androidColors[new Random().nextInt(androidColors.length)];
 
         public CategoryViewHolder(View view) {
             super(view);
             categoryName = (TextView) view.findViewById(R.id.categoryName);
-            categoryPic = (CircleImageView) view.findViewById(R.id.categoryPic);
+            categoryPic = (TextView) view.findViewById(R.id.categoryPic);
 
             categoryName.setTypeface(cat_names_font);
+            categoryPic.setTypeface(cat_pic_font);
+            categoryPic.setBackgroundColor(categoryPicColor);
             // Getting data from Shared preferences
             SharedPreferences sharedPreferences = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
             if (null != sharedPreferences) {
@@ -144,7 +150,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         final CategoriesPojo category = categoriesList.get(position);
         this.holder = holder;
         holder.categoryName.setText(category.getName());
-        holder.categoryPic.setImageBitmap(category.getPic());
+        holder.categoryPic.setText(""+category.getName().charAt(0));
     }
 
     @Override
