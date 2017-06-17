@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -51,12 +52,14 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
         public CircleImageView distributorPic;
         public Switch  simpleSwitch;
         private String apikey;
+        com.shamanland.fab.FloatingActionButton fabCallOutSide;
 
         public DistributorViewHolder(View view) {
             super(view);
             distributorName = (TextView) view.findViewById(R.id.distributorName);
             distributorPic = (CircleImageView) view.findViewById(R.id.distributorPic);
             simpleSwitch = (Switch) view.findViewById(R.id.activeSwitch);
+            fabCallOutSide = (com.shamanland.fab.FloatingActionButton) view.findViewById(R.id.dist_call_outside);
 
             // Getting data from Shared preferences
             SharedPreferences sharedPreferences = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
@@ -108,6 +111,37 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
                     });
                     builder.show();
 
+                }
+            });
+
+            fabCallOutSide.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final View v = view;
+                    distributorPojo = distributorsList.get(getPosition());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                    //builder.setTitle("Sample Alert");
+                    builder.setMessage("Do you want to make call to "+distributorPojo.getName()+"?");
+                    builder.setNegativeButton("NO",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //Toast.makeText(getContext(),"No is clicked",Toast.LENGTH_LONG).show();
+                                }
+                            });
+                    builder.setPositiveButton("YES",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //Toast.makeText(getContext(),"Yes is clicked",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(v.getContext(),"Calling "+distributorPojo.getName(),Toast.LENGTH_SHORT).show();
+                                    Intent in = new Intent(Intent.ACTION_CALL, Uri.parse("tel:+91"+distributorPojo.getMobile()));
+                                    try {
+                                        v.getContext().startActivity(in);
+                                    } catch (android.content.ActivityNotFoundException ex) {
+                                        Toast.makeText(v.getContext(), "your Activity is not found", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                    builder.show();
                 }
             });
         }
