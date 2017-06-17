@@ -176,10 +176,12 @@ public class NavigationDrawerFragment extends Fragment{
                             public void onClick(DialogInterface dialog,
                                                 int which) {
                                 //Toast.makeText(getContext(),"Yes is clicked",Toast.LENGTH_LONG).show();
-                                SharedPreferences preferences =getContext().getSharedPreferences("UserData", Context.MODE_PRIVATE);
+                                SharedPreferences preferences = getContext().getSharedPreferences("UserData", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = preferences.edit();
                                 editor.clear();
                                 editor.commit();
+                                /*SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(getContext());
+                                db.onUpgrade(dbs, "products");*/
                                 startActivity(new Intent(getActivity(), LoginActivity.class));
                                 getActivity().finish();
                             }

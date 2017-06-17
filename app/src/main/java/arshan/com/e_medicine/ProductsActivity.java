@@ -79,7 +79,7 @@ public class ProductsActivity extends AppCompatActivity {
          * CRUD Operations
          * */
         // Inserting products
-        Log.d("Insert: ", "Inserting ..");
+        //Log.d("Insert: ", "Inserting ..");
         //db.addProduct(new ProductsSQLite("3-cnC1Ot", "3-1XRoRH", "8901314010728", "Colgate Strong Teeth Super Shakti Dental Cream", "2017-02-01", "2018-04-30", "5", "10", "100", "code1", "http:\\/\\/www.ranchibazaar.com\\/1017-thickbox_default\\/colgate-strong-teeth-toothpaste-500-g.jpg"));
        /* db.addProduct(new ProductsSQLite("5-cnC1Oo", "3-1XRoRH", "8901314010728", "Maxfreh", "2017-02-01", "2018-04-30", "5", "10", "100", "code1", "http:\\/\\/www.ranchibazaar.com\\/1017-thickbox_default\\/colgate-strong-teeth-toothpaste-500-g.jpg"));
         db.addProduct(new ProductsSQLite("6-cnC1Oo", "3-1XRoRH", "8901314010728", "Active salt", "2017-02-01", "2018-04-30", "5", "10", "100", "code1", "http:\\/\\/www.ranchibazaar.com\\/1017-thickbox_default\\/colgate-strong-teeth-toothpaste-500-g.jpg"));

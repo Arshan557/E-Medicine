@@ -60,7 +60,7 @@ public class AddDistributorActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String finalUrl = Constants.ADD_DISTRIBUTOR_URL + "?name=" + name.getText().toString() + "&email=" + mail.getText().toString() +
                         "&username=" + uname.getText().toString() + "&password=" + password.getText().toString() + "&number=" + mobile.getText().toString()
-                        + "&phone=" + phone.getText().toString() + "&apikey=" + apikey;
+                        + "&phone=" + phone.getText().toString() + "&apikey=" + apikey+"&image=http://www.provo2.com/health-fitness/wp-content/uploads/2010/11/default-avatar.jpg";
                 Log.d("final url", finalUrl);
                 //Make call to Async
                 new addDistributor().execute(finalUrl);
@@ -146,7 +146,7 @@ public class AddDistributorActivity extends AppCompatActivity {
             // Dismiss the progress dialog
             if (pDialog.isShowing())
                 pDialog.dismiss();
-            if ("ok".equalsIgnoreCase(status)) {
+            if ("success".equalsIgnoreCase(status)) {
                 Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(AddDistributorActivity.this, DistributorsActivity.class);
                 startActivity(intent);
