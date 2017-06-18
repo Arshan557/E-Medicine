@@ -6,6 +6,7 @@ package arshan.com.e_medicine.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
@@ -37,24 +38,39 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
 
     public class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public TextView newTitle, newsDesc, publishedAt;
+        public TextView name, available, qty, mrp, rupee;
         public ImageView bmp;
         public Button undoButton;
 
         public ProductViewHolder(View view) {
             super(view);
-            newTitle = (TextView) view.findViewById(R.id.news_title);
-            newsDesc = (TextView) view.findViewById(R.id.news_desc);
-            bmp = (ImageView) view.findViewById(R.id.news_image);
-            publishedAt = (TextView) view.findViewById(R.id.publishedAt);
+            name = (TextView) view.findViewById(R.id.product_name);
+            available = (TextView) view.findViewById(R.id.product_available);
+            bmp = (ImageView) view.findViewById(R.id.product_image);
+            qty = (TextView) view.findViewById(R.id.product_qty);
+            mrp = (TextView) view.findViewById(R.id.product_mrp);
+            rupee = (TextView) view.findViewById(R.id.rupee);
             undoButton = (Button) view.findViewById(R.id.undo_button);
+            undoButton.setVisibility(View.GONE);
+
+            Typeface mrp_font = Typeface.createFromAsset(context.getAssets(), "categorynamefont.otf");
+            Typeface product_name_font = Typeface.createFromAsset(context.getAssets(), "sensation.ttf");
+            Typeface available_font = Typeface.createFromAsset(context.getAssets(), "colaborate.otf");
+
+            mrp.setTypeface(mrp_font);
+            name.setTypeface(product_name_font);
+            available.setTypeface(available_font);
+            qty.setTypeface(product_name_font);
+            rupee.setTypeface(mrp_font);
+
 
 
             view.setOnClickListener(this);
-            newTitle.setOnClickListener(this);
-            newsDesc.setOnClickListener(this);
+            name.setOnClickListener(this);
+            available.setOnClickListener(this);
             bmp.setOnClickListener(this);
-            publishedAt.setOnClickListener(this);
+            qty.setOnClickListener(this);
+            mrp.setOnClickListener(this);
             undoButton.setOnClickListener(this);
         }
 
@@ -63,9 +79,9 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             final ProductsPojo productsPojo = productsList.get(getPosition());
             Intent i = new Intent(context, EditProductActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString("title", productsPojo.getTitle());
-            bundle.putString("desc", productsPojo.getDesc());
-            bundle.putString("mrp", productsPojo.getPublishedAt());
+            bundle.putString("name", productsPojo.getItemname());
+            bundle.putString("mrp", productsPojo.getMrp());
+            bundle.putString("exp", productsPojo.getExpdate());
             i.putExtras(bundle);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
@@ -96,7 +112,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
                 if (constraint != null) {
                     if (productsList != null && productsList.size() > 0) {
                         for (final ProductsPojo prod : productsList) {
-                            if (prod.getTitle().toLowerCase().contains(constraint.toString()))
+                            if (prod.getItemname().toLowerCase().contains(constraint.toString()))
                                 results.add(prod);
                         }
                     }
@@ -129,10 +145,12 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         if (itemsPendingRemoval.contains(product)) {
             // we need to show the "undo" state of the row
             holder.itemView.setBackgroundColor(Color.RED);
-            holder.newTitle.setVisibility(View.GONE);
-            holder.newsDesc.setVisibility(View.GONE);;
+            holder.name.setVisibility(View.GONE);
+            holder.available.setVisibility(View.GONE);;
             holder.bmp.setVisibility(View.GONE);
-            holder.publishedAt.setVisibility(View.GONE);
+            holder.qty.setVisibility(View.GONE);
+            holder.mrp.setVisibility(View.GONE);
+            holder.undoButton.setText("UNDO");
             holder.undoButton.setVisibility(View.VISIBLE);
             holder.undoButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -149,10 +167,10 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         } else {
             // we need to show the "normal" state
             holder.itemView.setBackgroundColor(Color.WHITE);
-            holder.newTitle.setText(product.getTitle());
-            holder.newsDesc.setText(product.getDesc());
+            holder.name.setText(product.getItemname());
             holder.bmp.setImageBitmap(product.getBmp());
-            holder.publishedAt.setText(product.getPublishedAt());
+            holder.qty.setText(product.getQty());
+            holder.mrp.setText(product.getMrp());
             holder.undoButton.setVisibility(View.VISIBLE);
             holder.undoButton.setOnClickListener(null);
         }

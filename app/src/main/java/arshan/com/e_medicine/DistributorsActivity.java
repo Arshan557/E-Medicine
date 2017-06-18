@@ -29,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -119,13 +120,13 @@ public class DistributorsActivity extends AppCompatActivity {
             //Make call to Async
             new getDistributors().execute(finalUrl);
         } else {
-            try {
-                String imgUrl = "http://www.ranchibazaar.com/1017-thickbox_default/colgate-strong-teeth-toothpaste-500-g.jpg";
-                URL url = new URL(imgUrl);
+            /*try {
+                String picURL = "http://www.provo2.com/health-fitness/wp-content/uploads/2010/11/default-avatar.jpg";
+                URL url = new URL(picURL);
                 bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
             } catch (Exception e) {
-                Log.d("Exception", "" + e.getLocalizedMessage());
-            }
+                Log.d("Exception", "" + e.getMessage());
+            }*/
 
             // Reading all distributors
             Log.d("Reading: ", "Reading all distributors..");
@@ -135,9 +136,9 @@ public class DistributorsActivity extends AppCompatActivity {
                 String log = "Id: "+distributors.get(i).getId()+" ,companyid: " + distributors.get(i).getCompanyid();
                 Log.d("product: ", log);
                 try {
-                /*URL url = new URL(products.get(i).getProductimage());
-                bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());*/
-                    DistributorPojo distributorPojo = new DistributorPojo(distributors.get(i).getName(), bmp, distributors.get(i).getIsActive(),
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(distributors.get(i).getImageByteArray() , 0, distributors.get(i).getImageByteArray().length);
+
+                    DistributorPojo distributorPojo = new DistributorPojo(distributors.get(i).getName(), bitmap, distributors.get(i).getIsActive(),
                             distributors.get(i).getId(), distributors.get(i).getCompanyid(), distributors.get(i).getEmail(), distributors.get(i).getUname(), distributors.get(i).getPassword(),
                             distributors.get(i).getMobile(), distributors.get(i).getPhone(), distributors.get(i).getCreatedBy(), distributors.get(i).getModifiedBy(), distributors.get(i).getCreatedOn(), distributors.get(i).getModifiedOn(), distributors.get(i).getPicURL());
                     distributorPojoList.add(distributorPojo);
@@ -216,8 +217,11 @@ public class DistributorsActivity extends AppCompatActivity {
                                     uname, password, mobile, phone, createdBy, modifiedBy, createdOn, modifiedOn, picURL);
                             distributorPojoList.add(distributorsPojo);
 
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+
                             SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(DistributorsActivity.this);
-                            db.addDistributor(new DistributorsSQLite(id, companyid, name, email, uname, password, phone, mobile, isActive, picURL, createdBy, modifiedBy, createdOn, modifiedOn));
+                            db.addDistributor(new DistributorsSQLite(id, companyid, name, email, uname, password, phone, mobile, isActive, picURL, createdBy, modifiedBy, createdOn, modifiedOn, stream.toByteArray()));
                         }
                     } else {
                         msg = jsonObj.getString("msg");

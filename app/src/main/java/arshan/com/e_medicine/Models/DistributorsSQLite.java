@@ -5,13 +5,14 @@ package arshan.com.e_medicine.Models;
  */
 public class DistributorsSQLite {
     String id, companyid, name, email, uname, password, mobile, phone, isActive, picURL, createdBy, modifiedBy, createdOn, modifiedOn;
+    private byte[] imageByteArray;
 
     public DistributorsSQLite() {
     }
 
     public DistributorsSQLite(String id, String companyid, String name, String email, String uname
             , String password, String mobile, String phone, String isActive, String picURL,
-                              String createdBy, String modifiedBy, String createdOn, String modifiedOn) {
+                              String createdBy, String modifiedBy, String createdOn, String modifiedOn, byte[] imageByteArray) {
         this.id = id;
         this.companyid = companyid;
         this.name = name;
@@ -26,6 +27,7 @@ public class DistributorsSQLite {
         this.modifiedBy = modifiedBy;
         this.createdOn = createdOn;
         this.modifiedOn = modifiedOn;
+        this.imageByteArray = imageByteArray;
 
     }
 
@@ -139,5 +141,13 @@ public class DistributorsSQLite {
 
     public void setModifiedOn(String modifiedOn) {
         this.modifiedOn = modifiedOn;
+    }
+
+    public byte[] getImageByteArray() {
+        return imageByteArray;
+    }
+
+    public void setImageByteArray(byte[] imageByteArray) {
+        this.imageByteArray = imageByteArray;
     }
 }

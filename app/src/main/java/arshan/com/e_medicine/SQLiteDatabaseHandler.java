@@ -35,8 +35,8 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 	// Creating Tables
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		String CREATE_PRODUCTS_TABLE = "CREATE TABLE "+ TABLE_PRODUCTS +"(id TEXT PRIMARY KEY, companyid TEXT, barcode TEXT, itemname TEXT, mfgdate TEXT, expdate TEXT, maxdiscount TEXT, qty TEXT, mrp TEXT, batch TEXT, productimage TEXT)" ;
-		String CREATE_DISTRIBUTORS_TABLE = "CREATE TABLE "+ TABLE_DISTRIBUTORS +"(id TEXT PRIMARY KEY, companyid TEXT, name TEXT, email TEXT, uname TEXT, password TEXT, mobile TEXT, phone TEXT, isActive TEXT, picURL TEXT, createdBy TEXT, modifiedBy TEXT, createdOn TEXT, modifiedOn TEXT)" ;
+		String CREATE_PRODUCTS_TABLE = "CREATE TABLE "+ TABLE_PRODUCTS +"(id TEXT PRIMARY KEY, companyid TEXT, barcode TEXT, itemname TEXT, mfgdate TEXT, expdate TEXT, maxdiscount TEXT, qty TEXT, mrp TEXT, batch TEXT, bmp BLOB)" ;
+		String CREATE_DISTRIBUTORS_TABLE = "CREATE TABLE "+ TABLE_DISTRIBUTORS +"(id TEXT PRIMARY KEY, companyid TEXT, name TEXT, email TEXT, uname TEXT, password TEXT, mobile TEXT, phone TEXT, isActive TEXT, picURL TEXT, createdBy TEXT, modifiedBy TEXT, createdOn TEXT, modifiedOn TEXT, bmp BLOB)" ;
 		String CREATE_CATEGORIES_TABLE = "CREATE TABLE "+ TABLE_CATEGORIES +"(id TEXT PRIMARY KEY, companyid TEXT, name TEXT, createdBy TEXT, createdOn TEXT, modifiedBy TEXT, modifiedOn TEXT)" ;
 
 		db.execSQL(CREATE_PRODUCTS_TABLE);
@@ -74,7 +74,7 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		values.put("qty", productsSQLite.getQty());
 		values.put("mrp", productsSQLite.getMrp());
 		values.put("batch", productsSQLite.getBatch());
-		values.put("productimage", productsSQLite.getProductimage());
+		values.put("bmp", productsSQLite.getImageByteArray());
 
 		// Inserting Row
 		db.insert(TABLE_PRODUCTS, null, values);
@@ -99,6 +99,7 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		values.put("modifiedBy", distributorsSQLite.getModifiedBy());
 		values.put("createdOn", distributorsSQLite.getCreatedOn());
 		values.put("modifiedOn", distributorsSQLite.getModifiedOn());
+		values.put("bmp", distributorsSQLite.getImageByteArray());
 
 		// Inserting Row
 		db.insert(TABLE_DISTRIBUTORS, null, values);
@@ -161,7 +162,7 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 				product.setQty(cursor.getString(7));
 				product.setMrp(cursor.getString(8));
 				product.setBatch(cursor.getString(9));
-				product.setProductimage(cursor.getString(10));
+				product.setImageByteArray(cursor.getBlob(10));
 				// Adding product to list
 				productList.add(product);
 			} while (cursor.moveToNext());
@@ -198,6 +199,8 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 				distributor.setModifiedBy(cursor.getString(11));
 				distributor.setCreatedOn(cursor.getString(12));
 				distributor.setModifiedOn(cursor.getString(13));
+				distributor.setImageByteArray(cursor.getBlob(14));
+
 				// Adding distributor to list
 				distributorList.add(distributor);
 			} while (cursor.moveToNext());

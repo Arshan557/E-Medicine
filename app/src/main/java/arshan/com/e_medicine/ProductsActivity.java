@@ -35,6 +35,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -91,27 +92,20 @@ public class ProductsActivity extends AppCompatActivity {
         db.addProduct(new ProductsSQLite("12-cnC1Oo", "3-1XRoRH", "8901314010728", "DELL", "2017-02-01", "2018-04-30", "5", "10", "100", "code1", "http:\\/\\/www.ranchibazaar.com\\/1017-thickbox_default\\/colgate-strong-teeth-toothpaste-500-g.jpg"));
         db.addProduct(new ProductsSQLite("13-cnC1Oo", "3-1XRoRH", "8901314010728", "Anand Bhavan", "2017-02-01", "2018-04-30", "5", "10", "100", "code1", "http:\\/\\/www.ranchibazaar.com\\/1017-thickbox_default\\/colgate-strong-teeth-toothpaste-500-g.jpg"));
 */
-        try {
-            String imgUrl = "http://www.ranchibazaar.com/1017-thickbox_default/colgate-strong-teeth-toothpaste-500-g.jpg";
-            URL url = new URL(imgUrl);
-            bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-        } catch (Exception e) {
-            Log.d("Exception", "" + e.getLocalizedMessage());
-        }
 
         // Reading all products
         Log.d("Reading: ", "Reading all products..");
         List<ProductsSQLite> products = db.getAllProducts();
 
-        for (int i=products.size()-1; i >= 0; i--) {
+        for (int i = products.size()-1; i >= 0; i--) {
             String log = "Id: "+products.get(i).getId()+" ,companyid: " + products.get(i).getCompanyid() + " ,barcode: " + products.get(i).getBarcode() + " ,itemname: " + products.get(i).getItemname() + " ,mfgdate: " + products.get(i).getMfgdate()
-                    + " ,expdate: " + products.get(i).getExpdate() + " ,maxdiscount: " + products.get(i).getMaxdiscount() + " ,qty: " + products.get(i).getQty() + " ,mrp: " + products.get(i).getMrp() + " ,batch: " + products.get(i).getBatch() + " ,productimage: " + products.get(i).getProductimage();
+                    + " ,expdate: " + products.get(i).getExpdate() + " ,maxdiscount: " + products.get(i).getMaxdiscount() + " ,qty: " + products.get(i).getQty() + " ,mrp: " + products.get(i).getMrp() + " ,batch: " + products.get(i).getBatch();
             Log.d("product: ", log);
             try {
-                /*URL url = new URL(products.get(i).getProductimage());
-                bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());*/
-                ProductsPojo productsPojo = new ProductsPojo(products.get(i).getItemname(), products.get(i).getMfgdate(), bmp,
-                        products.get(i).getQty(), products.get(i).getMrp());
+                Bitmap bitmap = BitmapFactory.decodeByteArray(products.get(i).getImageByteArray() , 0, products.get(i).getImageByteArray().length);
+                ProductsPojo productsPojo = new ProductsPojo(products.get(i).getId(), products.get(i).getCompanyid(),
+                        products.get(i).getBarcode(), products.get(i).getItemname(), products.get(i).getMfgdate(), products.get(i).getExpdate(), products.get(i).getMaxdiscount(),
+                        products.get(i).getQty(), products.get(i).getMrp(), products.get(i).getBatch(), products.get(i).getProductimage(), bitmap);
                 productsPojoList.add(productsPojo);
             } catch (Exception e) {
                 Log.d("Exception", ""+e.getMessage());
@@ -454,11 +448,15 @@ public class ProductsActivity extends AppCompatActivity {
                             URL url = new URL(productimage);
                             Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
-                            ProductsPojo productsPojo = new ProductsPojo(itemname, mfgdate, bmp, qty, mrp);
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+
+                            ProductsPojo productsPojo = new ProductsPojo(id, companyid, barcode, itemname, mfgdate, expdate, maxdiscount,
+                                    qty, mrp, batch, productimage, bmp);
                             productsPojoList.add(productsPojo);
 
                             SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(ProductsActivity.this);
-                            db.addProduct(new ProductsSQLite(id, companyid, barcode, itemname, mfgdate, expdate, maxdiscount, qty, mrp, batch, productimage));
+                            db.addProduct(new ProductsSQLite(id, companyid, barcode, itemname, mfgdate, expdate, maxdiscount, qty, mrp, batch, productimage, stream.toByteArray()));
 
                         }
                     } else {
@@ -468,7 +466,10 @@ public class ProductsActivity extends AppCompatActivity {
                         SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(ProductsActivity.this);
                         List<ProductsSQLite> products = db.getAllProducts();
                         for (ProductsSQLite pr : products) {
-                            ProductsPojo productsPojo = new ProductsPojo(pr.getItemname(), pr.getMfgdate(), bmp, pr.getQty(), pr.getMrp());
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(pr.getImageByteArray() , 0, pr.getImageByteArray().length);
+                            ProductsPojo productsPojo = new ProductsPojo(pr.getId(), pr.getCompanyid(),
+                                    pr.getBarcode(), pr.getItemname(), pr.getMfgdate(), pr.getExpdate(), pr.getMaxdiscount(),
+                                    pr.getQty(), pr.getMrp(), pr.getBatch(), pr.getProductimage(), bitmap);
                             productsPojoList.add(productsPojo);
                         }
                     }

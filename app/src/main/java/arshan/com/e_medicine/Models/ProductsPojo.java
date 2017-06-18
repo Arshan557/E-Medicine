@@ -7,34 +7,114 @@ import android.graphics.Bitmap;
  */
 
 public class ProductsPojo {
-    private String title, desc, newsUrl, publishedAt;
+    private String id, companyid, barcode, itemname, mfgdate, expdate, maxdiscount, qty, mrp, batch, productimage;
     private Bitmap bmp;
 
     public ProductsPojo() {
     }
 
-    public ProductsPojo(String title, String desc, Bitmap bmp, String newsUrl, String publishedAt) {
-        this.title = title;
-        this.desc = desc;
+    public ProductsPojo(String id, String companyid, String barcode, String itemname, String mfgdate, String expdate, String maxdiscount,
+                        String qty, String mrp, String batch, String productimage, Bitmap bmp) {
+        this.id = id;
+        this.companyid = companyid;
+        this.barcode = barcode;
+        this.itemname = itemname;
+        this.mfgdate = mfgdate;
+        this.expdate = expdate;
+        this.maxdiscount = maxdiscount;
+        this.qty = qty;
+        this.mrp = mrp;
+        this.batch = batch;
+        this.productimage = productimage;
         this.bmp = bmp;
-        this.newsUrl = newsUrl;
-        this.publishedAt = publishedAt;
     }
 
-    public String getTitle() {
-        return title;
+    public String getId() {
+        return id;
     }
 
-    public void setTitle(String name) {
-        this.title = name;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getCompanyid() {
+        return companyid;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setCompanyid(String companyid) {
+        this.companyid = companyid;
+    }
+
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
+
+    public String getItemname() {
+        return itemname;
+    }
+
+    public void setItemname(String itemname) {
+        this.itemname = itemname;
+    }
+
+    public String getMfgdate() {
+        return mfgdate;
+    }
+
+    public void setMfgdate(String mfgdate) {
+        this.mfgdate = mfgdate;
+    }
+
+    public String getExpdate() {
+        return expdate;
+    }
+
+    public void setExpdate(String expdate) {
+        this.expdate = expdate;
+    }
+
+    public String getMaxdiscount() {
+        return maxdiscount;
+    }
+
+    public void setMaxdiscount(String maxdiscount) {
+        this.maxdiscount = maxdiscount;
+    }
+
+    public String getQty() {
+        return qty;
+    }
+
+    public void setQty(String qty) {
+        this.qty = qty;
+    }
+
+    public String getMrp() {
+        return mrp;
+    }
+
+    public void setMrp(String mrp) {
+        this.mrp = mrp;
+    }
+
+    public String getBatch() {
+        return batch;
+    }
+
+    public void setBatch(String batch) {
+        this.batch = batch;
+    }
+
+    public String getProductimage() {
+        return productimage;
+    }
+
+    public void setProductimage(String productimage) {
+        this.productimage = productimage;
     }
 
     public Bitmap getBmp() {
@@ -43,21 +123,5 @@ public class ProductsPojo {
 
     public void setBmp(Bitmap bmp) {
         this.bmp = bmp;
-    }
-
-    public String getNewsUrl() {
-        return newsUrl;
-    }
-
-    public void setNewsUrl(String newsUrl) {
-        this.newsUrl = newsUrl;
-    }
-
-    public String getPublishedAt() {
-        return publishedAt;
-    }
-
-    public void setPublishedAt(String publishedAt) {
-        this.publishedAt = publishedAt;
     }
 }

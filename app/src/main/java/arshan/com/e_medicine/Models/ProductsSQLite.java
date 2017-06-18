@@ -5,12 +5,13 @@ package arshan.com.e_medicine.Models;
  */
 public class ProductsSQLite {
     String id, companyid, barcode, itemname, mfgdate, expdate, maxdiscount, qty, mrp, batch, productimage;
+    private byte[] imageByteArray;
 
     public ProductsSQLite () {
     }
 
     public ProductsSQLite(String id, String companyid, String barcode, String itemname, String mfgdate
-            , String expdate, String maxdiscount, String qty, String mrp, String batch, String productimage) {
+            , String expdate, String maxdiscount, String qty, String mrp, String batch, String productimage, byte[] imageByteArray) {
         this.id = id;
         this.companyid = companyid;
         this.barcode = barcode;
@@ -22,6 +23,7 @@ public class ProductsSQLite {
         this.mrp = mrp;
         this.batch = batch;
         this.productimage = productimage;
+        this.imageByteArray = imageByteArray;
     }
 
     public String getId() {
@@ -30,14 +32,6 @@ public class ProductsSQLite {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getProductimage() {
-        return productimage;
-    }
-
-    public void setProductimage(String productimage) {
-        this.productimage = productimage;
     }
 
     public String getCompanyid() {
@@ -110,5 +104,21 @@ public class ProductsSQLite {
 
     public void setBatch(String batch) {
         this.batch = batch;
+    }
+
+    public String getProductimage() {
+        return productimage;
+    }
+
+    public void setProductimage(String productimage) {
+        this.productimage = productimage;
+    }
+
+    public byte[] getImageByteArray() {
+        return imageByteArray;
+    }
+
+    public void setImageByteArray(byte[] imageByteArray) {
+        this.imageByteArray = imageByteArray;
     }
 }
