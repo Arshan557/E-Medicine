@@ -100,7 +100,7 @@ public class ProductsActivity extends AppCompatActivity {
         }
 
         // Reading all products
-        Log.d("Reading: ", "Reading all contacts..");
+        Log.d("Reading: ", "Reading all products..");
         List<ProductsSQLite> products = db.getAllProducts();
 
         for (int i=products.size()-1; i >= 0; i--) {
@@ -350,6 +350,7 @@ public class ProductsActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Data:"+scanContent+","+scanFormat, Toast.LENGTH_SHORT).show();
             Log.d("bar code results",scanContent+"....."+scanFormat);
 
+            productsPojoList.clear();
             new GetProducts().execute(Constants.BARCODE_SEARCH_URL+"?barcode="+scanContent);
 
         } else {
@@ -374,6 +375,7 @@ public class ProductsActivity extends AppCompatActivity {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
                         Log.w("myApp", "onQueryTextSubmit::"+query);
+                        productsPojoList.clear();
                         new GetProducts().execute(Constants.PRODUCTNAME_SEARCH_URL+"?name="+query);
                         return false;
                     }
@@ -452,11 +454,9 @@ public class ProductsActivity extends AppCompatActivity {
                             URL url = new URL(productimage);
                             Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
-                            productsPojoList.clear();
                             ProductsPojo productsPojo = new ProductsPojo(itemname, mfgdate, bmp, qty, mrp);
                             productsPojoList.add(productsPojo);
 
-                            //In
                             SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(ProductsActivity.this);
                             db.addProduct(new ProductsSQLite(id, companyid, barcode, itemname, mfgdate, expdate, maxdiscount, qty, mrp, batch, productimage));
 

@@ -15,31 +15,38 @@
             android:id="@+id/app_bar"
             layout="@layout/app_bar" />
 
-        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swipe_refresh_layout_categories"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/app_bar">
 
-            <LinearLayout
+            <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:layout_below="@+id/app_bar">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/category_recycle"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/app_bar"
-                    android:padding="5dp" />
+                    android:orientation="vertical">
 
-                <View
-                    android:id="@+id/justView"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp" />
-            </LinearLayout>
-        </ScrollView>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/category_recycle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/app_bar"
+                        android:padding="5dp" />
+
+                    <View
+                        android:id="@+id/justView"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp" />
+                </LinearLayout>
+            </ScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
     </RelativeLayout>
 
     <com.shamanland.fab.FloatingActionButton

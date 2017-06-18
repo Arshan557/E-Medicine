@@ -5,11 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import arshan.com.e_medicine.Models.CategoriesSQLite;
+import arshan.com.e_medicine.Models.DistributorsSQLite;
 import arshan.com.e_medicine.Models.ProductsSQLite;
 
 public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
@@ -21,8 +22,11 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 	// Database Name
 	private static final String DATABASE_NAME = "MyDB";
 
-	// Contacts table name
 	private static final String TABLE_PRODUCTS = "products";
+
+	private static final String TABLE_DISTRIBUTORS = "distributors";
+
+	private static final String TABLE_CATEGORIES = "categories";
 
 	public SQLiteDatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -32,9 +36,12 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		String CREATE_PRODUCTS_TABLE = "CREATE TABLE "+ TABLE_PRODUCTS +"(id TEXT PRIMARY KEY, companyid TEXT, barcode TEXT, itemname TEXT, mfgdate TEXT, expdate TEXT, maxdiscount TEXT, qty TEXT, mrp TEXT, batch TEXT, productimage TEXT)" ;
+		String CREATE_DISTRIBUTORS_TABLE = "CREATE TABLE "+ TABLE_DISTRIBUTORS +"(id TEXT PRIMARY KEY, companyid TEXT, name TEXT, email TEXT, uname TEXT, password TEXT, mobile TEXT, phone TEXT, isActive TEXT, picURL TEXT, createdBy TEXT, modifiedBy TEXT, createdOn TEXT, modifiedOn TEXT)" ;
+		String CREATE_CATEGORIES_TABLE = "CREATE TABLE "+ TABLE_CATEGORIES +"(id TEXT PRIMARY KEY, companyid TEXT, name TEXT, createdBy TEXT, createdOn TEXT, modifiedBy TEXT, modifiedOn TEXT)" ;
 
-		Log.d("create",CREATE_PRODUCTS_TABLE);
 		db.execSQL(CREATE_PRODUCTS_TABLE);
+		db.execSQL(CREATE_DISTRIBUTORS_TABLE);
+		db.execSQL(CREATE_CATEGORIES_TABLE);
 	}
 
 	// Upgrading database
@@ -42,6 +49,8 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// Drop older table if existed
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCTS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_DISTRIBUTORS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIES);
 
 		// Create tables again
 		onCreate(db);
@@ -51,7 +60,6 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 	 * All CRUD(Create, Read, Update, Delete) Operations
 	 */
 
-	// Adding new contact
 	void addProduct(ProductsSQLite productsSQLite) {
 		SQLiteDatabase db = this.getWritableDatabase();
 
@@ -70,6 +78,47 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 
 		// Inserting Row
 		db.insert(TABLE_PRODUCTS, null, values);
+		db.close(); // Closing database connection
+	}
+
+	void addDistributor(DistributorsSQLite distributorsSQLite) {
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put("id", distributorsSQLite.getId());
+		values.put("companyid", distributorsSQLite.getCompanyid());
+		values.put("name", distributorsSQLite.getName());
+		values.put("email", distributorsSQLite.getEmail());
+		values.put("uname", distributorsSQLite.getUname());
+		values.put("password", distributorsSQLite.getPassword());
+		values.put("mobile", distributorsSQLite.getMobile());
+		values.put("phone", distributorsSQLite.getPhone());
+		values.put("isActive", distributorsSQLite.getIsActive());
+		values.put("picURL", distributorsSQLite.getPicURL());
+		values.put("createdBy", distributorsSQLite.getCreatedBy());
+		values.put("modifiedBy", distributorsSQLite.getModifiedBy());
+		values.put("createdOn", distributorsSQLite.getCreatedOn());
+		values.put("modifiedOn", distributorsSQLite.getModifiedOn());
+
+		// Inserting Row
+		db.insert(TABLE_DISTRIBUTORS, null, values);
+		db.close(); // Closing database connection
+	}
+
+	void addCategory(CategoriesSQLite categoriesSQLite) {
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put("id", categoriesSQLite.getId());
+		values.put("companyid", categoriesSQLite.getCompanyid());
+		values.put("name", categoriesSQLite.getName());
+		values.put("createdBy", categoriesSQLite.getCreatedBy());
+		values.put("createdOn", categoriesSQLite.getCreatedOn());
+		values.put("modifiedBy", categoriesSQLite.getModifiedBy());
+		values.put("modifiedOn", categoriesSQLite.getModifiedOn());
+
+		// Inserting Row
+		db.insert(TABLE_CATEGORIES, null, values);
 		db.close(); // Closing database connection
 	}
 
@@ -113,13 +162,76 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 				product.setMrp(cursor.getString(8));
 				product.setBatch(cursor.getString(9));
 				product.setProductimage(cursor.getString(10));
-				// Adding contact to list
+				// Adding product to list
 				productList.add(product);
 			} while (cursor.moveToNext());
 		}
 
 		// return product list
 		return productList;
+	}
+
+	// Getting All distrbutors
+	public List<DistributorsSQLite> getAllDistributors() {
+		List<DistributorsSQLite> distributorList = new ArrayList<DistributorsSQLite>();
+		// Select All Query
+		String selectQuery = "SELECT  * FROM " + TABLE_DISTRIBUTORS;
+
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+
+		// looping through all rows and adding to list
+		if (cursor.moveToFirst()) {
+			do {
+				DistributorsSQLite distributor = new DistributorsSQLite();
+				distributor.setId(cursor.getString(0));
+				distributor.setCompanyid(cursor.getString(1));
+				distributor.setName(cursor.getString(2));
+				distributor.setEmail(cursor.getString(3));
+				distributor.setUname(cursor.getString(4));
+				distributor.setPassword(cursor.getString(5));
+				distributor.setMobile(cursor.getString(6));
+				distributor.setPhone(cursor.getString(7));
+				distributor.setIsActive(cursor.getString(8));
+				distributor.setPicURL(cursor.getString(9));
+				distributor.setCreatedBy(cursor.getString(10));
+				distributor.setModifiedBy(cursor.getString(11));
+				distributor.setCreatedOn(cursor.getString(12));
+				distributor.setModifiedOn(cursor.getString(13));
+				// Adding distributor to list
+				distributorList.add(distributor);
+			} while (cursor.moveToNext());
+		}
+		// return distributors list
+		return distributorList;
+	}
+
+	// Getting All distrbutors
+	public List<CategoriesSQLite> getAllCategories() {
+		List<CategoriesSQLite> categoryList = new ArrayList<CategoriesSQLite>();
+		// Select All Query
+		String selectQuery = "SELECT  * FROM " + TABLE_CATEGORIES;
+
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+
+		// looping through all rows and adding to list
+		if (cursor.moveToFirst()) {
+			do {
+				CategoriesSQLite category = new CategoriesSQLite();
+				category.setId(cursor.getString(0));
+				category.setCompanyid(cursor.getString(1));
+				category.setName(cursor.getString(2));
+				category.setCreatedBy(cursor.getString(3));
+				category.setCreatedOn(cursor.getString(4));
+				category.setModifiedBy(cursor.getString(5));
+				category.setModifiedOn(cursor.getString(6));
+				// Adding distributor to list
+				categoryList.add(category);
+			} while (cursor.moveToNext());
+		}
+		// return distributors list
+		return categoryList;
 	}
 
 	// Updating single product
@@ -143,6 +255,22 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		db.close();
 	}
 
+	// Deleting single distributor
+	public void deleteDistributor(DistributorsSQLite distributor) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_DISTRIBUTORS, "id" + " = ?",
+				new String[] { String.valueOf(distributor.getId()) });
+		db.close();
+	}
+
+	// Deleting single category
+	public void deleteCategory(CategoriesSQLite category) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_CATEGORIES, "id" + " = ?",
+				new String[] { String.valueOf(category.getId()) });
+		db.close();
+	}
+
 
 	// Getting products Count
 	public int getProductsCount() {
@@ -150,7 +278,26 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(countQuery, null);
 		cursor.close();
+		// return count
+		return cursor.getCount();
+	}
 
+	// Getting distributors Count
+	public int getDistributorsCount() {
+		String countQuery = "SELECT  * FROM " + TABLE_DISTRIBUTORS;
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(countQuery, null);
+		cursor.close();
+		// return count
+		return cursor.getCount();
+	}
+
+	// Getting categories Count
+	public int getCategoriesCount() {
+		String countQuery = "SELECT  * FROM " + TABLE_CATEGORIES;
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(countQuery, null);
+		cursor.close();
 		// return count
 		return cursor.getCount();
 	}

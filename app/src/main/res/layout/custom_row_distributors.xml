@@ -10,10 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal">
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_gravity="center_horizontal"
         android:id="@+id/distributorPic"
         android:src="@drawable/defaultpic"
@@ -26,7 +27,7 @@
         android:id="@+id/distributorName"
         android:textColor="@color/black"
         android:textStyle="bold"
-        android:paddingLeft="10dp"
+        android:paddingLeft="15dp"
         android:layout_gravity="center_vertical"
         android:textSize="16dip"/>
     </LinearLayout>
@@ -42,11 +43,11 @@
 
     <com.shamanland.fab.FloatingActionButton
         android:id="@+id/dist_call_outside"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_below="@+id/activeSwitch"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/phone"
+        android:layout_margin="10dp"
+        android:src="@drawable/phonesmall"
         android:layout_alignParentRight="true"
         app:floatingActionButtonColor="#00c853"
         app:floatingActionButtonSize="normal" />

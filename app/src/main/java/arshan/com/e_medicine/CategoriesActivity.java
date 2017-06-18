@@ -5,13 +5,12 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,13 +27,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import arshan.com.e_medicine.Adapters.CategoriesAdapter;
 import arshan.com.e_medicine.Constants.Constants;
 import arshan.com.e_medicine.Models.CategoriesPojo;
+import arshan.com.e_medicine.Models.CategoriesSQLite;
 import arshan.com.e_medicine.Network.HttpHandler;
 
 public class CategoriesActivity extends AppCompatActivity {
@@ -46,8 +45,8 @@ public class CategoriesActivity extends AppCompatActivity {
     private String TAG = CategoriesActivity.class.getSimpleName(), apikey="";
     private ProgressDialog pDialog;
     public static final String DEFAULT = "";
-    private static Bundle mBundleRecyclerViewState;
-    private final String KEY_RECYCLER_STATE = "recycler_state";
+    SharedPreferences spGetFirstTime;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +59,8 @@ public class CategoriesActivity extends AppCompatActivity {
         final Drawable upArrow = getResources().getDrawable(R.mipmap.back);
         //upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
+        SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(this);
 
         // Getting data from Shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
@@ -87,10 +88,49 @@ public class CategoriesActivity extends AppCompatActivity {
             }
         });
 
-        String finalUrl = Constants.CATEGORIES_URL+"?apikey="+apikey;
-        Log.d("final url",finalUrl);
-        //Make call to Async
-        new getCategories().execute(finalUrl);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout_categories);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                String finalUrl = Constants.CATEGORIES_URL+"?apikey="+apikey;
+                Log.d("final url",finalUrl);
+                categoryPojoList.clear();
+                //Make call to Async
+                new getCategories().execute(finalUrl);
+            }
+        });
+
+        String firstTimeFlag;
+        spGetFirstTime = getSharedPreferences("CategoryFirstTimeFlag", Context.MODE_PRIVATE);
+        firstTimeFlag = spGetFirstTime.getString("firstTimeFlag", "");
+        Log.d("firstTimeFlag", firstTimeFlag);
+        if (!"N".equalsIgnoreCase(firstTimeFlag)) {
+            spGetFirstTime = getSharedPreferences("CategoryFirstTimeFlag", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = spGetFirstTime.edit();
+            editor.putString("firstTimeFlag", "N");
+            editor.commit();
+
+            String finalUrl = Constants.CATEGORIES_URL+"?apikey="+apikey;
+            Log.d("final url",finalUrl);
+            //Make call to Async
+            new getCategories().execute(finalUrl);
+        } else {
+            // Reading all categories
+            Log.d("Reading: ", "Reading all categories..");
+            List<CategoriesSQLite> categories = db.getAllCategories();
+
+            for (int i = 0; i <= categories.size()-1; i++) {
+                String log = "Id: "+categories.get(i).getId()+" ,name: " + categories.get(i).getName();
+                Log.d("category: ", log);
+                try {
+                    CategoriesPojo categoriesPojo = new CategoriesPojo(categories.get(i).getId(), categories.get(i).getCompanyid(), categories.get(i).getName(), categories.get(i).getCreatedBy(),
+                            categories.get(i).getCreatedOn(), categories.get(i).getModifiedBy(), categories.get(i).getModifiedOn());
+                    categoryPojoList.add(categoriesPojo);
+                } catch (Exception e) {
+                    Log.d("Exception", ""+e.getMessage());
+                }
+            }
+        }
     }
 
     private class getCategories extends AsyncTask<String, String, String> {
@@ -139,21 +179,12 @@ public class CategoriesActivity extends AppCompatActivity {
                             String createdOn = c.getString("createdOn");
                             String modifiedBy = c.getString("modifiedBy");
                             String modifiedOn = c.getString("modifiedOn");
-                            String picURL = "";
 
-                            //Log.d("response", name + "," + picURL );
-                            URL url = null;
-                            if (null != picURL && !"".equalsIgnoreCase(picURL)) {
-                                url = new URL(picURL);
-                            } else {
-                                picURL = "http://www.provo2.com/health-fitness/wp-content/uploads/2010/11/default-avatar.jpg";
-                                url = new URL(picURL);
-                            }
-                            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-
-                            CategoriesPojo categoriesPojo = new CategoriesPojo(id, companyId, name, createdBy, createdOn, modifiedBy,
-                                    modifiedOn, picURL, bmp);
+                            CategoriesPojo categoriesPojo = new CategoriesPojo(id, companyId, name, createdBy, createdOn, modifiedBy, modifiedOn);
                             categoryPojoList.add(categoriesPojo);
+
+                            SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(CategoriesActivity.this);
+                            db.addCategory(new CategoriesSQLite(id, companyId, name, createdBy, createdOn, modifiedBy, modifiedOn));
                         }
                     } else {
                         msg = jsonObj.getString("msg");
@@ -199,6 +230,9 @@ public class CategoriesActivity extends AppCompatActivity {
             // Dismiss the progress dialog
             if (pDialog.isShowing())
                 pDialog.dismiss();
+            if (swipeRefreshLayout.isRefreshing()) {
+                swipeRefreshLayout.setRefreshing(false);
+            }
 
             if (null != msg && !"".equalsIgnoreCase(msg)) {
                 Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();

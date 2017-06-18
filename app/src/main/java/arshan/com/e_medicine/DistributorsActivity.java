@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,6 +36,7 @@ import java.util.List;
 import arshan.com.e_medicine.Adapters.DistributorAdapter;
 import arshan.com.e_medicine.Constants.Constants;
 import arshan.com.e_medicine.Models.DistributorPojo;
+import arshan.com.e_medicine.Models.DistributorsSQLite;
 import arshan.com.e_medicine.Network.HttpHandler;
 
 public class DistributorsActivity extends AppCompatActivity {
@@ -46,6 +48,9 @@ public class DistributorsActivity extends AppCompatActivity {
     private String TAG = DistributorsActivity.class.getSimpleName(), apikey="";
     private ProgressDialog pDialog;
     public static final String DEFAULT = "";
+    Bitmap bmp;
+    SharedPreferences spGetFirstTime;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +63,8 @@ public class DistributorsActivity extends AppCompatActivity {
         final Drawable upArrow = getResources().getDrawable(R.mipmap.back);
         //upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
+        SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(this);
 
         // Getting data from Shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
@@ -84,10 +91,61 @@ public class DistributorsActivity extends AppCompatActivity {
             }
         });
 
-        String finalUrl = Constants.DISTRIBUTORS_URL+"?apikey="+apikey;
-        Log.d("final url",finalUrl);
-        //Make call to Async
-        new getDistributors().execute(finalUrl);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout_distributors);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                String finalUrl = Constants.DISTRIBUTORS_URL+"?apikey="+apikey;
+                Log.d("final url",finalUrl);
+                distributorPojoList.clear();
+                //Make call to Async
+                new getDistributors().execute(finalUrl);
+            }
+        });
+
+        String firstTimeFlag;
+        spGetFirstTime = getSharedPreferences("DistributorFirstTimeFlag", Context.MODE_PRIVATE);
+        firstTimeFlag = spGetFirstTime.getString("firstTimeFlag", "");
+        Log.d("firstTimeFlag", firstTimeFlag);
+        if (!"N".equalsIgnoreCase(firstTimeFlag)) {
+
+            spGetFirstTime = getSharedPreferences("DistributorFirstTimeFlag", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = spGetFirstTime.edit();
+            editor.putString("firstTimeFlag", "N");
+            editor.commit();
+
+            String finalUrl = Constants.DISTRIBUTORS_URL+"?apikey="+apikey;
+            Log.d("final url",finalUrl);
+            //Make call to Async
+            new getDistributors().execute(finalUrl);
+        } else {
+            try {
+                String imgUrl = "http://www.ranchibazaar.com/1017-thickbox_default/colgate-strong-teeth-toothpaste-500-g.jpg";
+                URL url = new URL(imgUrl);
+                bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+            } catch (Exception e) {
+                Log.d("Exception", "" + e.getLocalizedMessage());
+            }
+
+            // Reading all distributors
+            Log.d("Reading: ", "Reading all distributors..");
+            List<DistributorsSQLite> distributors = db.getAllDistributors();
+
+            for (int i = 0; i <= distributors.size()-1; i++) {
+                String log = "Id: "+distributors.get(i).getId()+" ,companyid: " + distributors.get(i).getCompanyid();
+                Log.d("product: ", log);
+                try {
+                /*URL url = new URL(products.get(i).getProductimage());
+                bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());*/
+                    DistributorPojo distributorPojo = new DistributorPojo(distributors.get(i).getName(), bmp, distributors.get(i).getIsActive(),
+                            distributors.get(i).getId(), distributors.get(i).getCompanyid(), distributors.get(i).getEmail(), distributors.get(i).getUname(), distributors.get(i).getPassword(),
+                            distributors.get(i).getMobile(), distributors.get(i).getPhone(), distributors.get(i).getCreatedBy(), distributors.get(i).getModifiedBy(), distributors.get(i).getCreatedOn(), distributors.get(i).getModifiedOn(), distributors.get(i).getPicURL());
+                    distributorPojoList.add(distributorPojo);
+                } catch (Exception e) {
+                    Log.d("Exception", ""+e.getMessage());
+                }
+            }
+        }
     }
 
     private class getDistributors extends AsyncTask<String, String, String> {
@@ -157,6 +215,9 @@ public class DistributorsActivity extends AppCompatActivity {
                             DistributorPojo distributorsPojo = new DistributorPojo(name, bmp, isActive, id, companyid, email,
                                     uname, password, mobile, phone, createdBy, modifiedBy, createdOn, modifiedOn, picURL);
                             distributorPojoList.add(distributorsPojo);
+
+                            SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(DistributorsActivity.this);
+                            db.addDistributor(new DistributorsSQLite(id, companyid, name, email, uname, password, phone, mobile, isActive, picURL, createdBy, modifiedBy, createdOn, modifiedOn));
                         }
                     } else {
                         msg = jsonObj.getString("msg");
@@ -196,6 +257,10 @@ public class DistributorsActivity extends AppCompatActivity {
             // Dismiss the progress dialog
             if (pDialog.isShowing())
                 pDialog.dismiss();
+
+            if (swipeRefreshLayout.isRefreshing()) {
+                swipeRefreshLayout.setRefreshing(false);
+            }
 
             if (null != msg && !"".equalsIgnoreCase(msg)) {
                 Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
