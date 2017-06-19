@@ -283,6 +283,7 @@ public class DistributorsActivity extends AppCompatActivity {
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         MenuItem search = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(search);
+        MenuItem refresh = menu.findItem(R.id.action_refresh);
         searchView.setSearchableInfo( searchManager.getSearchableInfo(getComponentName()));
         searchView.setQueryHint(getResources().getString(R.string.search_hint));
 
@@ -307,6 +308,18 @@ public class DistributorsActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+
+        refresh.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                String finalUrl = Constants.DISTRIBUTORS_URL+"?apikey="+apikey;
+                Log.d("final url",finalUrl);
+                distributorPojoList.clear();
+                //Make call to Async
+                new getDistributors().execute(finalUrl);
+                return false;
+            }
+        });
         return true;
     }
 }

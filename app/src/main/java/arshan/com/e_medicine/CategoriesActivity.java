@@ -254,6 +254,7 @@ public class CategoriesActivity extends AppCompatActivity {
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         MenuItem search = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(search);
+        MenuItem refresh = menu.findItem(R.id.action_refresh);
         searchView.setSearchableInfo( searchManager.getSearchableInfo(getComponentName()));
         searchView.setQueryHint(getResources().getString(R.string.search_hint));
 
@@ -278,6 +279,18 @@ public class CategoriesActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+
+        refresh.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                String finalUrl = Constants.CATEGORIES_URL+"?apikey="+apikey;
+                Log.d("final url",finalUrl);
+                categoryPojoList.clear();
+                //Make call to Async
+                new getCategories().execute(finalUrl);
+                return false;
+            }
+        });
         return true;
     }
 }

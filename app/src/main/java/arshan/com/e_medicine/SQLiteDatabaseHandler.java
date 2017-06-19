@@ -3,8 +3,11 @@ package arshan.com.e_medicine;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +15,7 @@ import java.util.List;
 import arshan.com.e_medicine.Models.CategoriesSQLite;
 import arshan.com.e_medicine.Models.DistributorsSQLite;
 import arshan.com.e_medicine.Models.ProductsSQLite;
+import arshan.com.e_medicine.Models.PurchasesPojo;
 
 public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 
@@ -28,6 +32,8 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 
 	private static final String TABLE_CATEGORIES = "categories";
 
+	private static final String TABLE_PURCHASES = "purchases";
+
 	public SQLiteDatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
@@ -38,10 +44,12 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		String CREATE_PRODUCTS_TABLE = "CREATE TABLE "+ TABLE_PRODUCTS +"(id TEXT PRIMARY KEY, companyid TEXT, barcode TEXT, itemname TEXT, mfgdate TEXT, expdate TEXT, maxdiscount TEXT, qty TEXT, mrp TEXT, batch TEXT, bmp BLOB)" ;
 		String CREATE_DISTRIBUTORS_TABLE = "CREATE TABLE "+ TABLE_DISTRIBUTORS +"(id TEXT PRIMARY KEY, companyid TEXT, name TEXT, email TEXT, uname TEXT, password TEXT, mobile TEXT, phone TEXT, isActive TEXT, picURL TEXT, createdBy TEXT, modifiedBy TEXT, createdOn TEXT, modifiedOn TEXT, bmp BLOB)" ;
 		String CREATE_CATEGORIES_TABLE = "CREATE TABLE "+ TABLE_CATEGORIES +"(id TEXT PRIMARY KEY, companyid TEXT, name TEXT, createdBy TEXT, createdOn TEXT, modifiedBy TEXT, modifiedOn TEXT)" ;
+		String CREATE_PURCHASES_TABLE = "CREATE TABLE "+ TABLE_PURCHASES +"(id TEXT PRIMARY KEY, companyid TEXT, BillDate TEXT, InvoiceNumber TEXT, DistributorId TEXT, Amount TEXT, PaymentDate TEXT, PaymentMode TEXT, ChequeNumber TEXT, BankName TEXT, createdBy TEXT, createdOn TEXT, modifiedBy TEXT, modifiedOn TEXT, isSettled TEXT)" ;
 
 		db.execSQL(CREATE_PRODUCTS_TABLE);
 		db.execSQL(CREATE_DISTRIBUTORS_TABLE);
 		db.execSQL(CREATE_CATEGORIES_TABLE);
+		db.execSQL(CREATE_PURCHASES_TABLE);
 	}
 
 	// Upgrading database
@@ -51,6 +59,7 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCTS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_DISTRIBUTORS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIES);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PURCHASES);
 
 		// Create tables again
 		onCreate(db);
@@ -75,10 +84,17 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		values.put("mrp", productsSQLite.getMrp());
 		values.put("batch", productsSQLite.getBatch());
 		values.put("bmp", productsSQLite.getImageByteArray());
-
-		// Inserting Row
-		db.insert(TABLE_PRODUCTS, null, values);
-		db.close(); // Closing database connection
+		try {
+			// Inserting Row
+			db.insert(TABLE_PRODUCTS, null, values);
+			db.close(); // Closing database connection
+		} catch (SQLiteConstraintException e) {
+			Log.d("SQConstraintException", "" + e.getLocalizedMessage());
+		} catch (SQLiteException e) {
+			Log.d("SQLiteException", "" + e.getLocalizedMessage());
+		} catch (Exception e) {
+			Log.d("Exception", "" + e.getLocalizedMessage());
+		}
 	}
 
 	void addDistributor(DistributorsSQLite distributorsSQLite) {
@@ -101,9 +117,17 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		values.put("modifiedOn", distributorsSQLite.getModifiedOn());
 		values.put("bmp", distributorsSQLite.getImageByteArray());
 
-		// Inserting Row
-		db.insert(TABLE_DISTRIBUTORS, null, values);
-		db.close(); // Closing database connection
+		try {
+			// Inserting Row
+			db.insert(TABLE_DISTRIBUTORS, null, values);
+			db.close(); // Closing database connection
+		} catch (SQLiteConstraintException e) {
+			Log.d("SQConstraintException", ""+e.getLocalizedMessage());
+		} catch (SQLiteException e) {
+			Log.d("SQLiteException", ""+e.getLocalizedMessage());
+		} catch (Exception e) {
+			Log.d("Exception", ""+e.getLocalizedMessage());
+		}
 	}
 
 	void addCategory(CategoriesSQLite categoriesSQLite) {
@@ -117,10 +141,49 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		values.put("createdOn", categoriesSQLite.getCreatedOn());
 		values.put("modifiedBy", categoriesSQLite.getModifiedBy());
 		values.put("modifiedOn", categoriesSQLite.getModifiedOn());
+		try {
+			// Inserting Row
+			db.insert(TABLE_CATEGORIES, null, values);
+			db.close(); // Closing database connection
+		} catch (SQLiteConstraintException e) {
+			Log.d("SQConstraintException", "" + e.getLocalizedMessage());
+		} catch (SQLiteException e) {
+			Log.d("SQLiteException", "" + e.getLocalizedMessage());
+		} catch (Exception e) {
+			Log.d("Exception", "" + e.getLocalizedMessage());
+		}
+	}
 
-		// Inserting Row
-		db.insert(TABLE_CATEGORIES, null, values);
-		db.close(); // Closing database connection
+	void addPurchase(PurchasesPojo purchasesPojo) {
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put("id", purchasesPojo.getId());
+		values.put("companyid", purchasesPojo.getCompanyid());
+		values.put("BillDate", purchasesPojo.getBillDate());
+		values.put("InvoiceNumber", purchasesPojo.getInvoiceNumber());
+		values.put("DistributorId", purchasesPojo.getDistributorId());
+		values.put("Amount", purchasesPojo.getAmount());
+		values.put("PaymentDate", purchasesPojo.getPaymentDate());
+		values.put("PaymentMode", purchasesPojo.getPaymentMode());
+		values.put("ChequeNumber", purchasesPojo.getChequeNumber());
+		values.put("BankName", purchasesPojo.getBankName());
+		values.put("createdBy", purchasesPojo.getCreatedBy());
+		values.put("createdOn", purchasesPojo.getCreatedOn());
+		values.put("modifiedBy", purchasesPojo.getModifiedBy());
+		values.put("modifiedOn", purchasesPojo.getModifiedOn());
+		values.put("isSettled", purchasesPojo.getIsSettled());
+		try {
+			// Inserting Row
+			db.insert(TABLE_PURCHASES, null, values);
+			db.close(); // Closing database connection
+		} catch (SQLiteConstraintException e) {
+			Log.d("SQConstraintException", "" + e.getLocalizedMessage());
+		} catch (SQLiteException e) {
+			Log.d("SQLiteException", "" + e.getLocalizedMessage());
+		} catch (Exception e) {
+			Log.d("Exception", "" + e.getLocalizedMessage());
+		}
 	}
 
 	// Getting single product
@@ -209,7 +272,7 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		return distributorList;
 	}
 
-	// Getting All distrbutors
+	// Getting All Categories
 	public List<CategoriesSQLite> getAllCategories() {
 		List<CategoriesSQLite> categoryList = new ArrayList<CategoriesSQLite>();
 		// Select All Query
@@ -229,12 +292,49 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 				category.setCreatedOn(cursor.getString(4));
 				category.setModifiedBy(cursor.getString(5));
 				category.setModifiedOn(cursor.getString(6));
-				// Adding distributor to list
+				// Adding categories to list
 				categoryList.add(category);
 			} while (cursor.moveToNext());
 		}
-		// return distributors list
+		// return categories list
 		return categoryList;
+	}
+
+	// Getting All purchases
+	public List<PurchasesPojo> getAllPurchases() {
+		List<PurchasesPojo> purchasesList = new ArrayList<PurchasesPojo>();
+		// Select All Query
+		String selectQuery = "SELECT  * FROM " + TABLE_PURCHASES;
+
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+
+		// looping through all rows and adding to list
+		if (cursor.moveToFirst()) {
+			do {
+				PurchasesPojo purchase = new PurchasesPojo();
+				purchase.setId(cursor.getString(0));
+				purchase.setCompanyid(cursor.getString(1));
+				purchase.setBillDate(cursor.getString(2));
+				purchase.setInvoiceNumber(cursor.getString(3));
+				purchase.setDistributorId(cursor.getString(4));
+				purchase.setAmount(cursor.getString(5));
+				purchase.setPaymentDate(cursor.getString(6));
+				purchase.setPaymentMode(cursor.getString(7));
+				purchase.setChequeNumber(cursor.getString(8));
+				purchase.setBankName(cursor.getString(9));
+				purchase.setCreatedBy(cursor.getString(10));
+				purchase.setCreatedOn(cursor.getString(11));
+				purchase.setModifiedBy(cursor.getString(12));
+				purchase.setModifiedOn(cursor.getString(13));
+				purchase.setIsSettled(cursor.getString(14));
+				// Adding purchase to list
+				purchasesList.add(purchase);
+			} while (cursor.moveToNext());
+		}
+
+		// return purchase list
+		return purchasesList;
 	}
 
 	// Updating single product
@@ -274,6 +374,14 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		db.close();
 	}
 
+	// Deleting single purchase
+	public void deletePurchase(PurchasesPojo purchase) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_PURCHASES, "id" + " = ?",
+				new String[] { String.valueOf(purchase.getId()) });
+		db.close();
+	}
+
 
 	// Getting products Count
 	public int getProductsCount() {
@@ -298,6 +406,16 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 	// Getting categories Count
 	public int getCategoriesCount() {
 		String countQuery = "SELECT  * FROM " + TABLE_CATEGORIES;
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(countQuery, null);
+		cursor.close();
+		// return count
+		return cursor.getCount();
+	}
+
+	// Getting purchases Count
+	public int getPurchasesCount() {
+		String countQuery = "SELECT  * FROM " + TABLE_PURCHASES;
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(countQuery, null);
 		cursor.close();

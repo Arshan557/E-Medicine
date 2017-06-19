@@ -35,7 +35,7 @@ class MyUserAdapter extends ArrayAdapter<String> {
     String[] titleArray;
 
     public MyUserAdapter(Context context, String[] titles, int imgs[]) {
-        super(context, R.layout.admins_row,R.id.skillTitle,titles);
+        super(context, R.layout.users_row,R.id.skillTitle,titles);
         this.context = context;
         this.images = imgs;
         this.titleArray = titles;

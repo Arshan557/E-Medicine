@@ -4,6 +4,12 @@
     tools:context="com.example.arshan.materialdesign.SubActivity">
 
     <item
+        android:id="@+id/action_refresh"
+        android:icon="@drawable/refresh"
+        android:title="action_refresh"
+        app:showAsAction="always|collapseActionView" />
+
+    <item
         android:id="@+id/action_search"
         android:icon="@mipmap/search"
         android:title="action_search"

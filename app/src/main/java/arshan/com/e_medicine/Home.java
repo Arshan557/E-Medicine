@@ -68,16 +68,16 @@ public class Home extends AppCompatActivity {
         boolean hasPermissionToCall = (ContextCompat.checkSelfPermission(Home.this,
                 android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED);
 
-        if (!hasPermissionToGallery) {
+        if (!hasPermissionToGallery && !hasPermissionToCall) {
             ActivityCompat.requestPermissions(Home.this,
-                    new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.CAMERA},
+                    new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.CAMERA, android.Manifest.permission.CALL_PHONE},
                     REQUEST_GALLERY);
         }
-        if (!hasPermissionToCall) {
+        /*if (!hasPermissionToCall) {
             ActivityCompat.requestPermissions(Home.this,
                     new String[]{android.Manifest.permission.CALL_PHONE},
                     REQUEST_CALL_PHONE);
-        }
+        }*/
 
         Bundle data = getIntent().getExtras();
         if(null != data) {
