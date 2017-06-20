@@ -24,7 +24,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import arshan.com.e_medicine.Adapters.PurchaseSettledAdapter;
+import arshan.com.e_medicine.Adapters.OutstandingBillAdapter;
 import arshan.com.e_medicine.Constants.Constants;
 import arshan.com.e_medicine.Models.PurchasesPojo;
 import arshan.com.e_medicine.Network.HttpHandler;
@@ -32,8 +32,8 @@ import arshan.com.e_medicine.Network.HttpHandler;
 /**
  * Created by Arshan on 19-Jun-2017.
  */
-public class PurchaseSettled extends Fragment {
-    private PurchaseSettledAdapter purchaseSettledAdapter;
+public class OutstandingBill extends Fragment {
+    private OutstandingBillAdapter outstandingBillAdapter;
     private RecyclerView recyclerView;
     private List<PurchasesPojo> purchasesPojoList = new ArrayList<>();
     private String TAG = PurchaseSettled.class.getSimpleName(), apikey="";
@@ -46,8 +46,8 @@ public class PurchaseSettled extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.purchase_settled, container, false);
-        recyclerView = (RecyclerView) view.findViewById(R.id.settled_recycle);
+        View view = inflater.inflate(R.layout.outstanding_bills, container, false);
+        recyclerView = (RecyclerView) view.findViewById(R.id.outstanding_recycle);
 
         SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(getActivity());
 
@@ -58,13 +58,13 @@ public class PurchaseSettled extends Fragment {
         }
 
         //Recycle view starts
-        purchaseSettledAdapter = new PurchaseSettledAdapter(getContext(), purchasesPojoList);
+        outstandingBillAdapter = new OutstandingBillAdapter(getContext(), purchasesPojoList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(purchaseSettledAdapter);
+        recyclerView.setAdapter(outstandingBillAdapter);
 
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout_purchase_settled);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout_outstanding);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -72,14 +72,14 @@ public class PurchaseSettled extends Fragment {
                 Log.d("final url",finalUrl);
                 purchasesPojoList.clear();
                 //Make call to Async
-                new getSettledPurchases().execute(finalUrl);
+                new getOutstandingBills().execute(finalUrl);
             }
         });
 
         String firstTimeFlag;
         spGetFirstTime = getContext().getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
         firstTimeFlag = spGetFirstTime.getString("PurchaseFirstTimeFlag", "");
-        Log.d("PurchaseFirstTimeFlag", firstTimeFlag);
+        Log.d("outstandingTimeFlag", firstTimeFlag);
         if (!"N".equalsIgnoreCase(firstTimeFlag)) {
             spGetFirstTime = getContext().getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = spGetFirstTime.edit();
@@ -90,7 +90,7 @@ public class PurchaseSettled extends Fragment {
             Log.d("final url",finalUrl);
             purchasesPojoList.clear();
             //Make call to Async
-            new getSettledPurchases().execute(finalUrl);
+            new getOutstandingBills().execute(finalUrl);
         } else {
             // Reading all purchases
             Log.d("Reading: ", "Reading all purchases..");
@@ -113,7 +113,7 @@ public class PurchaseSettled extends Fragment {
         return view;
     }
 
-    private class getSettledPurchases extends AsyncTask<String, String, String> {
+    private class getOutstandingBills extends AsyncTask<String, String, String> {
         String status, msg = "";
 
         @Override
@@ -233,7 +233,7 @@ public class PurchaseSettled extends Fragment {
             /**
              * Updating parsed JSON data into ListView
              * */
-            purchaseSettledAdapter.notifyDataSetChanged();
+            outstandingBillAdapter.notifyDataSetChanged();
         }
     }
 }

@@ -6,14 +6,14 @@
     <item
         android:id="@+id/action_search"
         android:icon="@mipmap/search"
-        android:title="action_search"
+        android:title="Search"
         app:showAsAction="always|collapseActionView"
         app:actionViewClass="android.support.v7.widget.SearchView" />
 
     <item
         android:id="@+id/action_barcode"
         android:icon="@drawable/barcodescan"
-        android:title="action_barcode"
+        android:title="Barcode scan"
         app:showAsAction="always|collapseActionView" />
 
 </menu>

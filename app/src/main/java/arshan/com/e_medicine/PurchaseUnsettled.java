@@ -79,13 +79,13 @@ public class PurchaseUnsettled extends Fragment {
         });
 
         String firstTimeFlag;
-        spGetFirstTime = getContext().getSharedPreferences("PurchaseUnsettledFirstTimeFlag", Context.MODE_PRIVATE);
-        firstTimeFlag = spGetFirstTime.getString("firstTimeFlag", "");
+        spGetFirstTime = getContext().getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
+        firstTimeFlag = spGetFirstTime.getString("PurchaseFirstTimeFlag", "");
         Log.d("firstTimeFlag", firstTimeFlag);
         if (!"N".equalsIgnoreCase(firstTimeFlag)) {
-            spGetFirstTime = getContext().getSharedPreferences("PurchaseUnsettledFirstTimeFlag", Context.MODE_PRIVATE);
+            spGetFirstTime = getContext().getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = spGetFirstTime.edit();
-            editor.putString("firstTimeFlag", "N");
+            editor.putString("PurchaseFirstTimeFlag", "N");
             editor.commit();
 
             String finalUrl = Constants.PURCHASE_LIST_URL+"?apikey="+apikey;
@@ -97,7 +97,7 @@ public class PurchaseUnsettled extends Fragment {
             // Reading all purchases
             Log.d("Reading: ", "Reading all purchases..");
             List<PurchasesPojo> purchases = db.getAllPurchases();
-
+            purchasesPojoList.clear();
             for (int i = 0; i <= purchases.size()-1; i++) {
                 String log = "Bankname: "+purchases.get(i).getBankName()+" ,Invoice: " + purchases.get(i).getInvoiceNumber();
                 Log.d("purchases: ", log);

@@ -24,7 +24,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher2"
+        android:icon="@drawable/ic_launcher_green"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
@@ -248,9 +248,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="arshan.com.e_medicine.DistributorsActivity" />
         </activity>
-        <activity android:name=".ViewSettledPurchaseActivity"
+        <activity
+            android:name=".ViewSettledPurchaseActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="Add Distributor"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Dark">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="arshan.com.e_medicine.PurchaseActivity" />
+        </activity>
+        <activity android:name=".AddPurchaseActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="Add Purchase"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark">
             <meta-data

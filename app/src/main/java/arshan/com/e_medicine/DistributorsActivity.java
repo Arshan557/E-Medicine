@@ -105,14 +105,14 @@ public class DistributorsActivity extends AppCompatActivity {
         });
 
         String firstTimeFlag;
-        spGetFirstTime = getSharedPreferences("DistributorFirstTimeFlag", Context.MODE_PRIVATE);
-        firstTimeFlag = spGetFirstTime.getString("firstTimeFlag", "");
+        spGetFirstTime = getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
+        firstTimeFlag = spGetFirstTime.getString("DistributorFirstTimeFlag", "");
         Log.d("firstTimeFlag", firstTimeFlag);
         if (!"N".equalsIgnoreCase(firstTimeFlag)) {
 
-            spGetFirstTime = getSharedPreferences("DistributorFirstTimeFlag", Context.MODE_PRIVATE);
+            spGetFirstTime = getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = spGetFirstTime.edit();
-            editor.putString("firstTimeFlag", "N");
+            editor.putString("DistributorFirstTimeFlag", "N");
             editor.commit();
 
             String finalUrl = Constants.DISTRIBUTORS_URL+"?apikey="+apikey;

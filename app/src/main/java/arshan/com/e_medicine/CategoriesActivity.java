@@ -101,13 +101,13 @@ public class CategoriesActivity extends AppCompatActivity {
         });
 
         String firstTimeFlag;
-        spGetFirstTime = getSharedPreferences("CategoryFirstTimeFlag", Context.MODE_PRIVATE);
-        firstTimeFlag = spGetFirstTime.getString("firstTimeFlag", "");
+        spGetFirstTime = getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
+        firstTimeFlag = spGetFirstTime.getString("CategoryFirstTimeFlag", "");
         Log.d("firstTimeFlag", firstTimeFlag);
         if (!"N".equalsIgnoreCase(firstTimeFlag)) {
-            spGetFirstTime = getSharedPreferences("CategoryFirstTimeFlag", Context.MODE_PRIVATE);
+            spGetFirstTime = getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = spGetFirstTime.edit();
-            editor.putString("firstTimeFlag", "N");
+            editor.putString("CategoryFirstTimeFlag", "N");
             editor.commit();
 
             String finalUrl = Constants.CATEGORIES_URL+"?apikey="+apikey;

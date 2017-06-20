@@ -176,12 +176,19 @@ public class NavigationDrawerFragment extends Fragment{
                             public void onClick(DialogInterface dialog,
                                                 int which) {
                                 //Toast.makeText(getContext(),"Yes is clicked",Toast.LENGTH_LONG).show();
-                                SharedPreferences preferences = getContext().getSharedPreferences("UserData", Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = preferences.edit();
-                                editor.clear();
-                                editor.commit();
-                                /*SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(getContext());
-                                db.onUpgrade(dbs, "products");*/
+                                //Clear shared preferences on loggedOut
+                                SharedPreferences preferencesUserData = getContext().getSharedPreferences("UserData", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editorUserData = preferencesUserData.edit();
+                                editorUserData.clear();
+                                editorUserData.commit();
+                                SharedPreferences preferencesFirstTimeFlag = getContext().getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editorFirstTimeFlag = preferencesFirstTimeFlag.edit();
+                                editorFirstTimeFlag.clear();
+                                editorFirstTimeFlag.commit();
+
+                                //Delete SQLite tables
+                                SQLiteDatabaseHandler db =new SQLiteDatabaseHandler(getContext());
+                                db.deleteAllTables();
                                 startActivity(new Intent(getActivity(), LoginActivity.class));
                                 getActivity().finish();
                             }

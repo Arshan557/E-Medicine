@@ -2,6 +2,7 @@ package arshan.com.e_medicine;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -24,8 +25,9 @@ public class PurchaseActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private int[] tabIcons = {
-            R.drawable.settled,
-            R.drawable.unsettled
+            R.drawable.outstanding,
+            R.drawable.settled2,
+            R.drawable.unsettled2
     };
 
     @Override
@@ -52,10 +54,12 @@ public class PurchaseActivity extends AppCompatActivity {
     private void setupTabIcons() {
         tabLayout.getTabAt(0).setIcon(tabIcons[0]);
         tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
     }
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new OutstandingBill(), "Outstanding");
         adapter.addFragment(new PurchaseSettled(), "Settled");
         adapter.addFragment(new PurchaseUnsettled(), "Unsettled");
         viewPager.setAdapter(adapter);
@@ -97,8 +101,18 @@ public class PurchaseActivity extends AppCompatActivity {
         MenuItem search = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(search);
         MenuItem refresh = menu.findItem(R.id.action_refresh);
+        MenuItem addBill = menu.findItem(R.id.action_addbill);
         searchView.setSearchableInfo( searchManager.getSearchableInfo(getComponentName()));
         searchView.setQueryHint(getResources().getString(R.string.search_hint));
+
+        addBill.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                Intent i = new Intent(PurchaseActivity.this, AddPurchaseActivity.class);
+                startActivity(i);
+                return false;
+            }
+        });
 
         /*searchView.setOnQueryTextListener(
                 new SearchView.OnQueryTextListener(){

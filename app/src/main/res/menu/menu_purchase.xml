@@ -4,16 +4,22 @@
     tools:context="com.example.arshan.materialdesign.SubActivity">
 
     <item
+        android:id="@+id/action_search"
+        android:icon="@mipmap/search"
+        android:title="Search"
+        app:showAsAction="always|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView" />
+
+    <item
         android:id="@+id/action_refresh"
         android:icon="@drawable/refresh"
-        android:title="action_refresh"
+        android:title="Refresh"
         app:showAsAction="always|collapseActionView" />
 
     <item
-        android:id="@+id/action_search"
-        android:icon="@mipmap/search"
-        android:title="action_search"
-        app:showAsAction="always|collapseActionView"
-        app:actionViewClass="android.support.v7.widget.SearchView" />
+        android:id="@+id/action_addbill"
+        android:icon="@drawable/addbill"
+        android:title="Add Bill"
+        app:showAsAction="always|collapseActionView" />
 
 </menu>

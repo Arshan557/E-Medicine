@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -35,11 +35,13 @@ public class PurchaseSettledAdapter extends RecyclerView.Adapter<PurchaseSettled
 
     public class PurchaseSettledViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView invoice;
+        LinearLayout linearLayout;
         Typeface cat_names_font = Typeface.createFromAsset(context.getAssets(), "categorynamefont.otf");
 
         public PurchaseSettledViewHolder(View view) {
             super(view);
             invoice = (TextView) view.findViewById(R.id.settled_invoice);
+            linearLayout = (LinearLayout) view.findViewById(R.id.mainLinear);
 
             invoice.setTypeface(cat_names_font);
 
@@ -129,10 +131,14 @@ public class PurchaseSettledAdapter extends RecyclerView.Adapter<PurchaseSettled
 
     @Override
     public void onBindViewHolder(PurchaseSettledViewHolder holder, int position) {
-        final PurchasesPojo settledPurchase = settledPurchaseList.get(position);
-        Log.d("size",""+settledPurchase.getInvoiceNumber());
-        this.holder = holder;
-        holder.invoice.setText(settledPurchase.getInvoiceNumber());
+        final PurchasesPojo purchasesPojo = settledPurchaseList.get(position);
+        //Log.d("size",""+purchasesPojo.getInvoiceNumber());
+        holder.linearLayout.setVisibility(View.GONE);
+        if ("1".equalsIgnoreCase(purchasesPojo.getIsSettled())) {
+            holder.linearLayout.setVisibility(View.VISIBLE);
+            this.holder = holder;
+            holder.invoice.setText(purchasesPojo.getInvoiceNumber());
+        }
     }
 
     @Override

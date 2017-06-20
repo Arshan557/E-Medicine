@@ -6,7 +6,7 @@
     <item
         android:id="@+id/action_search"
         android:icon="@mipmap/search"
-        android:title="action_search"
+        android:title="Search"
         app:showAsAction="always|collapseActionView"
         app:actionViewClass="android.support.v7.widget.SearchView" />
 

@@ -65,6 +65,17 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 
+	void deleteAllTables() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCTS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_DISTRIBUTORS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIES);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PURCHASES);
+
+		// Create tables again
+		onCreate(db);
+	}
+
 	/**
 	 * All CRUD(Create, Read, Update, Delete) Operations
 	 */
