@@ -5,15 +5,46 @@
     android:id="@+id/mainLinear"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Invoice"
-        android:textColor="@color/black"
-        android:padding="5dp"
-        android:textSize="25dp"
-        android:id="@+id/settled_invoice"/>
+        android:padding="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Invoice"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:id="@+id/settled_invoice"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/rupee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="₹"
+            android:textColor="@color/green"
+            android:textStyle="normal"
+            android:textSize="20dp"
+            android:layout_toLeftOf="@+id/settled_amount"
+            android:layout_toStartOf="@+id/settled_amount"
+            android:layout_alignBottom="@+id/settled_amount" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="amount"
+            android:paddingRight="5dp"
+            android:textColor="@color/green"
+            android:layout_alignParentRight="true"
+            android:textSize="25dp"
+            android:id="@+id/settled_amount"/>
+
+    </RelativeLayout>
     <View
         android:layout_width="match_parent"
         android:background="@color/iron"

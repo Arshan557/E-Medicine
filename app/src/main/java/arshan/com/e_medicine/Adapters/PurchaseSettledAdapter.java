@@ -34,19 +34,21 @@ public class PurchaseSettledAdapter extends RecyclerView.Adapter<PurchaseSettled
     private static final String TAG = "PurchaseSettledAdapter";
 
     public class PurchaseSettledViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public TextView invoice;
+        public TextView invoice, amount;
         LinearLayout linearLayout;
         Typeface cat_names_font = Typeface.createFromAsset(context.getAssets(), "categorynamefont.otf");
 
         public PurchaseSettledViewHolder(View view) {
             super(view);
             invoice = (TextView) view.findViewById(R.id.settled_invoice);
+            amount = (TextView) view.findViewById(R.id.settled_amount);
             linearLayout = (LinearLayout) view.findViewById(R.id.mainLinear);
 
             invoice.setTypeface(cat_names_font);
 
             view.setOnClickListener(this);
             invoice.setOnClickListener(this);
+            amount.setOnClickListener(this);
         }
 
         @Override
@@ -134,10 +136,11 @@ public class PurchaseSettledAdapter extends RecyclerView.Adapter<PurchaseSettled
         final PurchasesPojo purchasesPojo = settledPurchaseList.get(position);
         //Log.d("size",""+purchasesPojo.getInvoiceNumber());
         holder.linearLayout.setVisibility(View.GONE);
-        if ("1".equalsIgnoreCase(purchasesPojo.getIsSettled())) {
+        if ("0".equalsIgnoreCase(purchasesPojo.getIsSettled())) {
             holder.linearLayout.setVisibility(View.VISIBLE);
             this.holder = holder;
             holder.invoice.setText(purchasesPojo.getInvoiceNumber());
+            holder.amount.setText(purchasesPojo.getAmount());
         }
     }
 

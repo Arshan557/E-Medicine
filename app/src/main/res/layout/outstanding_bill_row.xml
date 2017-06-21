@@ -2,17 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:id="@+id/mainLinear"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Invoice"
-        android:textColor="@color/black"
-        android:padding="5dp"
-        android:textSize="25dp"
-        android:id="@+id/settled_invoice"/>
+        android:padding="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Distributor"
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            android:id="@+id/outstanding_distributor"
+            android:layout_marginLeft="43dp"
+            android:layout_marginStart="43dp" />
+
+        <TextView
+            android:id="@+id/rupee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="₹"
+            android:textColor="@color/red"
+            android:textStyle="normal"
+            android:textSize="20dp"
+            android:layout_toStartOf="@+id/outstanding_amount"
+            android:layout_alignBottom="@+id/outstanding_amount"
+            android:layout_toLeftOf="@+id/outstanding_amount" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="amount"
+            android:paddingRight="5dp"
+            android:textColor="@color/red"
+            android:layout_alignParentRight="true"
+            android:textSize="25dp"
+            android:id="@+id/outstanding_amount"/>
+
+    </RelativeLayout>
     <View
         android:layout_width="match_parent"
         android:background="@color/iron"

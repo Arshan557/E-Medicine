@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,13 +32,16 @@ public class PurchaseUnsettledAdapter extends RecyclerView.Adapter<PurchaseUnset
     private static final String TAG = "PurchaseUnsettledAdapter";
 
     public class PurchaseUnSettledViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public TextView invoice;
+        public TextView invoice, amount;
+        public CheckBox checkBox;
         LinearLayout linearLayout;
         Typeface cat_names_font = Typeface.createFromAsset(context.getAssets(), "categorynamefont.otf");
 
         public PurchaseUnSettledViewHolder(View view) {
             super(view);
             invoice = (TextView) view.findViewById(R.id.unsettled_invoice);
+            amount = (TextView) view.findViewById(R.id.unsettled_amount);
+            checkBox = (CheckBox) view.findViewById(R.id.unsettled_checkbox);
             linearLayout = (LinearLayout) view.findViewById(R.id.mainLinear);
 
             invoice.setTypeface(cat_names_font);
@@ -49,6 +53,8 @@ public class PurchaseUnsettledAdapter extends RecyclerView.Adapter<PurchaseUnset
 
             view.setOnClickListener(this);
             invoice.setOnClickListener(this);
+            amount.setOnClickListener(this);
+            checkBox.setOnClickListener(this);
         }
 
         @Override
@@ -139,6 +145,7 @@ public class PurchaseUnsettledAdapter extends RecyclerView.Adapter<PurchaseUnset
             holder.linearLayout.setVisibility(View.VISIBLE);
             this.holder = holder;
             holder.invoice.setText(purchasesPojo.getInvoiceNumber());
+            holder.amount.setText(purchasesPojo.getAmount());
         }
     }
 

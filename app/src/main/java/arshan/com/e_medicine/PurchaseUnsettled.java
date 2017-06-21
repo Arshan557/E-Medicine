@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -35,6 +36,7 @@ import arshan.com.e_medicine.Network.HttpHandler;
 public class PurchaseUnsettled extends Fragment {
     private PurchaseUnsettledAdapter purchaseUnsettledAdapter;
     private RecyclerView recyclerView;
+    private Button btnSettle;
     private List<PurchasesPojo> purchasesPojoList = new ArrayList<>();
     private String TAG = PurchaseUnsettled.class.getSimpleName(), apikey="";
     private ProgressDialog pDialog;
@@ -48,6 +50,7 @@ public class PurchaseUnsettled extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.purchase_unsettled, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.unsettled_recycle);
+        btnSettle = (Button) view.findViewById(R.id.btn_settle);
 
         SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(getActivity());
 
@@ -57,7 +60,13 @@ public class PurchaseUnsettled extends Fragment {
             apikey = sharedPreferences.getString("apikey", DEFAULT);
         }
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.unsettled_recycle);
+        btnSettle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getContext(), PurchaseSettledUpActivity.class);
+                getContext().startActivity(i);
+            }
+        });
 
         //Recycle view starts
         purchaseUnsettledAdapter = new PurchaseUnsettledAdapter(getContext(), purchasesPojoList);

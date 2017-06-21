@@ -22,10 +22,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import arshan.com.e_medicine.Adapters.OutstandingBillAdapter;
 import arshan.com.e_medicine.Constants.Constants;
+import arshan.com.e_medicine.Models.DistNameAmountMapPojo;
+import arshan.com.e_medicine.Models.PurchaseDistributorPojo;
 import arshan.com.e_medicine.Models.PurchasesPojo;
 import arshan.com.e_medicine.Network.HttpHandler;
 
@@ -36,6 +41,9 @@ public class OutstandingBill extends Fragment {
     private OutstandingBillAdapter outstandingBillAdapter;
     private RecyclerView recyclerView;
     private List<PurchasesPojo> purchasesPojoList = new ArrayList<>();
+    private Map<String, String> distNameAmountMap = new HashMap<>();
+    private List<DistNameAmountMapPojo> distNameAmountMapPojosList = new ArrayList<>();
+    private List<PurchaseDistributorPojo> purchaseDistributorPojo = new ArrayList<>();
     private String TAG = PurchaseSettled.class.getSimpleName(), apikey="";
     private ProgressDialog pDialog;
     public static final String DEFAULT = "";
@@ -56,25 +64,6 @@ public class OutstandingBill extends Fragment {
         if (null != sharedPreferences) {
             apikey = sharedPreferences.getString("apikey", DEFAULT);
         }
-
-        //Recycle view starts
-        outstandingBillAdapter = new OutstandingBillAdapter(getContext(), purchasesPojoList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(outstandingBillAdapter);
-
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout_outstanding);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                String finalUrl = Constants.PURCHASE_LIST_URL+"?apikey="+apikey;
-                Log.d("final url",finalUrl);
-                purchasesPojoList.clear();
-                //Make call to Async
-                new getOutstandingBills().execute(finalUrl);
-            }
-        });
 
         String firstTimeFlag;
         spGetFirstTime = getContext().getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
@@ -97,7 +86,7 @@ public class OutstandingBill extends Fragment {
             List<PurchasesPojo> purchases = db.getAllPurchases();
             purchasesPojoList.clear();
             for (int i = 0; i <= purchases.size()-1; i++) {
-                String log = "Bankname: "+purchases.get(i).getBankName()+" ,Invoice: " + purchases.get(i).getInvoiceNumber();
+                String log = "getDistributorId: "+purchases.get(i).getDistributorId()+" ,getAmount: " + purchases.get(i).getAmount();
                 Log.d("purchases: ", log);
                 try {
                     PurchasesPojo purchasesPojo = new PurchasesPojo(purchases.get(i).getId(), purchases.get(i).getCompanyid(), purchases.get(i).getBillDate(), purchases.get(i).getInvoiceNumber(),
@@ -109,6 +98,50 @@ public class OutstandingBill extends Fragment {
                 }
             }
         }
+        distNameAmountMap.clear();
+        for (PurchasesPojo purchasesPojo : purchasesPojoList) {
+            float amt = 0;
+            if (!distNameAmountMap.containsKey(purchasesPojo.getDistributorId())) {
+                distNameAmountMap.put(purchasesPojo.getDistributorId(), purchasesPojo.getAmount());
+            } else {
+                amt = Float.parseFloat(distNameAmountMap.get(purchasesPojo.getDistributorId()));
+                amt = amt + Float.parseFloat(purchasesPojo.getAmount());
+                distNameAmountMap.remove(purchasesPojo.getDistributorId());
+                distNameAmountMap.put(purchasesPojo.getDistributorId(), ""+amt);
+            }
+        }
+        distNameAmountMapPojosList.clear();
+        Iterator it = distNameAmountMap.entrySet().iterator();
+        Map.Entry pair = null;
+        String dName="", dAmt="";
+        while (it.hasNext()) {
+            pair = (Map.Entry)it.next();
+            dName = ""+pair.getKey();
+            dAmt = ""+pair.getValue();
+            Log.d("distNameAmountMap",""+dName + " = " + dAmt);
+            DistNameAmountMapPojo distNameAmountMapPojo = new DistNameAmountMapPojo(dAmt, dName);
+            distNameAmountMapPojosList.add(distNameAmountMapPojo);
+
+        }
+        Log.d("distNameAmtMapPojosList",""+distNameAmountMapPojosList.size());
+        //Recycle view starts
+        outstandingBillAdapter = new OutstandingBillAdapter(getContext(), distNameAmountMapPojosList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(outstandingBillAdapter);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout_outstanding);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                String finalUrl = Constants.PURCHASE_LIST_URL+"?apikey="+apikey;
+                Log.d("final url",finalUrl);
+                purchasesPojoList.clear();
+                //Make call to Async
+                new getOutstandingBills().execute(finalUrl);
+            }
+        });
 
         return view;
     }

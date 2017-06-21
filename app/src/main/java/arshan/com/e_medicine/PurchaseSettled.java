@@ -26,8 +26,10 @@ import java.util.List;
 
 import arshan.com.e_medicine.Adapters.PurchaseSettledAdapter;
 import arshan.com.e_medicine.Constants.Constants;
+import arshan.com.e_medicine.Models.PurchaseDistributorPojo;
 import arshan.com.e_medicine.Models.PurchasesPojo;
 import arshan.com.e_medicine.Network.HttpHandler;
+import arshan.com.e_medicine.Views.CustomProgressDialog;
 
 /**
  * Created by Arshan on 19-Jun-2017.
@@ -36,11 +38,13 @@ public class PurchaseSettled extends Fragment {
     private PurchaseSettledAdapter purchaseSettledAdapter;
     private RecyclerView recyclerView;
     private List<PurchasesPojo> purchasesPojoList = new ArrayList<>();
+    private List<PurchaseDistributorPojo> purchaseDistributorPojoList = new ArrayList<>();
     private String TAG = PurchaseSettled.class.getSimpleName(), apikey="";
     private ProgressDialog pDialog;
     public static final String DEFAULT = "";
     SharedPreferences spGetFirstTime;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private CustomProgressDialog customProgressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,6 +80,11 @@ public class PurchaseSettled extends Fragment {
             }
         });
 
+        //Get active distributors
+        String finalUrl = Constants.PURCHASE_PRE_ADD_URL+"?&apikey="+apikey;
+        Log.d("final url",finalUrl);
+        new getActiveDistributors().execute(finalUrl);
+
         String firstTimeFlag;
         spGetFirstTime = getContext().getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
         firstTimeFlag = spGetFirstTime.getString("PurchaseFirstTimeFlag", "");
@@ -86,8 +95,8 @@ public class PurchaseSettled extends Fragment {
             editor.putString("PurchaseFirstTimeFlag", "N");
             editor.commit();
 
-            String finalUrl = Constants.PURCHASE_LIST_URL+"?apikey="+apikey;
-            Log.d("final url",finalUrl);
+            String finalDistUrl = Constants.PURCHASE_LIST_URL+"?apikey="+apikey;
+            Log.d("final url",finalDistUrl);
             purchasesPojoList.clear();
             //Make call to Async
             new getSettledPurchases().execute(finalUrl);
@@ -111,6 +120,98 @@ public class PurchaseSettled extends Fragment {
         }
 
         return view;
+    }
+
+    private class getActiveDistributors extends AsyncTask<String, String, String> {
+        String status,msg;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // Showing progress dialog
+            customProgressDialog = CustomProgressDialog.show(getContext());
+        }
+        @Override
+        protected String doInBackground(String... f_url) {
+            HttpHandler sh = new HttpHandler();
+
+            String cookie="";
+            /*SharedPreferences sharedPreferencesCookie = getSharedPreferences("CookieData", Context.MODE_PRIVATE);
+            cookie = sharedPreferencesCookie.getString("cookieString", "");
+            if (null == cookie || cookie.equalsIgnoreCase("")) {
+                Toast.makeText(getApplicationContext(),"Cookie empty", Toast.LENGTH_LONG).show();
+            }*/
+            // Making a request to url and getting response
+            String jsonStr = sh.makeServiceCall(f_url[0],cookie);
+
+            Log.e(TAG, "Response from url: " + jsonStr);
+
+            if (jsonStr != null) {
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    status = jsonObj.getString("status");
+                    if ("ok".equalsIgnoreCase(status)) {
+                        // Getting JSON Array node
+                        JSONArray category = jsonObj.getJSONArray("distributors");
+                        // looping through All News
+                        for (int i = 0; i < category.length(); i++) {
+                            JSONObject c = category.getJSONObject(i);
+
+                            String id = c.getString("id");
+                            String name = c.getString("name");
+
+                            PurchaseDistributorPojo purchaseDistributorPojo = new PurchaseDistributorPojo(id, name);
+                            purchaseDistributorPojoList.add(purchaseDistributorPojo);
+
+                        }
+                    } else {
+                        msg = jsonObj.getString("msg");
+                    }
+                    Log.d("status",status);
+                } catch (final JSONException e) {
+                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
+                            Intent i = new Intent(getContext(), Home.class);
+                            startActivity(i);
+                            getActivity().finish();
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.e(TAG, "Exception " + e.getMessage());
+                    Toast.makeText(getContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(getContext(), Home.class);
+                    startActivity(i);
+                    getActivity().finish();
+                }
+            } else {
+                Log.e(TAG, "Couldn't get json from server.");
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(),
+                                "Something went wrong. Please try again",
+                                Toast.LENGTH_LONG)
+                                .show();
+                        Intent i = new Intent(getContext(), Home.class);
+                        startActivity(i);
+                        getActivity().finish();
+                    }
+                });
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            // Dismiss the progress dialog
+            customProgressDialog.cancel();
+            if (null != msg) {
+                Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     private class getSettledPurchases extends AsyncTask<String, String, String> {

@@ -1,10 +1,9 @@
 package arshan.com.e_medicine.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,41 +13,45 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import arshan.com.e_medicine.Models.DistNameAmountMapPojo;
 import arshan.com.e_medicine.Models.PurchasesPojo;
 import arshan.com.e_medicine.R;
-import arshan.com.e_medicine.ViewSettledPurchaseActivity;
 import arshan.com.e_medicine.Views.CustomProgressDialog;
 
 /**
  * Created by Arshan on 19-Jun-2017.
  */
 public class OutstandingBillAdapter extends RecyclerView.Adapter<OutstandingBillAdapter.OutstandingBillViewHolder> {
-    private List<PurchasesPojo> outstandingBillList = new ArrayList<>();;
+    private List<PurchasesPojo> outstandingBillList = new ArrayList<>();
     private OutstandingBillClickListener outstandingBillClickListener;
     private CustomProgressDialog customProgressDialog;
     PurchasesPojo purchasesPojo;
+    DistNameAmountMapPojo distNameAmountMapPojo;
     private Context context;
+    private List<DistNameAmountMapPojo> distNameAmountMapPojosList = new ArrayList<>();
     OutstandingBillViewHolder holder;
 
     private static final String TAG = "OutstandingBillAdapter";
 
     public class OutstandingBillViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public TextView invoice;
+        public TextView distributor, amount;
         Typeface cat_names_font = Typeface.createFromAsset(context.getAssets(), "categorynamefont.otf");
 
         public OutstandingBillViewHolder(View view) {
             super(view);
-            invoice = (TextView) view.findViewById(R.id.settled_invoice);
+            distributor = (TextView) view.findViewById(R.id.outstanding_distributor);
+            amount = (TextView) view.findViewById(R.id.outstanding_amount);
 
-            invoice.setTypeface(cat_names_font);
+            distributor.setTypeface(cat_names_font);
 
             view.setOnClickListener(this);
-            invoice.setOnClickListener(this);
+            distributor.setOnClickListener(this);
+            amount.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            PurchasesPojo purchasesPojo = outstandingBillList.get(getPosition());
+            /*PurchasesPojo purchasesPojo = outstandingBillList.get(getPosition());
             Intent i = new Intent(context, ViewSettledPurchaseActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString("id", purchasesPojo.getId());
@@ -68,7 +71,7 @@ public class OutstandingBillAdapter extends RecyclerView.Adapter<OutstandingBill
             bundle.putString("isSettled", purchasesPojo.getIsSettled());
             i.putExtras(bundle);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(i);
+            context.startActivity(i);*/
 
             if (outstandingBillClickListener != null) {
                 outstandingBillClickListener.itemClicked(v, getPosition());
@@ -76,9 +79,10 @@ public class OutstandingBillAdapter extends RecyclerView.Adapter<OutstandingBill
         }
     }
 
-    public OutstandingBillAdapter(Context context, List<PurchasesPojo> outstandingBillList) {
+    public OutstandingBillAdapter(Context context, List<DistNameAmountMapPojo> distNameAmountMapPojosList) {
         this.context=context;
         this.outstandingBillList = outstandingBillList;
+        this.distNameAmountMapPojosList = distNameAmountMapPojosList;
     }
 
     /**
@@ -120,18 +124,21 @@ public class OutstandingBillAdapter extends RecyclerView.Adapter<OutstandingBill
 
     @Override
     public OutstandingBillViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.outstanding_bill_row, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.outstanding_bill_row, parent, false);
 
         return new OutstandingBillViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(OutstandingBillViewHolder holder, int position) {
-        final PurchasesPojo purchasesPojo = outstandingBillList.get(position);
-        //Log.d("size",""+purchasesPojo.getInvoiceNumber());
+        //final PurchasesPojo purchasesPojo = outstandingBillList.get(position);
+        distNameAmountMapPojo = distNameAmountMapPojosList.get(position);
+        Log.d("size",""+distNameAmountMapPojo.getAmount());
+
         this.holder = holder;
-        holder.invoice.setText(purchasesPojo.getInvoiceNumber());
+        holder.distributor.setText(distNameAmountMapPojo.getName());
+        holder.amount.setText(distNameAmountMapPojo.getAmount());
+
     }
 
     @Override
