@@ -44,4 +44,7 @@ public class Constants {
         public static final String PURCHASE_LIST_URL = "http://myinvent.000webhostapp.com/mobile/PurchaseList";
         public static final String PURCHASE_PRE_ADD_URL = "http://myinvent.000webhostapp.com/mobile/PurchasePreAdd";
         public static final String PURCHASE_ADD_URL = "http://myinvent.000webhostapp.com/mobile/PurchaseAdd";
+        public static final String USERS_LIST_URL = "https://myinvent.000webhostapp.com/mobile/UsersList";
+        public static final String USERS_ADD_URL = "http://health.ultimatefreehost.in/E-H/production/mobile/UserAdd";
+
 }

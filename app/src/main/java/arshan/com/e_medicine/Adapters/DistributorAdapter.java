@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -52,14 +51,14 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
         public CircleImageView distributorPic;
         public Switch  simpleSwitch;
         private String apikey;
-        com.shamanland.fab.FloatingActionButton fabCallOutSide;
+        //com.shamanland.fab.FloatingActionButton fabCallOutSide;
 
         public DistributorViewHolder(View view) {
             super(view);
             distributorName = (TextView) view.findViewById(R.id.distributorName);
             distributorPic = (CircleImageView) view.findViewById(R.id.distributorPic);
             simpleSwitch = (Switch) view.findViewById(R.id.activeSwitch);
-            fabCallOutSide = (com.shamanland.fab.FloatingActionButton) view.findViewById(R.id.dist_call_outside);
+            //fabCallOutSide = (com.shamanland.fab.FloatingActionButton) view.findViewById(R.id.dist_call_outside);
 
             // Getting data from Shared preferences
             SharedPreferences sharedPreferences = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
@@ -114,7 +113,7 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
                 }
             });
 
-            fabCallOutSide.setOnClickListener(new View.OnClickListener() {
+            /*fabCallOutSide.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     final View v = view;
@@ -143,7 +142,7 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
                             });
                     builder.show();
                 }
-            });
+            });*/
         }
 
         @Override

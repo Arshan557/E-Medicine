@@ -136,7 +136,7 @@ public class PurchaseSettledAdapter extends RecyclerView.Adapter<PurchaseSettled
         final PurchasesPojo purchasesPojo = settledPurchaseList.get(position);
         //Log.d("size",""+purchasesPojo.getInvoiceNumber());
         holder.linearLayout.setVisibility(View.GONE);
-        if ("0".equalsIgnoreCase(purchasesPojo.getIsSettled())) {
+        if ("1".equalsIgnoreCase(purchasesPojo.getIsSettled())) {
             holder.linearLayout.setVisibility(View.VISIBLE);
             this.holder = holder;
             holder.invoice.setText(purchasesPojo.getInvoiceNumber());

@@ -120,30 +120,24 @@ public class DistributorsActivity extends AppCompatActivity {
             //Make call to Async
             new getDistributors().execute(finalUrl);
         } else {
-            /*try {
-                String picURL = "http://www.provo2.com/health-fitness/wp-content/uploads/2010/11/default-avatar.jpg";
-                URL url = new URL(picURL);
-                bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            } catch (Exception e) {
-                Log.d("Exception", "" + e.getMessage());
-            }*/
-
             // Reading all distributors
             Log.d("Reading: ", "Reading all distributors..");
             List<DistributorsSQLite> distributors = db.getAllDistributors();
+            distributorPojoList.clear();
+            if (null != distributors) {
+                for (int i = 0; i <= distributors.size() - 1; i++) {
+                    String log = "Id: " + distributors.get(i).getId() + " ,companyid: " + distributors.get(i).getCompanyid();
+                    Log.d("product: ", log);
+                    try {
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(distributors.get(i).getImageByteArray(), 0, distributors.get(i).getImageByteArray().length);
 
-            for (int i = 0; i <= distributors.size()-1; i++) {
-                String log = "Id: "+distributors.get(i).getId()+" ,companyid: " + distributors.get(i).getCompanyid();
-                Log.d("product: ", log);
-                try {
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(distributors.get(i).getImageByteArray() , 0, distributors.get(i).getImageByteArray().length);
-
-                    DistributorPojo distributorPojo = new DistributorPojo(distributors.get(i).getName(), bitmap, distributors.get(i).getIsActive(),
-                            distributors.get(i).getId(), distributors.get(i).getCompanyid(), distributors.get(i).getEmail(), distributors.get(i).getUname(), distributors.get(i).getPassword(),
-                            distributors.get(i).getMobile(), distributors.get(i).getPhone(), distributors.get(i).getCreatedBy(), distributors.get(i).getModifiedBy(), distributors.get(i).getCreatedOn(), distributors.get(i).getModifiedOn(), distributors.get(i).getPicURL());
-                    distributorPojoList.add(distributorPojo);
-                } catch (Exception e) {
-                    Log.d("Exception", ""+e.getMessage());
+                        DistributorPojo distributorPojo = new DistributorPojo(distributors.get(i).getName(), bitmap, distributors.get(i).getIsActive(),
+                                distributors.get(i).getId(), distributors.get(i).getCompanyid(), distributors.get(i).getEmail(), distributors.get(i).getUname(), distributors.get(i).getPassword(),
+                                distributors.get(i).getMobile(), distributors.get(i).getPhone(), distributors.get(i).getCreatedBy(), distributors.get(i).getModifiedBy(), distributors.get(i).getCreatedOn(), distributors.get(i).getModifiedOn(), distributors.get(i).getPicURL());
+                        distributorPojoList.add(distributorPojo);
+                    } catch (Exception e) {
+                        Log.d("Exception", "" + e.getMessage());
+                    }
                 }
             }
         }

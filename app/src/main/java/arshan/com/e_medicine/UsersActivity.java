@@ -34,10 +34,10 @@ public class UsersActivity extends AppCompatActivity {
         //upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = (ViewPager) findViewById(R.id.usersViewpager);
         setupViewPager(viewPager);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout = (TabLayout) findViewById(R.id.usersTabs);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
     }

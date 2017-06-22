@@ -41,7 +41,7 @@
         android:layout_alignParentRight="true"
         android:id="@+id/activeSwitch" />
 
-    <com.shamanland.fab.FloatingActionButton
+    <!--<com.shamanland.fab.FloatingActionButton
         android:id="@+id/dist_call_outside"
         android:layout_width="30dp"
         android:layout_height="30dp"
@@ -50,6 +50,6 @@
         android:src="@drawable/phonesmall"
         android:layout_alignParentRight="true"
         app:floatingActionButtonColor="#00c853"
-        app:floatingActionButtonSize="normal" />
+        app:floatingActionButtonSize="normal" />-->
 
 </RelativeLayout>

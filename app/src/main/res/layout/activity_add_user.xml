@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/addUserCoordinate"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="arshan.com.e_medicine.AddUserActivity">
+
+        <include
+            android:id="@+id/app_bar"
+            layout="@layout/app_bar" />
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/app_bar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
+                android:paddingTop="26dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/userPic"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="4dp"
+                    android:paddingBottom="8dp"
+                    android:src="@drawable/defaultpic"
+                    app:border_color="@color/white"
+                    app:border_width="1dp" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/shape">
+
+                    <EditText
+                        android:id="@+id/userName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Name"
+                        android:textColor="@color/aluminum" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/shape">
+
+                    <EditText
+                        android:id="@+id/userUname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="User name"
+                        android:textColor="@color/aluminum" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/shape">
+
+                    <EditText
+                        android:id="@+id/userEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="E-mail"
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/aluminum" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/shape">
+
+                    <EditText
+                        android:id="@+id/userPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Password"
+                        android:inputType="textPassword"
+                        android:textColor="@color/aluminum" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/shape">
+
+                    <EditText
+                        android:id="@+id/userMobile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Mobile"
+                        android:inputType="number"
+                        android:textColor="@color/aluminum" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/shape">
+
+                    <EditText
+                        android:id="@+id/userPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Phone"
+                        android:inputType="number"
+                        android:textColor="@color/aluminum" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    android:id="@+id/justView"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp" />
+
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+    <com.shamanland.fab.FloatingActionButton
+        android:id="@+id/fabAddUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/profilesave"
+        app:floatingActionButtonColor="@color/bg_screen3"
+        app:floatingActionButtonSize="normal" />
+
+</android.support.design.widget.CoordinatorLayout>

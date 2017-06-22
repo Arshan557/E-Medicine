@@ -107,16 +107,18 @@ public class PurchaseUnsettled extends Fragment {
             Log.d("Reading: ", "Reading all purchases..");
             List<PurchasesPojo> purchases = db.getAllPurchases();
             purchasesPojoList.clear();
-            for (int i = 0; i <= purchases.size()-1; i++) {
-                String log = "Bankname: "+purchases.get(i).getBankName()+" ,Invoice: " + purchases.get(i).getInvoiceNumber();
-                Log.d("purchases: ", log);
-                try {
-                    PurchasesPojo purchasesPojo = new PurchasesPojo(purchases.get(i).getId(), purchases.get(i).getCompanyid(), purchases.get(i).getBillDate(), purchases.get(i).getInvoiceNumber(),
-                            purchases.get(i).getDistributorId(), purchases.get(i).getAmount(), purchases.get(i).getPaymentDate(), purchases.get(i).getPaymentMode(), purchases.get(i).getChequeNumber(),
-                            purchases.get(i).getBankName(), purchases.get(i).getCreatedBy(), purchases.get(i).getCreatedOn(), purchases.get(i).getModifiedBy(), purchases.get(i).getModifiedOn(), purchases.get(i).getIsSettled());
-                    purchasesPojoList.add(purchasesPojo);
-                } catch (Exception e) {
-                    Log.d("Exception", ""+e.getMessage());
+            if (null != purchases) {
+                for (int i = 0; i <= purchases.size() - 1; i++) {
+                    String log = "Bankname: " + purchases.get(i).getBankName() + " ,Invoice: " + purchases.get(i).getInvoiceNumber();
+                    Log.d("purchases: ", log);
+                    try {
+                        PurchasesPojo purchasesPojo = new PurchasesPojo(purchases.get(i).getId(), purchases.get(i).getCompanyid(), purchases.get(i).getBillDate(), purchases.get(i).getInvoiceNumber(),
+                                purchases.get(i).getDistributorId(), purchases.get(i).getAmount(), purchases.get(i).getPaymentDate(), purchases.get(i).getPaymentMode(), purchases.get(i).getChequeNumber(),
+                                purchases.get(i).getBankName(), purchases.get(i).getCreatedBy(), purchases.get(i).getCreatedOn(), purchases.get(i).getModifiedBy(), purchases.get(i).getModifiedOn(), purchases.get(i).getIsSettled());
+                        purchasesPojoList.add(purchasesPojo);
+                    } catch (Exception e) {
+                        Log.d("Exception", "" + e.getMessage());
+                    }
                 }
             }
         }

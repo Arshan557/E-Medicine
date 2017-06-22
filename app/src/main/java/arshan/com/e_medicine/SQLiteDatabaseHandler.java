@@ -16,6 +16,7 @@ import arshan.com.e_medicine.Models.CategoriesSQLite;
 import arshan.com.e_medicine.Models.DistributorsSQLite;
 import arshan.com.e_medicine.Models.ProductsSQLite;
 import arshan.com.e_medicine.Models.PurchasesPojo;
+import arshan.com.e_medicine.Models.UsersPojo;
 
 public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 
@@ -34,6 +35,8 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 
 	private static final String TABLE_PURCHASES = "purchases";
 
+	private static final String TABLE_USERS = "users";
+
 	public SQLiteDatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
@@ -45,11 +48,13 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		String CREATE_DISTRIBUTORS_TABLE = "CREATE TABLE "+ TABLE_DISTRIBUTORS +"(id TEXT PRIMARY KEY, companyid TEXT, name TEXT, email TEXT, uname TEXT, password TEXT, mobile TEXT, phone TEXT, isActive TEXT, picURL TEXT, createdBy TEXT, modifiedBy TEXT, createdOn TEXT, modifiedOn TEXT, bmp BLOB)" ;
 		String CREATE_CATEGORIES_TABLE = "CREATE TABLE "+ TABLE_CATEGORIES +"(id TEXT PRIMARY KEY, companyid TEXT, name TEXT, createdBy TEXT, createdOn TEXT, modifiedBy TEXT, modifiedOn TEXT)" ;
 		String CREATE_PURCHASES_TABLE = "CREATE TABLE "+ TABLE_PURCHASES +"(id TEXT PRIMARY KEY, companyid TEXT, BillDate TEXT, InvoiceNumber TEXT, DistributorId TEXT, Amount TEXT, PaymentDate TEXT, PaymentMode TEXT, ChequeNumber TEXT, BankName TEXT, createdBy TEXT, createdOn TEXT, modifiedBy TEXT, modifiedOn TEXT, isSettled TEXT)" ;
+		String CREATE_USERS_TABLE = "CREATE TABLE "+ TABLE_USERS +"(id TEXT PRIMARY KEY, fname TEXT, lname TEXT, uname TEXT, password TEXT, gender TEXT, email TEXT, mobile TEXT, phone TEXT, usertype TEXT, apikey TEXT, addressId TEXT, profilePic TEXT, companyid TEXT, createdBy TEXT, createdOn TEXT, modifiedBy TEXT, modifiedOn TEXT, isActive TEXT, bmp BLOB)" ;
 
 		db.execSQL(CREATE_PRODUCTS_TABLE);
 		db.execSQL(CREATE_DISTRIBUTORS_TABLE);
 		db.execSQL(CREATE_CATEGORIES_TABLE);
 		db.execSQL(CREATE_PURCHASES_TABLE);
+		db.execSQL(CREATE_USERS_TABLE);
 	}
 
 	// Upgrading database
@@ -60,6 +65,7 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_DISTRIBUTORS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIES);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PURCHASES);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
 
 		// Create tables again
 		onCreate(db);
@@ -71,6 +77,7 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_DISTRIBUTORS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIES);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PURCHASES);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
 
 		// Create tables again
 		onCreate(db);
@@ -194,6 +201,44 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 			Log.d("SQLiteException", "" + e.getLocalizedMessage());
 		} catch (Exception e) {
 			Log.d("Exception", "" + e.getLocalizedMessage());
+		}
+	}
+
+	void addUser(UsersPojo usersPojo) {
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put("id", usersPojo.getId());
+		values.put("fname", usersPojo.getFname());
+		values.put("lname", usersPojo.getLname());
+		values.put("uname", usersPojo.getUname());
+		values.put("password", usersPojo.getPassword());
+		values.put("gender", usersPojo.getGender());
+		values.put("email", usersPojo.getEmail());
+		values.put("mobile", usersPojo.getMobile());
+		values.put("phone", usersPojo.getPhone());
+		values.put("usertype", usersPojo.getUsertype());
+		values.put("apikey", usersPojo.getApikey());
+		values.put("addressId", usersPojo.getAddressId());
+		values.put("profilePic", usersPojo.getProfilePic());
+		values.put("companyid", usersPojo.getCompanyid());
+		values.put("createdBy", usersPojo.getCreatedBy());
+		values.put("modifiedBy", usersPojo.getModifiedBy());
+		values.put("createdOn", usersPojo.getCreatedOn());
+		values.put("modifiedOn", usersPojo.getModifiedOn());
+		values.put("isActive", usersPojo.getIsActive());
+		values.put("bmp", usersPojo.getImageByteArray());
+
+		try {
+			// Inserting Row
+			db.insert(TABLE_USERS, null, values);
+			db.close(); // Closing database connection
+		} catch (SQLiteConstraintException e) {
+			Log.d("SQConstraintException", ""+e.getLocalizedMessage());
+		} catch (SQLiteException e) {
+			Log.d("SQLiteException", ""+e.getLocalizedMessage());
+		} catch (Exception e) {
+			Log.d("Exception", ""+e.getLocalizedMessage());
 		}
 	}
 
@@ -348,6 +393,47 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		return purchasesList;
 	}
 
+	// Getting All users
+	public List<UsersPojo> getAllUsers() {
+		List<UsersPojo> usersPojoList = new ArrayList<UsersPojo>();
+		// Select All Query
+		String selectQuery = "SELECT  * FROM " + TABLE_USERS;
+
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+
+		// looping through all rows and adding to list
+		if (cursor.moveToFirst()) {
+			do {
+				UsersPojo user = new UsersPojo();
+				user.setId(cursor.getString(0));
+				user.setFname(cursor.getString(1));
+				user.setLname(cursor.getString(2));
+				user.setUname(cursor.getString(3));
+				user.setPassword(cursor.getString(4));
+				user.setGender(cursor.getString(5));
+				user.setEmail(cursor.getString(6));
+				user.setMobile(cursor.getString(7));
+				user.setPhone(cursor.getString(8));
+				user.setApikey(cursor.getString(9));
+				user.setAddressId(cursor.getString(10));
+				user.setProfilePic(cursor.getString(11));
+				user.setCompanyid(cursor.getString(12));
+				user.setCreatedBy(cursor.getString(13));
+				user.setCreatedOn(cursor.getString(14));
+				user.setModifiedBy(cursor.getString(15));
+				user.setModifiedOn(cursor.getString(16));
+				user.setIsActive(cursor.getString(17));
+				user.setImageByteArray(cursor.getBlob(18));
+
+				// Adding distributor to list
+				usersPojoList.add(user);
+			} while (cursor.moveToNext());
+		}
+		// return distributors list
+		return usersPojoList;
+	}
+
 	// Updating single product
 	/*public int updateProduct(ProductsSQLite product) {
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -393,6 +479,13 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		db.close();
 	}
 
+	// Deleting single user
+	public void deleteUser(UsersPojo usersPojo) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_USERS, "id" + " = ?",
+				new String[] { String.valueOf(usersPojo.getId()) });
+		db.close();
+	}
 
 	// Getting products Count
 	public int getProductsCount() {
@@ -427,6 +520,16 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 	// Getting purchases Count
 	public int getPurchasesCount() {
 		String countQuery = "SELECT  * FROM " + TABLE_PURCHASES;
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(countQuery, null);
+		cursor.close();
+		// return count
+		return cursor.getCount();
+	}
+
+	// Getting distributors Count
+	public int getUsersCount() {
+		String countQuery = "SELECT  * FROM " + TABLE_USERS;
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(countQuery, null);
 		cursor.close();

@@ -118,16 +118,18 @@ public class CategoriesActivity extends AppCompatActivity {
             // Reading all categories
             Log.d("Reading: ", "Reading all categories..");
             List<CategoriesSQLite> categories = db.getAllCategories();
-
-            for (int i = 0; i <= categories.size()-1; i++) {
-                String log = "Id: "+categories.get(i).getId()+" ,name: " + categories.get(i).getName();
-                Log.d("category: ", log);
-                try {
-                    CategoriesPojo categoriesPojo = new CategoriesPojo(categories.get(i).getId(), categories.get(i).getCompanyid(), categories.get(i).getName(), categories.get(i).getCreatedBy(),
-                            categories.get(i).getCreatedOn(), categories.get(i).getModifiedBy(), categories.get(i).getModifiedOn());
-                    categoryPojoList.add(categoriesPojo);
-                } catch (Exception e) {
-                    Log.d("Exception", ""+e.getMessage());
+            if (null != categoryPojoList) {
+                categoryPojoList.clear();
+                for (int i = 0; i <= categories.size() - 1; i++) {
+                    String log = "Id: " + categories.get(i).getId() + " ,name: " + categories.get(i).getName();
+                    Log.d("category: ", log);
+                    try {
+                        CategoriesPojo categoriesPojo = new CategoriesPojo(categories.get(i).getId(), categories.get(i).getCompanyid(), categories.get(i).getName(), categories.get(i).getCreatedBy(),
+                                categories.get(i).getCreatedOn(), categories.get(i).getModifiedBy(), categories.get(i).getModifiedOn());
+                        categoryPojoList.add(categoriesPojo);
+                    } catch (Exception e) {
+                        Log.d("Exception", "" + e.getMessage());
+                    }
                 }
             }
         }

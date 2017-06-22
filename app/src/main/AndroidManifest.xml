@@ -268,7 +268,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="arshan.com.e_medicine.PurchaseActivity" />
         </activity>
-        <activity android:name=".PurchaseSettledUpActivity"
+        <activity
+            android:name=".PurchaseSettledUpActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="Add Purchase"
             android:screenOrientation="portrait"
@@ -276,6 +277,25 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="arshan.com.e_medicine.PurchaseActivity" />
+        </activity>
+        <activity
+            android:name=".EditUserActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="Edit User"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Dark">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="arshan.com.e_medicine.UsersActivity" />
+        </activity>
+        <activity android:name=".AddUserActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="Add User"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Dark">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="arshan.com.e_medicine.UsersActivity" />
         </activity>
     </application>
 
