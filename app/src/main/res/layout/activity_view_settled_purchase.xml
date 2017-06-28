@@ -204,6 +204,7 @@
             android:layout_height="270dp"
             android:layout_gravity="bottom|center"
             android:paddingBottom="20dp"
+            android:id="@+id/paidstamp"
             android:src="@drawable/paidstamp"/>
     </FrameLayout>
 </RelativeLayout>

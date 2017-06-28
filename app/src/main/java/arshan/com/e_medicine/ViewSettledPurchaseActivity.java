@@ -7,14 +7,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ViewSettledPurchaseActivity extends AppCompatActivity {
+public class ViewSettledPurchaseActivity extends AppCompatActivity  implements Animation.AnimationListener {
     private Toolbar toolbar;
     private TextView dName, invoiceNumText, invoiceNum, billDateText, billDate, amountText, amount,
     paymentModeText, paymentMode, chequeNumText, chequeNum, paymentDateText, paymentDate, bankText, bank;
     private LinearLayout linearCheque, linearBank;
+    private ImageView paidStamp;
+    Animation slideDown, bounce;
     Bundle data = null;
 
     @Override
@@ -34,6 +39,14 @@ public class ViewSettledPurchaseActivity extends AppCompatActivity {
             Log.d("data",data.getString("InvoiceNumber"));
         }
         getSupportActionBar().setTitle(data.getString("InvoiceNumber"));
+
+        // load the animation
+        slideDown = AnimationUtils.loadAnimation(ViewSettledPurchaseActivity.this, R.anim.slide_down);
+        bounce = AnimationUtils.loadAnimation(ViewSettledPurchaseActivity.this, R.anim.bounce);
+
+        // set animation listener
+        slideDown.setAnimationListener(this);
+        bounce.setAnimationListener(this);
 
         Typeface cat_names_font = Typeface.createFromAsset(getAssets(), "categorynamefont.otf");
         Typeface nav_items_font = Typeface.createFromAsset(getAssets(), "nav_items.ttf");
@@ -56,6 +69,7 @@ public class ViewSettledPurchaseActivity extends AppCompatActivity {
         bank = (TextView) findViewById(R.id.bank);
         linearCheque = (LinearLayout) findViewById(R.id.linearChequeNum);
         linearBank = (LinearLayout) findViewById(R.id.linearBank);
+        paidStamp = (ImageView) findViewById(R.id.paidstamp);
 
         dName.setTypeface(nav_subitems_font);
         //invoiceNumText.setTypeface(nav_subitems_font);
@@ -72,6 +86,8 @@ public class ViewSettledPurchaseActivity extends AppCompatActivity {
         chequeNum.setTypeface(cat_names_font);
         paymentDate.setTypeface(cat_names_font);
         bank.setTypeface(cat_names_font);
+
+        paidStamp.setAnimation(slideDown);
 
         if (!"null".equalsIgnoreCase(data.getString("DistributorId")))
             dName.setText(data.getString("DistributorId"));
@@ -94,5 +110,20 @@ public class ViewSettledPurchaseActivity extends AppCompatActivity {
             linearCheque.setVisibility(View.GONE);
             linearBank.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onAnimationStart(Animation animation) {
+
+    }
+
+    @Override
+    public void onAnimationEnd(Animation animation) {
+
+    }
+
+    @Override
+    public void onAnimationRepeat(Animation animation) {
+
     }
 }

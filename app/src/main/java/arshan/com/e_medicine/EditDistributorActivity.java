@@ -161,7 +161,7 @@ public class EditDistributorActivity extends AppCompatActivity {
                                 try {
                                     startActivity(in);
                                 } catch (android.content.ActivityNotFoundException ex) {
-                                    Toast.makeText(getApplicationContext(), "your Activity is not found", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Sorry! Unable to call", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

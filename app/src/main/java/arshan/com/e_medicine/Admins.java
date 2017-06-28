@@ -63,14 +63,14 @@ public class Admins extends Fragment {
             apikey = sharedPreferences.getString("apikey", DEFAULT);
         }
 
-        com.shamanland.fab.FloatingActionButton fab = (com.shamanland.fab.FloatingActionButton) view.findViewById(R.id.fabAdmin);
+        /*com.shamanland.fab.FloatingActionButton fab = (com.shamanland.fab.FloatingActionButton) view.findViewById(R.id.fabAdmin);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), AddUserActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
         //Recycle view starts
         adminsAdapter = new AdminsAdapter(getContext(), usersPojoList);

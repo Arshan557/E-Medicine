@@ -25,7 +25,7 @@ public class Constants {
         public static final String PURCHASE_PRE_ADD_URL = "http://health.ultimatefreehost.in/E-H/production/mobile/PurchasePreAdd";
         public static final String PURCHASE_ADD_URL = "http://health.ultimatefreehost.in/E-H/production/mobile/PurchaseAdd";*/
 
-        public static final String FEEDBACK_URL = "https://myinvent.000webhostapp.com/test.php";
+        public static final String FEEDBACK_URL = "https://myinvent.000webhostapp.com/mobile/mFeedList";
         public static final String AUTH_URL = "http://myinvent.000webhostapp.com/mobile/login";
         public static final String BARCODE_SEARCH_URL = "http://myinvent.000webhostapp.com/mobile/searchbarcode";
         public static final String PRODUCTNAME_SEARCH_URL = "http://myinvent.000webhostapp.com/mobile/searchproductname";
@@ -45,6 +45,6 @@ public class Constants {
         public static final String PURCHASE_PRE_ADD_URL = "http://myinvent.000webhostapp.com/mobile/PurchasePreAdd";
         public static final String PURCHASE_ADD_URL = "http://myinvent.000webhostapp.com/mobile/PurchaseAdd";
         public static final String USERS_LIST_URL = "https://myinvent.000webhostapp.com/mobile/UsersList";
-        public static final String USERS_ADD_URL = "http://health.ultimatefreehost.in/E-H/production/mobile/UserAdd";
+        public static final String USERS_ADD_URL = "https://myinvent.000webhostapp.com/mobile/UserAdd";
 
 }

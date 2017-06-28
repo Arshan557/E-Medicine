@@ -27,7 +27,7 @@ public class CustomProgressDialog extends Dialog {
         dialog.setCancelable(false);
         ProgressBar progressBar = new ProgressBar(context);
         //progressBar.setProgressDrawable(R.drawable.progress_style);
-        progressBar.getIndeterminateDrawable().setColorFilter(context.getResources().getColor(android.R.color.holo_red_light), android.graphics.PorterDuff.Mode.MULTIPLY);
+        progressBar.getIndeterminateDrawable().setColorFilter(context.getResources().getColor(android.R.color.holo_green_dark), android.graphics.PorterDuff.Mode.MULTIPLY);
 
         dialog.addContentView(progressBar, new LayoutParams(
                 LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
@@ -42,7 +42,7 @@ public class CustomProgressDialog extends Dialog {
         dialog.setCancelable(false);
         ProgressBar progressBar = new ProgressBar(context);
         //progressBar.setProgressDrawable(R.drawable.progress_style);
-        progressBar.getIndeterminateDrawable().setColorFilter(context.getResources().getColor(android.R.color.holo_red_light), android.graphics.PorterDuff.Mode.MULTIPLY);
+        progressBar.getIndeterminateDrawable().setColorFilter(context.getResources().getColor(android.R.color.holo_green_dark), android.graphics.PorterDuff.Mode.MULTIPLY);
 
         dialog.addContentView(progressBar, new LayoutParams(
                 LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));

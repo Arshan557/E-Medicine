@@ -290,7 +290,7 @@
         </activity>
         <activity android:name=".AddUserActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="Add User"
+            android:label="Add User or Admin"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark">
             <meta-data
