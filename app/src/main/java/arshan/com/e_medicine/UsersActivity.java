@@ -1,9 +1,14 @@
 package arshan.com.e_medicine;
 
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -14,16 +19,33 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import arshan.com.e_medicine.Constants.Constants;
+import arshan.com.e_medicine.Models.UsersPojo;
+import arshan.com.e_medicine.Network.HttpHandler;
 
 public class UsersActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private String TAG = UsersActivity.class.getSimpleName(), apikey="";
+    private ProgressDialog pDialog;
+    public static final String DEFAULT = "";
+    private List<UsersPojo> usersPojoList = new ArrayList<>();
+    SharedPreferences spGetFirstTime;
     private int[] tabIcons = {
             R.drawable.admin,
             R.drawable.user
@@ -41,12 +63,31 @@ public class UsersActivity extends AppCompatActivity {
         //upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
-        viewPager = (ViewPager) findViewById(R.id.usersViewpager);
-        setupViewPager(viewPager);
+        // Getting data from Shared preferences
+        SharedPreferences sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
+        if (null != sharedPreferences) {
+            apikey = sharedPreferences.getString("apikey", DEFAULT);
+        }
+        SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(UsersActivity.this);
 
-        tabLayout = (TabLayout) findViewById(R.id.usersTabs);
-        tabLayout.setupWithViewPager(viewPager);
-        setupTabIcons();
+        String firstTimeFlag;
+        spGetFirstTime = getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
+        firstTimeFlag = spGetFirstTime.getString("UsersFirstTimeFlag", "");
+        Log.d("UsersFirstTimeFlag", firstTimeFlag);
+        if (!"N".equalsIgnoreCase(firstTimeFlag)) {
+            String finalUrl = Constants.USERS_LIST_URL + "?apikey=" + apikey;
+            Log.d("final url", finalUrl);
+            usersPojoList.clear();
+            //Make call to Async
+            new getUsersList().execute(finalUrl);
+        } else {
+            viewPager = (ViewPager) findViewById(R.id.usersViewpager);
+            setupViewPager(viewPager);
+
+            tabLayout = (TabLayout) findViewById(R.id.usersTabs);
+            tabLayout.setupWithViewPager(viewPager);
+            setupTabIcons();
+        }
     }
 
     //Tabs with icons
@@ -91,6 +132,151 @@ public class UsersActivity extends AppCompatActivity {
         }
     }
 
+    private class getUsersList extends AsyncTask<String, String, String> {
+        String status,msg;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // Showing progress dialog
+            pDialog = new ProgressDialog(UsersActivity.this);
+            pDialog.setMessage("Loading Users...");
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+        @Override
+        protected String doInBackground(String... f_url) {
+            HttpHandler sh = new HttpHandler();
+
+            String cookie="";
+            /*SharedPreferences sharedPreferencesCookie = getSharedPreferences("CookieData", Context.MODE_PRIVATE);
+            cookie = sharedPreferencesCookie.getString("cookieString", "");
+            if (null == cookie || cookie.equalsIgnoreCase("")) {
+                Toast.makeText(getApplicationContext(),"Cookie empty", Toast.LENGTH_LONG).show();
+            }*/
+            // Making a request to url and getting response
+            String jsonStr = sh.makeServiceCall(f_url[0],cookie);
+
+            Log.e(TAG, "Response from url: " + jsonStr);
+
+            if (jsonStr != null) {
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    status = jsonObj.getString("status");
+                    if ("ok".equalsIgnoreCase(status)) {
+                        // Getting JSON Array node
+                        JSONArray category = jsonObj.getJSONArray("users");
+                        // looping through All News
+                        for (int i = 0; i < category.length(); i++) {
+                            JSONObject c = category.getJSONObject(i);
+
+                            String id = c.getString("id");
+                            String fname = c.getString("fname");
+                            String lname = c.getString("lname");
+                            String uname = c.getString("uname");
+                            String password = c.getString("password");
+                            String gender = c.getString("gender");
+                            String email = c.getString("email");
+                            String mobile = c.getString("mobile");
+                            String phone = c.getString("phone");
+                            String usertype = c.getString("usertype");
+                            String apikey = c.getString("apikey");
+                            String addressId = c.getString("addressId");
+                            String profilePic = c.getString("profilePic");
+                            String companyid = c.getString("companyid");
+                            String createdBy = c.getString("createdBy");
+                            String createdOn = c.getString("createdOn");
+                            String modifiedBy = c.getString("modifiedBy");
+                            String modifiedOn = c.getString("modifiedOn");
+                            String isActive = c.getString("isActive");
+
+                            Log.d("UserActivity:response", fname + "," + profilePic + "," + usertype);
+                            URL url = null;
+
+                            String picURL = "http://www.provo2.com/health-fitness/wp-content/uploads/2010/11/default-avatar.jpg";
+                            url = new URL(picURL);
+
+                            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+
+                            /*UsersPojo usersPojo = new UsersPojo(id, fname, lname, uname, password, gender, email,
+                                    mobile, phone,usertype, apikey, addressId, profilePic, companyid, createdBy, createdOn, modifiedBy, modifiedOn, isActive, bmp);
+                            usersPojoList.add(usersPojo);*/
+
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+
+                            SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(UsersActivity.this);
+                            db.addUser(new UsersPojo(id, fname, lname, uname, password, gender, email,
+                                    mobile, phone, usertype, apikey, addressId, profilePic, companyid, createdBy, createdOn, modifiedBy, modifiedOn, isActive, stream.toByteArray()));
+
+                        }
+                    } else {
+                        msg = jsonObj.getString("msg");
+                    }
+                    Log.d("status",status);
+                } catch (final JSONException e) {
+                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(UsersActivity.this, "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
+                            Intent i = new Intent(UsersActivity.this, Home.class);
+                            startActivity(i);
+                            finish();
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.e(TAG, "Exception " + e.getMessage());
+                    Toast.makeText(UsersActivity.this, "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(UsersActivity.this, Home.class);
+                    startActivity(i);
+                    finish();
+                }
+            } else {
+                Log.e(TAG, "Couldn't get json from server.");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(UsersActivity.this,
+                                "Something went wrong. Please try again",
+                                Toast.LENGTH_LONG)
+                                .show();
+                        Intent i = new Intent(UsersActivity.this, Home.class);
+                        startActivity(i);
+                        finish();
+                    }
+                });
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            // Dismiss the progress dialog
+            // Dismiss the progress dialog
+            if (pDialog.isShowing())
+                pDialog.dismiss();
+            if (null != msg && !"ok".equalsIgnoreCase(status)) {
+                Toast.makeText(UsersActivity.this, msg, Toast.LENGTH_LONG).show();
+                Intent i = new Intent(UsersActivity.this, Home.class);
+                startActivity(i);
+                finish();
+            } else if ("ok".equalsIgnoreCase(status) || "success".equalsIgnoreCase(status)) {
+                spGetFirstTime = getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = spGetFirstTime.edit();
+                editor.putString("UsersFirstTimeFlag", "N");
+                editor.commit();
+
+                viewPager = (ViewPager) findViewById(R.id.usersViewpager);
+                setupViewPager(viewPager);
+
+                tabLayout = (TabLayout) findViewById(R.id.usersTabs);
+                tabLayout.setupWithViewPager(viewPager);
+                setupTabIcons();
+            }
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.menu_user, menu);
@@ -131,19 +317,19 @@ public class UsersActivity extends AppCompatActivity {
                         recyclerView.invalidate();
                         return true;
                     }
-                });
+                });*/
 
         refresh.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                String finalUrl = Constants.CATEGORIES_URL+"?apikey="+apikey;
-                Log.d("final url",finalUrl);
-                categoryPojoList.clear();
+                String finalUrl = Constants.USERS_LIST_URL + "?apikey=" + apikey;
+                Log.d("final url", finalUrl);
+                usersPojoList.clear();
                 //Make call to Async
-                new getCategories().execute(finalUrl);
+                new getUsersList().execute(finalUrl);
                 return false;
             }
-        });*/
+        });
         return true;
     }
 }

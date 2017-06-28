@@ -72,6 +72,42 @@ public class Users extends Fragment {
             }
         });*/
 
+        /*String firstTimeFlag;
+        spGetFirstTime = getContext().getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
+        firstTimeFlag = spGetFirstTime.getString("UsersFirstTimeFlag", "");
+        Log.d("UsersFirstTimeFlag", firstTimeFlag);
+        if (!"N".equalsIgnoreCase(firstTimeFlag)) {
+            String finalUrl = Constants.USERS_LIST_URL+"?apikey="+apikey;
+            Log.d("final url",finalUrl);
+            usersPojoList.clear();
+            //Make call to Async
+            new getUsersList().execute(finalUrl);
+        } else {*/
+            // Reading all users
+            Log.d("Reading: ", "Reading all users..");
+                List<UsersPojo> user = db.getAllUsers();
+                if (null != user) {
+                    usersPojoList.clear();
+                    for (int i = 0; i <= user.size() - 1; i++) {
+                        String log = "Fname: " + user.get(i).getFname() + " ,Lname: " + user.get(i).getLname() + "type: " + user.get(i).getUsertype();
+                        Log.d("users: ", log);
+                        try {
+                            if ("3".equalsIgnoreCase(user.get(i).getUsertype())) {
+                                //Log.d("userType: ", user.get(i).getUsertype());
+                                Bitmap bitmap = BitmapFactory.decodeByteArray(user.get(i).getImageByteArray(), 0, user.get(i).getImageByteArray().length);
+
+                                UsersPojo usersPojo = new UsersPojo(user.get(i).getId(), user.get(i).getFname(), user.get(i).getLname(), user.get(i).getUname(),
+                                        user.get(i).getPassword(), user.get(i).getGender(), user.get(i).getEmail(), user.get(i).getMobile(), user.get(i).getPhone(),
+                                        user.get(i).getUsertype(), user.get(i).getApikey(), user.get(i).getAddressId(), user.get(i).getProfilePic(), user.get(i).getCompanyid(), user.get(i).getCreatedBy(),
+                                        user.get(i).getCreatedOn(), user.get(i).getModifiedBy(), user.get(i).getModifiedOn(), user.get(i).getIsActive(), bitmap);
+                                usersPojoList.add(usersPojo);
+                            }
+                        } catch (Exception e) {
+                            Log.d("Exception", "" + e.getMessage());
+                        }
+                    }
+                }
+
         //Recycle view starts
         usersAdapter = new UsersAdapter(getContext(), usersPojoList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
@@ -91,45 +127,6 @@ public class Users extends Fragment {
             }
         });
 
-        String firstTimeFlag;
-        spGetFirstTime = getContext().getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
-        firstTimeFlag = spGetFirstTime.getString("UsersFirstTimeFlag", "");
-        Log.d("UsersFirstTimeFlag", firstTimeFlag);
-        if (!"N".equalsIgnoreCase(firstTimeFlag)) {
-            spGetFirstTime = getContext().getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = spGetFirstTime.edit();
-            editor.putString("UsersFirstTimeFlag", "N");
-            editor.commit();
-
-            String finalUrl = Constants.USERS_LIST_URL+"?apikey="+apikey;
-            Log.d("final url",finalUrl);
-            usersPojoList.clear();
-            //Make call to Async
-            new getUsersList().execute(finalUrl);
-        } else {
-            // Reading all users
-            Log.d("Reading: ", "Reading all users..");
-            List<UsersPojo> user = db.getAllUsers();
-            if (null != user) {
-                usersPojoList.clear();
-                for (int i = 0; i <= user.size() - 1; i++) {
-                    String log = "Fname: " + user.get(i).getFname() + " ,Lname: " + user.get(i).getLname();
-                    Log.d("users: ", log);
-                    try {
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(user.get(i).getImageByteArray(), 0, user.get(i).getImageByteArray().length);
-
-                        UsersPojo usersPojo = new UsersPojo(user.get(i).getId(), user.get(i).getFname(), user.get(i).getLname(), user.get(i).getUname(),
-                                user.get(i).getPassword(), user.get(i).getGender(), user.get(i).getEmail(), user.get(i).getMobile(), user.get(i).getPhone(),
-                                user.get(i).getUsertype(), user.get(i).getApikey(), user.get(i).getAddressId(), user.get(i).getProfilePic(), user.get(i).getCompanyid(), user.get(i).getCreatedBy(),
-                                user.get(i).getCreatedOn(), user.get(i).getModifiedBy(), user.get(i).getModifiedOn(), user.get(i).getIsActive(), bitmap);
-                        usersPojoList.add(usersPojo);
-                    } catch (Exception e) {
-                        Log.d("Exception", "" + e.getMessage());
-                    }
-                }
-            }
-        }
-
         return view;
     }
 
@@ -139,7 +136,7 @@ public class Users extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
             // Showing progress dialog
-            customProgressDialog = CustomProgressDialog.show(getContext());
+            //customProgressDialog = CustomProgressDialog.show(getContext());
         }
         @Override
         protected String doInBackground(String... f_url) {
@@ -187,18 +184,15 @@ public class Users extends Fragment {
                             String modifiedOn = c.getString("modifiedOn");
                             String isActive = c.getString("isActive");
 
-                            Log.d("response", fname + "," + profilePic );
+                            Log.d("Users:response", fname + "," + profilePic + "," + usertype);
                             URL url = null;
-                            if (null != profilePic && !"".equalsIgnoreCase(profilePic)) {
-                                url = new URL(profilePic);
-                            } else {
-                                profilePic = "http://www.provo2.com/health-fitness/wp-content/uploads/2010/11/default-avatar.jpg";
-                                url = new URL(profilePic);
-                            }
+
+                            String picURL = "http://www.provo2.com/health-fitness/wp-content/uploads/2010/11/default-avatar.jpg";
+                            url = new URL(picURL);
                             Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
                             UsersPojo usersPojo = new UsersPojo(id, fname, lname, uname, password, gender, email,
-                                    mobile, phone,usertype, apikey, addressId, profilePic, companyid, createdBy, createdOn, modifiedBy, modifiedOn, isActive, bmp);
+                                    mobile, phone, usertype, apikey, addressId, profilePic, companyid, createdBy, createdOn, modifiedBy, modifiedOn, isActive, bmp);
                             usersPojoList.add(usersPojo);
 
                             ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -206,7 +200,7 @@ public class Users extends Fragment {
 
                             SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(getContext());
                             db.addUser(new UsersPojo(id, fname, lname, uname, password, gender, email,
-                                    mobile, phone,usertype, apikey, addressId, profilePic, companyid, createdBy, createdOn, modifiedBy, modifiedOn, isActive, stream.toByteArray()));
+                                    mobile, phone, usertype, apikey, addressId, profilePic, companyid, createdBy, createdOn, modifiedBy, modifiedOn, isActive, stream.toByteArray()));
 
                         }
                     } else {
@@ -253,7 +247,16 @@ public class Users extends Fragment {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             // Dismiss the progress dialog
-            customProgressDialog.cancel();
+            //customProgressDialog.cancel();
+            if (swipeRefreshLayout.isRefreshing()) {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+            /*if ("ok".equalsIgnoreCase(status) || "success".equalsIgnoreCase(status)){
+                spGetFirstTime = getContext().getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = spGetFirstTime.edit();
+                editor.putString("UsersFirstTimeFlag", "N");
+                editor.commit();
+            }*/
             if (null != msg) {
                 Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
             }

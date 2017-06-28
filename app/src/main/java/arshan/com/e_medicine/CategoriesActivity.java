@@ -105,11 +105,6 @@ public class CategoriesActivity extends AppCompatActivity {
         firstTimeFlag = spGetFirstTime.getString("CategoryFirstTimeFlag", "");
         Log.d("firstTimeFlag", firstTimeFlag);
         if (!"N".equalsIgnoreCase(firstTimeFlag)) {
-            spGetFirstTime = getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = spGetFirstTime.edit();
-            editor.putString("CategoryFirstTimeFlag", "N");
-            editor.commit();
-
             String finalUrl = Constants.CATEGORIES_URL+"?apikey="+apikey;
             Log.d("final url",finalUrl);
             //Make call to Async
@@ -235,7 +230,12 @@ public class CategoriesActivity extends AppCompatActivity {
             if (swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);
             }
-
+            if ("ok".equalsIgnoreCase(status) || "success".equalsIgnoreCase(status)){
+                spGetFirstTime = getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = spGetFirstTime.edit();
+                editor.putString("CategoryFirstTimeFlag", "N");
+                editor.commit();
+            }
             if (null != msg && !"".equalsIgnoreCase(msg)) {
                 Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(CategoriesActivity.this, Home.class);

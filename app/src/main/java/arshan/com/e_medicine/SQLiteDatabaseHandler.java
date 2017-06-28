@@ -415,16 +415,17 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 				user.setEmail(cursor.getString(6));
 				user.setMobile(cursor.getString(7));
 				user.setPhone(cursor.getString(8));
-				user.setApikey(cursor.getString(9));
-				user.setAddressId(cursor.getString(10));
-				user.setProfilePic(cursor.getString(11));
-				user.setCompanyid(cursor.getString(12));
-				user.setCreatedBy(cursor.getString(13));
-				user.setCreatedOn(cursor.getString(14));
+				user.setUsertype(cursor.getString(9));
+				user.setApikey(cursor.getString(10));
+				user.setAddressId(cursor.getString(11));
+				user.setProfilePic(cursor.getString(12));
+				user.setCompanyid(cursor.getString(13));
+				user.setCreatedBy(cursor.getString(14));
 				user.setModifiedBy(cursor.getString(15));
-				user.setModifiedOn(cursor.getString(16));
-				user.setIsActive(cursor.getString(17));
-				user.setImageByteArray(cursor.getBlob(18));
+				user.setCreatedOn(cursor.getString(16));
+				user.setModifiedOn(cursor.getString(17));
+				user.setIsActive(cursor.getString(18));
+				user.setImageByteArray(cursor.getBlob(19));
 
 				// Adding distributor to list
 				usersPojoList.add(user);

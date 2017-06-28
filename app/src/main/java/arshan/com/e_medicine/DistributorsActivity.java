@@ -109,12 +109,6 @@ public class DistributorsActivity extends AppCompatActivity {
         firstTimeFlag = spGetFirstTime.getString("DistributorFirstTimeFlag", "");
         Log.d("firstTimeFlag", firstTimeFlag);
         if (!"N".equalsIgnoreCase(firstTimeFlag)) {
-
-            spGetFirstTime = getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = spGetFirstTime.edit();
-            editor.putString("DistributorFirstTimeFlag", "N");
-            editor.commit();
-
             String finalUrl = Constants.DISTRIBUTORS_URL+"?apikey="+apikey;
             Log.d("final url",finalUrl);
             //Make call to Async
@@ -258,6 +252,12 @@ public class DistributorsActivity extends AppCompatActivity {
 
             if (swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);
+            }
+            if ("ok".equalsIgnoreCase(status) || "success".equalsIgnoreCase(status)){
+                spGetFirstTime = getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = spGetFirstTime.edit();
+                editor.putString("DistributorFirstTimeFlag", "N");
+                editor.commit();
             }
 
             if (null != msg && !"".equalsIgnoreCase(msg)) {

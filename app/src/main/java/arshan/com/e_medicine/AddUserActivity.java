@@ -204,8 +204,8 @@ public class AddUserActivity extends AppCompatActivity implements AdapterView.On
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        if ("Admin".equalsIgnoreCase(adapterView.getItemAtPosition(i).toString())) userTypeString = "1";
-        else if ("User".equalsIgnoreCase(adapterView.getItemAtPosition(i).toString())) userTypeString = "2";
+        if ("Admin".equalsIgnoreCase(adapterView.getItemAtPosition(i).toString())) userTypeString = "2";
+        else if ("User".equalsIgnoreCase(adapterView.getItemAtPosition(i).toString())) userTypeString = "3";
         else if ("Male".equalsIgnoreCase(adapterView.getItemAtPosition(i).toString())) genderString = "male";
         else if ("Female".equalsIgnoreCase(adapterView.getItemAtPosition(i).toString())) genderString = "female";
 
