@@ -4,15 +4,16 @@ package arshan.com.e_medicine.Models;
  * Created by Arshan on 19-Jun-2017.
  */
 public class PurchasesPojo {
-    String id, companyid, BillDate, InvoiceNumber, DistributorId, Amount, PaymentDate, PaymentMode, ChequeNumber, BankName,
+    String DistributorName, id, companyid, BillDate, InvoiceNumber, DistributorId, Amount, PaymentDate, PaymentMode, ChequeNumber, BankName,
             createdBy, createdOn, modifiedBy, modifiedOn, isSettled;
 
     public PurchasesPojo() {
     }
 
-    public PurchasesPojo(String id, String companyid, String BillDate, String InvoiceNumber, String DistributorId
+    public PurchasesPojo(String DistributorName, String id, String companyid, String BillDate, String InvoiceNumber, String DistributorId
             , String Amount, String PaymentDate, String PaymentMode, String ChequeNumber, String BankName,
                          String createdBy, String createdOn, String modifiedBy, String modifiedOn, String isSettled) {
+        this.DistributorName = DistributorName;
         this.id = id;
         this.companyid = companyid;
         this.BillDate = BillDate;
@@ -29,6 +30,14 @@ public class PurchasesPojo {
         this.modifiedOn = modifiedOn;
         this.isSettled = isSettled;
 
+    }
+
+    public String getDistributorName() {
+        return DistributorName;
+    }
+
+    public void setDistributorName(String distributorName) {
+        DistributorName = distributorName;
     }
 
     public String getId() {

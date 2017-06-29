@@ -19,7 +19,7 @@ public class ViewSettledPurchaseActivity extends AppCompatActivity  implements A
     paymentModeText, paymentMode, chequeNumText, chequeNum, paymentDateText, paymentDate, bankText, bank;
     private LinearLayout linearCheque, linearBank;
     private ImageView paidStamp;
-    Animation slideDown, bounce;
+    Animation zoom_out;
     Bundle data = null;
 
     @Override
@@ -41,12 +41,10 @@ public class ViewSettledPurchaseActivity extends AppCompatActivity  implements A
         getSupportActionBar().setTitle(data.getString("InvoiceNumber"));
 
         // load the animation
-        slideDown = AnimationUtils.loadAnimation(ViewSettledPurchaseActivity.this, R.anim.slide_down);
-        bounce = AnimationUtils.loadAnimation(ViewSettledPurchaseActivity.this, R.anim.bounce);
+        zoom_out = AnimationUtils.loadAnimation(ViewSettledPurchaseActivity.this, R.anim.zoom_out);
 
         // set animation listener
-        slideDown.setAnimationListener(this);
-        bounce.setAnimationListener(this);
+        zoom_out.setAnimationListener(this);
 
         Typeface cat_names_font = Typeface.createFromAsset(getAssets(), "categorynamefont.otf");
         Typeface nav_items_font = Typeface.createFromAsset(getAssets(), "nav_items.ttf");
@@ -87,12 +85,10 @@ public class ViewSettledPurchaseActivity extends AppCompatActivity  implements A
         paymentDate.setTypeface(cat_names_font);
         bank.setTypeface(cat_names_font);
 
-        paidStamp.setAnimation(slideDown);
+        paidStamp.setAnimation(zoom_out);
 
-        if (!"null".equalsIgnoreCase(data.getString("DistributorId")))
-            dName.setText(data.getString("DistributorId"));
-        /*if (null != data.getString("InvoiceNumber") && !"null".equalsIgnoreCase(data.getString("InvoiceNumber")))
-            invoiceNum.setText(data.getString("InvoiceNumber"));*/
+        if (!"null".equalsIgnoreCase(data.getString("DistributorName")))
+            dName.setText(data.getString("DistributorName"));
         if (null != data.getString("BillDate") && !"null".equalsIgnoreCase(data.getString("BillDate")))
             billDate.setText(data.getString("BillDate"));
         if (null != data.getString("Amount") && !"null".equalsIgnoreCase(data.getString("Amount")))

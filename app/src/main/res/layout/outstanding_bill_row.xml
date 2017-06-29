@@ -16,10 +16,11 @@
             android:layout_gravity="center"
             android:text="Distributor"
             android:textColor="@color/black"
-            android:textSize="25dp"
+            android:textSize="15dp"
             android:id="@+id/outstanding_distributor"
-            android:layout_marginLeft="43dp"
-            android:layout_marginStart="43dp" />
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:id="@+id/rupee"

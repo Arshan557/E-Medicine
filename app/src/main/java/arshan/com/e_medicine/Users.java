@@ -1,8 +1,6 @@
 package arshan.com.e_medicine;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,7 +30,6 @@ import arshan.com.e_medicine.Adapters.UsersAdapter;
 import arshan.com.e_medicine.Constants.Constants;
 import arshan.com.e_medicine.Models.UsersPojo;
 import arshan.com.e_medicine.Network.HttpHandler;
-import arshan.com.e_medicine.Views.CustomProgressDialog;
 
 /**
  * Created by Arshan on 19-Jun-2017.
@@ -42,11 +39,8 @@ public class Users extends Fragment {
     private RecyclerView recyclerView;
     private List<UsersPojo> usersPojoList = new ArrayList<>();
     private String TAG = Users.class.getSimpleName(), apikey="";
-    private ProgressDialog pDialog;
     public static final String DEFAULT = "";
-    SharedPreferences spGetFirstTime;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private CustomProgressDialog customProgressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -121,7 +115,6 @@ public class Users extends Fragment {
             public void onRefresh() {
                 String finalUrl = Constants.USERS_LIST_URL+"?apikey="+apikey;
                 Log.d("final url",finalUrl);
-                usersPojoList.clear();
                 //Make call to Async
                 new getUsersList().execute(finalUrl);
             }
@@ -161,6 +154,7 @@ public class Users extends Fragment {
                         // Getting JSON Array node
                         JSONArray category = jsonObj.getJSONArray("users");
                         // looping through All News
+                        usersPojoList.clear();
                         for (int i = 0; i < category.length(); i++) {
                             JSONObject c = category.getJSONObject(i);
 
@@ -213,30 +207,18 @@ public class Users extends Fragment {
                         @Override
                         public void run() {
                             Toast.makeText(getContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
-                            Intent i = new Intent(getContext(), Home.class);
-                            startActivity(i);
-                            getActivity().finish();
                         }
                     });
                 } catch (Exception e) {
                     Log.e(TAG, "Exception " + e.getMessage());
                     Toast.makeText(getContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
-                    Intent i = new Intent(getContext(), Home.class);
-                    startActivity(i);
-                    getActivity().finish();
                 }
             } else {
                 Log.e(TAG, "Couldn't get json from server.");
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getContext(),
-                                "Something went wrong. Please try again",
-                                Toast.LENGTH_LONG)
-                                .show();
-                        Intent i = new Intent(getContext(), Home.class);
-                        startActivity(i);
-                        getActivity().finish();
+                        Toast.makeText(getContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -246,17 +228,10 @@ public class Users extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            // Dismiss the progress dialog
-            //customProgressDialog.cancel();
             if (swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);
             }
-            /*if ("ok".equalsIgnoreCase(status) || "success".equalsIgnoreCase(status)){
-                spGetFirstTime = getContext().getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = spGetFirstTime.edit();
-                editor.putString("UsersFirstTimeFlag", "N");
-                editor.commit();
-            }*/
+            //usersAdapter.notifyDataSetChanged();
             if (null != msg) {
                 Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
             }

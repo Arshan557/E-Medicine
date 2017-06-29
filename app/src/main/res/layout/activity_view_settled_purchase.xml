@@ -23,46 +23,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Distributor name unavailable"
-            android:textSize="20dp"
-            android:textColor="@color/base"
+            android:textSize="30dp"
+            android:textColor="@color/black"
             android:layout_gravity="center_horizontal"
             android:id="@+id/dName"/>
         <View
             android:layout_width="match_parent"
-            android:layout_height="15dp" />
-        <!--<LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Invoice number: "
-                android:id="@+id/invoiceNumText"
-                android:textSize="@dimen/settled_purchase_font"
-                android:textColor="@color/aluminum"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="N/A"
-                android:textSize="@dimen/settled_purchase_font"
-                android:id="@+id/invoiceNum"
-                android:textColor="@color/black"/>
-        </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />-->
+            android:layout_height="25dp" />
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:weightSum="2"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Bill date: "
                 android:textSize="@dimen/settled_purchase_font"
+                android:layout_weight="1"
                 android:id="@+id/billDateText"
                 android:textColor="@color/aluminum"/>
             <TextView
@@ -70,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:text="N/A"
                 android:textSize="@dimen/settled_purchase_font"
+                android:layout_weight="1"
                 android:id="@+id/billDate"
                 android:textColor="@color/black"/>
         </LinearLayout>
@@ -77,8 +56,9 @@
             android:layout_width="match_parent"
             android:layout_height="10dp" />
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:weightSum="2"
             android:layout_gravity="center_horizontal"
             android:orientation="horizontal">
             <TextView
@@ -86,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:text="Amount: "
                 android:textSize="@dimen/settled_purchase_font"
+                android:layout_weight="1"
                 android:id="@+id/amountText"
                 android:textColor="@color/aluminum"/>
             <TextView
@@ -107,8 +88,9 @@
             android:layout_width="match_parent"
             android:layout_height="10dp" />
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:weightSum="2"
             android:layout_gravity="center_horizontal"
             android:orientation="horizontal">
             <TextView
@@ -116,6 +98,7 @@
                 android:layout_height="wrap_content"
                 android:text="Payment mode: "
                 android:textSize="@dimen/settled_purchase_font"
+                android:layout_weight="1"
                 android:id="@+id/paymentModeText"
                 android:textColor="@color/aluminum"/>
             <TextView
@@ -123,6 +106,7 @@
                 android:layout_height="wrap_content"
                 android:text="N/A"
                 android:textSize="@dimen/settled_purchase_font"
+                android:layout_weight="1"
                 android:id="@+id/paymentMode"
                 android:textColor="@color/black"/>
         </LinearLayout>
@@ -130,8 +114,9 @@
             android:layout_width="match_parent"
             android:layout_height="10dp" />
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:weightSum="2"
             android:layout_gravity="center_horizontal"
             android:orientation="horizontal">
             <TextView
@@ -139,6 +124,7 @@
                 android:layout_height="wrap_content"
                 android:text="Payment date: "
                 android:textSize="@dimen/settled_purchase_font"
+                android:layout_weight="1"
                 android:id="@+id/paymentDateText"
                 android:textColor="@color/aluminum"/>
             <TextView
@@ -146,6 +132,7 @@
                 android:layout_height="wrap_content"
                 android:text="N/A"
                 android:textSize="@dimen/settled_purchase_font"
+                android:layout_weight="1"
                 android:id="@+id/paymentDate"
                 android:textColor="@color/black"/>
         </LinearLayout>
@@ -153,8 +140,9 @@
             android:layout_width="match_parent"
             android:layout_height="10dp" />
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:weightSum="2"
             android:layout_gravity="center_horizontal"
             android:id="@+id/linearChequeNum"
             android:orientation="horizontal">
@@ -163,6 +151,7 @@
                 android:layout_height="wrap_content"
                 android:text="Cheque number: "
                 android:textSize="@dimen/settled_purchase_font"
+                android:layout_weight="1"
                 android:id="@+id/chequeNumText"
                 android:textColor="@color/aluminum"/>
             <TextView
@@ -170,6 +159,7 @@
                 android:layout_height="wrap_content"
                 android:text="N/A"
                 android:textSize="@dimen/settled_purchase_font"
+                android:layout_weight="1"
                 android:id="@+id/chequeNum"
                 android:textColor="@color/black"/>
         </LinearLayout>
@@ -177,8 +167,9 @@
             android:layout_width="match_parent"
             android:layout_height="10dp" />
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:weightSum="2"
             android:id="@+id/linearBank"
             android:layout_gravity="center_horizontal"
             android:orientation="horizontal">
@@ -187,6 +178,7 @@
                 android:layout_height="wrap_content"
                 android:text="Bank: "
                 android:textSize="@dimen/settled_purchase_font"
+                android:layout_weight="1"
                 android:id="@+id/bankText"
                 android:textColor="@color/aluminum"/>
             <TextView
@@ -194,14 +186,15 @@
                 android:layout_height="wrap_content"
                 android:text="N/A"
                 android:textSize="@dimen/settled_purchase_font"
+                android:layout_weight="1"
                 android:id="@+id/bank"
                 android:textColor="@color/black"/>
         </LinearLayout>
     </LinearLayout>
     </ScrollView>
         <ImageView
-            android:layout_width="248dp"
-            android:layout_height="270dp"
+            android:layout_width="348dp"
+            android:layout_height="370dp"
             android:layout_gravity="bottom|center"
             android:paddingBottom="20dp"
             android:id="@+id/paidstamp"

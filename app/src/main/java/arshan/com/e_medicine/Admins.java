@@ -2,7 +2,6 @@ package arshan.com.e_medicine;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -121,7 +120,6 @@ public class Admins extends Fragment {
             public void onRefresh() {
                 String finalUrl = Constants.USERS_LIST_URL+"?apikey="+apikey;
                 Log.d("final url",finalUrl);
-                usersPojoList.clear();
                 //Make call to Async
                 new getAdminsList().execute(finalUrl);
             }
@@ -161,6 +159,7 @@ public class Admins extends Fragment {
                         // Getting JSON Array node
                         JSONArray category = jsonObj.getJSONArray("users");
                         // looping through All News
+                        usersPojoList.clear();
                         for (int i = 0; i < category.length(); i++) {
                             JSONObject c = category.getJSONObject(i);
 
@@ -214,30 +213,18 @@ public class Admins extends Fragment {
                         @Override
                         public void run() {
                             Toast.makeText(getContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
-                            Intent i = new Intent(getContext(), Home.class);
-                            startActivity(i);
-                            getActivity().finish();
                         }
                     });
                 } catch (Exception e) {
                     Log.e(TAG, "Exception " + e.getMessage());
                     Toast.makeText(getContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
-                    Intent i = new Intent(getContext(), Home.class);
-                    startActivity(i);
-                    getActivity().finish();
                 }
             } else {
                 Log.e(TAG, "Couldn't get json from server.");
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getContext(),
-                                "Something went wrong. Please try again",
-                                Toast.LENGTH_LONG)
-                                .show();
-                        Intent i = new Intent(getContext(), Home.class);
-                        startActivity(i);
-                        getActivity().finish();
+                        Toast.makeText(getContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -247,17 +234,10 @@ public class Admins extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            // Dismiss the progress dialog
-            //customProgressDialog.cancel();
             if (swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);
             }
-            /*if ("ok".equalsIgnoreCase(status) || "success".equalsIgnoreCase(status)){
-                spGetFirstTime = getContext().getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = spGetFirstTime.edit();
-                editor.putString("UsersFirstTimeFlag", "N");
-                editor.commit();
-            }*/
+            //adminsAdapter.notifyDataSetChanged();
             if (null != msg) {
                 Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
             }

@@ -1,8 +1,6 @@
 package arshan.com.e_medicine;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,14 +21,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import arshan.com.e_medicine.Adapters.OutstandingBillAdapter;
 import arshan.com.e_medicine.Constants.Constants;
-import arshan.com.e_medicine.Models.DistNameAmountMapPojo;
-import arshan.com.e_medicine.Models.PurchaseDistributorPojo;
 import arshan.com.e_medicine.Models.PurchasesPojo;
 import arshan.com.e_medicine.Network.HttpHandler;
 
@@ -42,12 +37,8 @@ public class OutstandingBill extends Fragment {
     private RecyclerView recyclerView;
     private List<PurchasesPojo> purchasesPojoList = new ArrayList<>();
     private Map<String, String> distNameAmountMap = new HashMap<>();
-    private List<DistNameAmountMapPojo> distNameAmountMapPojosList = new ArrayList<>();
-    private List<PurchaseDistributorPojo> purchaseDistributorPojo = new ArrayList<>();
     private String TAG = PurchaseSettled.class.getSimpleName(), apikey="";
-    private ProgressDialog pDialog;
     public static final String DEFAULT = "";
-    SharedPreferences spGetFirstTime;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
@@ -65,7 +56,7 @@ public class OutstandingBill extends Fragment {
             apikey = sharedPreferences.getString("apikey", DEFAULT);
         }
 
-        String firstTimeFlag;
+        /*String firstTimeFlag;
         spGetFirstTime = getContext().getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
         firstTimeFlag = spGetFirstTime.getString("PurchaseFirstTimeFlag", "");
         Log.d("outstandingTimeFlag", firstTimeFlag);
@@ -80,52 +71,41 @@ public class OutstandingBill extends Fragment {
             purchasesPojoList.clear();
             //Make call to Async
             new getOutstandingBills().execute(finalUrl);
-        } else {
-            // Reading all purchases
-            Log.d("Reading: ", "Reading all purchases..");
-            List<PurchasesPojo> purchases = db.getAllPurchases();
-            purchasesPojoList.clear();
-            for (int i = 0; i <= purchases.size()-1; i++) {
-                String log = "getDistributorId: "+purchases.get(i).getDistributorId()+" ,getAmount: " + purchases.get(i).getAmount();
-                Log.d("purchases: ", log);
+        } else {*/
+        // Reading all purchases
+        Log.d("Reading: ", "Reading all purchases..");
+        List<PurchasesPojo> purchases = db.getAllPurchases();
+        purchasesPojoList.clear();
+        distNameAmountMap.clear();
+        float amt = 0;
+        for (int i = 0; i <= purchases.size()-1; i++) {
+            if (!distNameAmountMap.containsKey(purchases.get(i).getDistributorName())) {
+                distNameAmountMap.put(purchases.get(i).getDistributorName(), purchases.get(i).getAmount());
+            } else {
+                amt = Float.parseFloat(distNameAmountMap.get(purchases.get(i).getDistributorName()));
+                amt = amt + Float.parseFloat(purchases.get(i).getAmount());
+                distNameAmountMap.remove(purchases.get(i).getDistributorName());
+                distNameAmountMap.put(purchases.get(i).getDistributorName(), "" + amt);
+            }
+        }
+        Log.d("distNameAmountMap: ", ""+distNameAmountMap);
+        for (int i = 0; i <= purchases.size()-1; i++) {
+            if (distNameAmountMap.containsKey(purchases.get(i).getDistributorName())) {
+                String log = "getDistributorName: " + purchases.get(i).getDistributorName() + " ,getAmount: " + purchases.get(i).getAmount();
+                Log.d("outstanding:purchases: ", log);
                 try {
-                    PurchasesPojo purchasesPojo = new PurchasesPojo(purchases.get(i).getId(), purchases.get(i).getCompanyid(), purchases.get(i).getBillDate(), purchases.get(i).getInvoiceNumber(),
-                            purchases.get(i).getDistributorId(), purchases.get(i).getAmount(), purchases.get(i).getPaymentDate(), purchases.get(i).getPaymentMode(), purchases.get(i).getChequeNumber(),
+                    PurchasesPojo purchasesPojo = new PurchasesPojo(purchases.get(i).getDistributorName(), purchases.get(i).getId(), purchases.get(i).getCompanyid(), purchases.get(i).getBillDate(), purchases.get(i).getInvoiceNumber(),
+                            purchases.get(i).getDistributorId(), distNameAmountMap.get(purchases.get(i).getDistributorName()), purchases.get(i).getPaymentDate(), purchases.get(i).getPaymentMode(), purchases.get(i).getChequeNumber(),
                             purchases.get(i).getBankName(), purchases.get(i).getCreatedBy(), purchases.get(i).getCreatedOn(), purchases.get(i).getModifiedBy(), purchases.get(i).getModifiedOn(), purchases.get(i).getIsSettled());
                     purchasesPojoList.add(purchasesPojo);
+                    distNameAmountMap.remove(purchases.get(i).getDistributorName());
                 } catch (Exception e) {
-                    Log.d("Exception", ""+e.getMessage());
+                    Log.d("Exception", "" + e.getMessage());
                 }
             }
         }
-        distNameAmountMap.clear();
-        for (PurchasesPojo purchasesPojo : purchasesPojoList) {
-            float amt = 0;
-            if (!distNameAmountMap.containsKey(purchasesPojo.getDistributorId())) {
-                distNameAmountMap.put(purchasesPojo.getDistributorId(), purchasesPojo.getAmount());
-            } else {
-                amt = Float.parseFloat(distNameAmountMap.get(purchasesPojo.getDistributorId()));
-                amt = amt + Float.parseFloat(purchasesPojo.getAmount());
-                distNameAmountMap.remove(purchasesPojo.getDistributorId());
-                distNameAmountMap.put(purchasesPojo.getDistributorId(), ""+amt);
-            }
-        }
-        distNameAmountMapPojosList.clear();
-        Iterator it = distNameAmountMap.entrySet().iterator();
-        Map.Entry pair = null;
-        String dName="", dAmt="";
-        while (it.hasNext()) {
-            pair = (Map.Entry)it.next();
-            dName = ""+pair.getKey();
-            dAmt = ""+pair.getValue();
-            Log.d("distNameAmountMap",""+dName + " = " + dAmt);
-            DistNameAmountMapPojo distNameAmountMapPojo = new DistNameAmountMapPojo(dAmt, dName);
-            distNameAmountMapPojosList.add(distNameAmountMapPojo);
-
-        }
-        Log.d("distNameAmtMapPojosList",""+distNameAmountMapPojosList.size());
         //Recycle view starts
-        outstandingBillAdapter = new OutstandingBillAdapter(getContext(), distNameAmountMapPojosList);
+        outstandingBillAdapter = new OutstandingBillAdapter(getContext(), purchasesPojoList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -137,26 +117,20 @@ public class OutstandingBill extends Fragment {
             public void onRefresh() {
                 String finalUrl = Constants.PURCHASE_LIST_URL+"?apikey="+apikey;
                 Log.d("final url",finalUrl);
-                purchasesPojoList.clear();
                 //Make call to Async
-                new getOutstandingBills().execute(finalUrl);
+                new getPurchasesList().execute(finalUrl);
             }
         });
 
         return view;
     }
 
-    private class getOutstandingBills extends AsyncTask<String, String, String> {
-        String status, msg = "";
+    private class getPurchasesList extends AsyncTask<String, String, String> {
+        String status, msg;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            // Showing progress dialog
-            pDialog = new ProgressDialog(getContext());
-            pDialog.setMessage("Loading bills...");
-            pDialog.setCancelable(false);
-            pDialog.show();
         }
         @Override
         protected String doInBackground(String... f_url) {
@@ -182,9 +156,11 @@ public class OutstandingBill extends Fragment {
                         // Getting JSON Array node
                         JSONArray category = jsonObj.getJSONArray("purchase");
                         // looping through All News
+                        purchasesPojoList.clear();
                         for (int i = 0; i < category.length(); i++) {
                             JSONObject c = category.getJSONObject(i);
 
+                            String DistributorName = c.getString("DistributorName");
                             String id = c.getString("id");
                             String companyId = c.getString("companyId");
                             String BillDate = c.getString("BillDate");
@@ -201,12 +177,12 @@ public class OutstandingBill extends Fragment {
                             String modifiedOn = c.getString("modifiedOn");
                             String isSettled = c.getString("isSettled");
 
-                            PurchasesPojo purchasesPojo = new PurchasesPojo(id, companyId, BillDate, InvoiceNumber, DistributorId, Amount,
+                            PurchasesPojo purchasesPojo = new PurchasesPojo(DistributorName, id, companyId, BillDate, InvoiceNumber, DistributorId, Amount,
                                     PaymentDate, PaymentMode, ChequeNumber, BankName, createdBy, createdOn, modifiedBy, modifiedOn, isSettled);
                             purchasesPojoList.add(purchasesPojo);
 
                             SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(getContext());
-                            db.addPurchase(new PurchasesPojo(id, companyId, BillDate, InvoiceNumber, DistributorId, Amount,
+                            db.addPurchase(new PurchasesPojo(DistributorName, id, companyId, BillDate, InvoiceNumber, DistributorId, Amount,
                                     PaymentDate, PaymentMode, ChequeNumber, BankName, createdBy, createdOn, modifiedBy, modifiedOn, isSettled));
                         }
                     } else {
@@ -218,29 +194,18 @@ public class OutstandingBill extends Fragment {
                         @Override
                         public void run() {
                             Toast.makeText(getContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(getContext(), Home.class);
-                            startActivity(intent);
-                            getActivity().finish();
                         }
                     });
                 } catch (Exception e) {
                     Log.e(TAG, "Exception " + e.getMessage());
-                    Intent intent = new Intent(getContext(), Home.class);
-                    startActivity(intent);
-                    getActivity().finish();
+                    Toast.makeText(getContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
                 }
             } else {
                 Log.e(TAG, "Couldn't get json from server.");
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getContext(),
-                                "Something went wrong. Please try again",
-                                Toast.LENGTH_LONG)
-                                .show();
-                        Intent intent = new Intent(getContext(), Home.class);
-                        startActivity(intent);
-                        getActivity().finish();
+                        Toast.makeText(getContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -250,23 +215,17 @@ public class OutstandingBill extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            // Dismiss the progress dialog
-            if (pDialog.isShowing())
-                pDialog.dismiss();
             if (swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);
             }
 
             if (null != msg && !"".equalsIgnoreCase(msg)) {
                 Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getContext(), Home.class);
-                startActivity(intent);
-                getActivity().finish();
             }
             /**
              * Updating parsed JSON data into ListView
              * */
-            outstandingBillAdapter.notifyDataSetChanged();
+            //outstandingBillAdapter.notifyDataSetChanged();
         }
     }
 }

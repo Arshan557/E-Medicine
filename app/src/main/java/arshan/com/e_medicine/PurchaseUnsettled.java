@@ -68,26 +68,7 @@ public class PurchaseUnsettled extends Fragment {
             }
         });
 
-        //Recycle view starts
-        purchaseUnsettledAdapter = new PurchaseUnsettledAdapter(getContext(), purchasesPojoList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(purchaseUnsettledAdapter);
-
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout_purchase_unsettled);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                String finalUrl = Constants.PURCHASE_LIST_URL+"?apikey="+apikey;
-                Log.d("final url",finalUrl);
-                purchasesPojoList.clear();
-                //Make call to Async
-                new getUnsettledPurchases().execute(finalUrl);
-            }
-        });
-
-        String firstTimeFlag;
+        /*String firstTimeFlag;
         spGetFirstTime = getContext().getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
         firstTimeFlag = spGetFirstTime.getString("PurchaseFirstTimeFlag", "");
         Log.d("firstTimeFlag", firstTimeFlag);
@@ -102,41 +83,55 @@ public class PurchaseUnsettled extends Fragment {
             purchasesPojoList.clear();
             //Make call to Async
             new getUnsettledPurchases().execute(finalUrl);
-        } else {
+        } else {*/
             // Reading all purchases
             Log.d("Reading: ", "Reading all purchases..");
             List<PurchasesPojo> purchases = db.getAllPurchases();
             purchasesPojoList.clear();
             if (null != purchases) {
                 for (int i = 0; i <= purchases.size() - 1; i++) {
-                    String log = "Bankname: " + purchases.get(i).getBankName() + " ,Invoice: " + purchases.get(i).getInvoiceNumber();
-                    Log.d("purchases: ", log);
-                    try {
-                        PurchasesPojo purchasesPojo = new PurchasesPojo(purchases.get(i).getId(), purchases.get(i).getCompanyid(), purchases.get(i).getBillDate(), purchases.get(i).getInvoiceNumber(),
-                                purchases.get(i).getDistributorId(), purchases.get(i).getAmount(), purchases.get(i).getPaymentDate(), purchases.get(i).getPaymentMode(), purchases.get(i).getChequeNumber(),
-                                purchases.get(i).getBankName(), purchases.get(i).getCreatedBy(), purchases.get(i).getCreatedOn(), purchases.get(i).getModifiedBy(), purchases.get(i).getModifiedOn(), purchases.get(i).getIsSettled());
-                        purchasesPojoList.add(purchasesPojo);
-                    } catch (Exception e) {
-                        Log.d("Exception", "" + e.getMessage());
+                    String log = "IsSettled: " + purchases.get(i).getIsSettled() + " ,Invoice: " + purchases.get(i).getInvoiceNumber();
+                    Log.d("Unsettled:purchases: ", log);
+                    if ("0".equalsIgnoreCase(purchases.get(i).getIsSettled())) {
+                        try {
+                            PurchasesPojo purchasesPojo = new PurchasesPojo(purchases.get(i).getDistributorName(), purchases.get(i).getId(), purchases.get(i).getCompanyid(), purchases.get(i).getBillDate(), purchases.get(i).getInvoiceNumber(),
+                                    purchases.get(i).getDistributorId(), purchases.get(i).getAmount(), purchases.get(i).getPaymentDate(), purchases.get(i).getPaymentMode(), purchases.get(i).getChequeNumber(),
+                                    purchases.get(i).getBankName(), purchases.get(i).getCreatedBy(), purchases.get(i).getCreatedOn(), purchases.get(i).getModifiedBy(), purchases.get(i).getModifiedOn(), purchases.get(i).getIsSettled());
+                            purchasesPojoList.add(purchasesPojo);
+                        } catch (Exception e) {
+                            Log.d("Exception", "" + e.getMessage());
+                        }
                     }
                 }
             }
-        }
+
+        //Recycle view starts
+        purchaseUnsettledAdapter = new PurchaseUnsettledAdapter(getContext(), purchasesPojoList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(purchaseUnsettledAdapter);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout_purchase_unsettled);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                String finalUrl = Constants.PURCHASE_LIST_URL+"?apikey="+apikey;
+                Log.d("final url",finalUrl);
+                //Make call to Async
+                new getPurchasesList().execute(finalUrl);
+            }
+        });
 
         return view;
     }
 
-    private class getUnsettledPurchases extends AsyncTask<String, String, String> {
-        String status, msg = "";
+    private class getPurchasesList extends AsyncTask<String, String, String> {
+        String status, msg;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            // Showing progress dialog
-            pDialog = new ProgressDialog(getContext());
-            pDialog.setMessage("Loading bills...");
-            pDialog.setCancelable(false);
-            pDialog.show();
         }
         @Override
         protected String doInBackground(String... f_url) {
@@ -162,9 +157,11 @@ public class PurchaseUnsettled extends Fragment {
                         // Getting JSON Array node
                         JSONArray purchase = jsonObj.getJSONArray("purchase");
                         // looping through All News
+                        purchasesPojoList.clear();
                         for (int i = 0; i < purchase.length(); i++) {
                             JSONObject c = purchase.getJSONObject(i);
 
+                            String DistributorName = c.getString("DistributorName");
                             String id = c.getString("id");
                             String companyId = c.getString("companyId");
                             String BillDate = c.getString("BillDate");
@@ -182,12 +179,12 @@ public class PurchaseUnsettled extends Fragment {
                             String isSettled = c.getString("isSettled");
 
                             Log.d("response","InvoiceNumber:"+InvoiceNumber+",isSettled:"+isSettled);
-                            PurchasesPojo purchasesPojo = new PurchasesPojo(id, companyId, BillDate, InvoiceNumber, DistributorId, Amount,
+                            PurchasesPojo purchasesPojo = new PurchasesPojo(DistributorName, id, companyId, BillDate, InvoiceNumber, DistributorId, Amount,
                                     PaymentDate, PaymentMode, ChequeNumber, BankName, createdBy, createdOn, modifiedBy, modifiedOn, isSettled);
                             purchasesPojoList.add(purchasesPojo);
 
                             SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(getContext());
-                            db.addPurchase(new PurchasesPojo(id, companyId, BillDate, InvoiceNumber, DistributorId, Amount,
+                            db.addPurchase(new PurchasesPojo(DistributorName, id, companyId, BillDate, InvoiceNumber, DistributorId, Amount,
                                     PaymentDate, PaymentMode, ChequeNumber, BankName, createdBy, createdOn, modifiedBy, modifiedOn, isSettled));
                         }
                     } else {
@@ -199,29 +196,18 @@ public class PurchaseUnsettled extends Fragment {
                         @Override
                         public void run() {
                             Toast.makeText(getContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(getContext(), Home.class);
-                            startActivity(intent);
-                            getActivity().finish();
                         }
                     });
                 } catch (Exception e) {
                     Log.e(TAG, "Exception " + e.getMessage());
-                    Intent intent = new Intent(getContext(), Home.class);
-                    startActivity(intent);
-                    getActivity().finish();
+                    Toast.makeText(getContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
                 }
             } else {
                 Log.e(TAG, "Couldn't get json from server.");
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getContext(),
-                                "Something went wrong. Please try again",
-                                Toast.LENGTH_LONG)
-                                .show();
-                        Intent intent = new Intent(getContext(), Home.class);
-                        startActivity(intent);
-                        getActivity().finish();
+                        Toast.makeText(getContext(), "Something went wrong. Please try again", Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -231,23 +217,17 @@ public class PurchaseUnsettled extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            // Dismiss the progress dialog
-            if (pDialog.isShowing())
-                pDialog.dismiss();
             if (swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);
             }
 
-            if (null != msg && !"".equalsIgnoreCase(msg)) {
+            if (null != msg  && !"ok".equalsIgnoreCase(status)) {
                 Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getContext(), Home.class);
-                startActivity(intent);
-                getActivity().finish();
             }
             /**
              * Updating parsed JSON data into ListView
              * */
-            purchaseUnsettledAdapter.notifyDataSetChanged();
+            //purchaseUnsettledAdapter.notifyDataSetChanged();
         }
     }
 }

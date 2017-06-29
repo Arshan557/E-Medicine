@@ -47,7 +47,7 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		String CREATE_PRODUCTS_TABLE = "CREATE TABLE "+ TABLE_PRODUCTS +"(id TEXT PRIMARY KEY, companyid TEXT, barcode TEXT, itemname TEXT, mfgdate TEXT, expdate TEXT, maxdiscount TEXT, qty TEXT, mrp TEXT, batch TEXT, bmp BLOB)" ;
 		String CREATE_DISTRIBUTORS_TABLE = "CREATE TABLE "+ TABLE_DISTRIBUTORS +"(id TEXT PRIMARY KEY, companyid TEXT, name TEXT, email TEXT, uname TEXT, password TEXT, mobile TEXT, phone TEXT, isActive TEXT, picURL TEXT, createdBy TEXT, modifiedBy TEXT, createdOn TEXT, modifiedOn TEXT, bmp BLOB)" ;
 		String CREATE_CATEGORIES_TABLE = "CREATE TABLE "+ TABLE_CATEGORIES +"(id TEXT PRIMARY KEY, companyid TEXT, name TEXT, createdBy TEXT, createdOn TEXT, modifiedBy TEXT, modifiedOn TEXT)" ;
-		String CREATE_PURCHASES_TABLE = "CREATE TABLE "+ TABLE_PURCHASES +"(id TEXT PRIMARY KEY, companyid TEXT, BillDate TEXT, InvoiceNumber TEXT, DistributorId TEXT, Amount TEXT, PaymentDate TEXT, PaymentMode TEXT, ChequeNumber TEXT, BankName TEXT, createdBy TEXT, createdOn TEXT, modifiedBy TEXT, modifiedOn TEXT, isSettled TEXT)" ;
+		String CREATE_PURCHASES_TABLE = "CREATE TABLE "+ TABLE_PURCHASES +"(DistributorName TEXT,id TEXT PRIMARY KEY, companyid TEXT, BillDate TEXT, InvoiceNumber TEXT, DistributorId TEXT, Amount TEXT, PaymentDate TEXT, PaymentMode TEXT, ChequeNumber TEXT, BankName TEXT, createdBy TEXT, createdOn TEXT, modifiedBy TEXT, modifiedOn TEXT, isSettled TEXT)" ;
 		String CREATE_USERS_TABLE = "CREATE TABLE "+ TABLE_USERS +"(id TEXT PRIMARY KEY, fname TEXT, lname TEXT, uname TEXT, password TEXT, gender TEXT, email TEXT, mobile TEXT, phone TEXT, usertype TEXT, apikey TEXT, addressId TEXT, profilePic TEXT, companyid TEXT, createdBy TEXT, createdOn TEXT, modifiedBy TEXT, modifiedOn TEXT, isActive TEXT, bmp BLOB)" ;
 
 		db.execSQL(CREATE_PRODUCTS_TABLE);
@@ -176,6 +176,7 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
+		values.put("DistributorName", purchasesPojo.getDistributorName());
 		values.put("id", purchasesPojo.getId());
 		values.put("companyid", purchasesPojo.getCompanyid());
 		values.put("BillDate", purchasesPojo.getBillDate());
@@ -369,21 +370,22 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		if (cursor.moveToFirst()) {
 			do {
 				PurchasesPojo purchase = new PurchasesPojo();
-				purchase.setId(cursor.getString(0));
-				purchase.setCompanyid(cursor.getString(1));
-				purchase.setBillDate(cursor.getString(2));
-				purchase.setInvoiceNumber(cursor.getString(3));
-				purchase.setDistributorId(cursor.getString(4));
-				purchase.setAmount(cursor.getString(5));
-				purchase.setPaymentDate(cursor.getString(6));
-				purchase.setPaymentMode(cursor.getString(7));
-				purchase.setChequeNumber(cursor.getString(8));
-				purchase.setBankName(cursor.getString(9));
-				purchase.setCreatedBy(cursor.getString(10));
-				purchase.setCreatedOn(cursor.getString(11));
-				purchase.setModifiedBy(cursor.getString(12));
-				purchase.setModifiedOn(cursor.getString(13));
-				purchase.setIsSettled(cursor.getString(14));
+				purchase.setDistributorName(cursor.getString(0));
+				purchase.setId(cursor.getString(1));
+				purchase.setCompanyid(cursor.getString(2));
+				purchase.setBillDate(cursor.getString(3));
+				purchase.setInvoiceNumber(cursor.getString(4));
+				purchase.setDistributorId(cursor.getString(5));
+				purchase.setAmount(cursor.getString(6));
+				purchase.setPaymentDate(cursor.getString(7));
+				purchase.setPaymentMode(cursor.getString(8));
+				purchase.setChequeNumber(cursor.getString(9));
+				purchase.setBankName(cursor.getString(10));
+				purchase.setCreatedBy(cursor.getString(11));
+				purchase.setCreatedOn(cursor.getString(12));
+				purchase.setModifiedBy(cursor.getString(13));
+				purchase.setModifiedOn(cursor.getString(14));
+				purchase.setIsSettled(cursor.getString(15));
 				// Adding purchase to list
 				purchasesList.add(purchase);
 			} while (cursor.moveToNext());

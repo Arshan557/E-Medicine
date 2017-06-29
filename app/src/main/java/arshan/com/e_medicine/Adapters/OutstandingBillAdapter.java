@@ -3,7 +3,6 @@ package arshan.com.e_medicine.Adapters;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +12,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import arshan.com.e_medicine.Models.DistNameAmountMapPojo;
 import arshan.com.e_medicine.Models.PurchasesPojo;
 import arshan.com.e_medicine.R;
-import arshan.com.e_medicine.Views.CustomProgressDialog;
 
 /**
  * Created by Arshan on 19-Jun-2017.
@@ -24,11 +21,7 @@ import arshan.com.e_medicine.Views.CustomProgressDialog;
 public class OutstandingBillAdapter extends RecyclerView.Adapter<OutstandingBillAdapter.OutstandingBillViewHolder> {
     private List<PurchasesPojo> outstandingBillList = new ArrayList<>();
     private OutstandingBillClickListener outstandingBillClickListener;
-    private CustomProgressDialog customProgressDialog;
-    PurchasesPojo purchasesPojo;
-    DistNameAmountMapPojo distNameAmountMapPojo;
     private Context context;
-    private List<DistNameAmountMapPojo> distNameAmountMapPojosList = new ArrayList<>();
     OutstandingBillViewHolder holder;
 
     private static final String TAG = "OutstandingBillAdapter";
@@ -79,10 +72,9 @@ public class OutstandingBillAdapter extends RecyclerView.Adapter<OutstandingBill
         }
     }
 
-    public OutstandingBillAdapter(Context context, List<DistNameAmountMapPojo> distNameAmountMapPojosList) {
+    public OutstandingBillAdapter(Context context, List<PurchasesPojo> outstandingBillList) {
         this.context=context;
         this.outstandingBillList = outstandingBillList;
-        this.distNameAmountMapPojosList = distNameAmountMapPojosList;
     }
 
     /**
@@ -131,13 +123,11 @@ public class OutstandingBillAdapter extends RecyclerView.Adapter<OutstandingBill
 
     @Override
     public void onBindViewHolder(OutstandingBillViewHolder holder, int position) {
-        //final PurchasesPojo purchasesPojo = outstandingBillList.get(position);
-        distNameAmountMapPojo = distNameAmountMapPojosList.get(position);
-        Log.d("size",""+distNameAmountMapPojo.getAmount());
+        final PurchasesPojo purchasesPojo = outstandingBillList.get(position);
 
         this.holder = holder;
-        holder.distributor.setText(distNameAmountMapPojo.getName());
-        holder.amount.setText(distNameAmountMapPojo.getAmount());
+        holder.distributor.setText(purchasesPojo.getDistributorName());
+        holder.amount.setText(purchasesPojo.getAmount());
 
     }
 

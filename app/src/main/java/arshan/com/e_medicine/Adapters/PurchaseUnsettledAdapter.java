@@ -16,7 +16,6 @@ import java.util.List;
 
 import arshan.com.e_medicine.Models.PurchasesPojo;
 import arshan.com.e_medicine.R;
-import arshan.com.e_medicine.Views.CustomProgressDialog;
 
 /**
  * Created by Arshan on 19-Jun-2017.
@@ -24,8 +23,6 @@ import arshan.com.e_medicine.Views.CustomProgressDialog;
 public class PurchaseUnsettledAdapter extends RecyclerView.Adapter<PurchaseUnsettledAdapter.PurchaseUnSettledViewHolder> {
     private List<PurchasesPojo> unsettledPurchaseList = new ArrayList<>();;
     private UnsettledPurchaseClickListener unsettledPurchaseClickListener;
-    private CustomProgressDialog customProgressDialog;
-    PurchasesPojo purchasesPojo;
     private Context context;
     PurchaseUnSettledViewHolder holder;
 
@@ -140,13 +137,9 @@ public class PurchaseUnsettledAdapter extends RecyclerView.Adapter<PurchaseUnset
     @Override
     public void onBindViewHolder(PurchaseUnSettledViewHolder holder, int position) {
         final PurchasesPojo purchasesPojo = unsettledPurchaseList.get(position);
-        holder.linearLayout.setVisibility(View.GONE);
-        if ("0".equalsIgnoreCase(purchasesPojo.getIsSettled())) {
-            holder.linearLayout.setVisibility(View.VISIBLE);
             this.holder = holder;
             holder.invoice.setText(purchasesPojo.getInvoiceNumber());
             holder.amount.setText(purchasesPojo.getAmount());
-        }
     }
 
     @Override

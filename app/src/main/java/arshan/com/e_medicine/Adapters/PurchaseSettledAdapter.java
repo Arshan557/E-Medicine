@@ -18,7 +18,6 @@ import java.util.List;
 import arshan.com.e_medicine.Models.PurchasesPojo;
 import arshan.com.e_medicine.R;
 import arshan.com.e_medicine.ViewSettledPurchaseActivity;
-import arshan.com.e_medicine.Views.CustomProgressDialog;
 
 /**
  * Created by Arshan on 19-Jun-2017.
@@ -26,8 +25,6 @@ import arshan.com.e_medicine.Views.CustomProgressDialog;
 public class PurchaseSettledAdapter extends RecyclerView.Adapter<PurchaseSettledAdapter.PurchaseSettledViewHolder> {
     private List<PurchasesPojo> settledPurchaseList = new ArrayList<>();;
     private SettledPurchaseClickListener settledPurchaseClickListener;
-    private CustomProgressDialog customProgressDialog;
-    PurchasesPojo purchasesPojo;
     private Context context;
     PurchaseSettledViewHolder holder;
 
@@ -56,6 +53,7 @@ public class PurchaseSettledAdapter extends RecyclerView.Adapter<PurchaseSettled
             PurchasesPojo purchasesPojo = settledPurchaseList.get(getPosition());
             Intent i = new Intent(context, ViewSettledPurchaseActivity.class);
             Bundle bundle = new Bundle();
+            bundle.putString("DistributorName", purchasesPojo.getDistributorName());
             bundle.putString("id", purchasesPojo.getId());
             bundle.putString("companyId", purchasesPojo.getCompanyid());
             bundle.putString("BillDate", purchasesPojo.getBillDate());
@@ -134,14 +132,9 @@ public class PurchaseSettledAdapter extends RecyclerView.Adapter<PurchaseSettled
     @Override
     public void onBindViewHolder(PurchaseSettledViewHolder holder, int position) {
         final PurchasesPojo purchasesPojo = settledPurchaseList.get(position);
-        //Log.d("size",""+purchasesPojo.getInvoiceNumber());
-        holder.linearLayout.setVisibility(View.GONE);
-        if ("1".equalsIgnoreCase(purchasesPojo.getIsSettled())) {
-            holder.linearLayout.setVisibility(View.VISIBLE);
             this.holder = holder;
             holder.invoice.setText(purchasesPojo.getInvoiceNumber());
             holder.amount.setText(purchasesPojo.getAmount());
-        }
     }
 
     @Override
