@@ -35,6 +35,18 @@
                         android:id="@+id/justView"
                         android:layout_width="match_parent"
                         android:layout_height="50dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="You don't have admins. Please add"
+                        android:textStyle="bold"
+                        android:id="@+id/no_admins"
+                        android:visibility="gone"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="@color/primary_dark"
+                        android:textSize="20dp"/>
+
                 </LinearLayout>
             </ScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>

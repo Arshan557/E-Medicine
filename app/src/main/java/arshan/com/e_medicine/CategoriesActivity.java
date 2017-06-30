@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -41,6 +42,7 @@ public class CategoriesActivity extends AppCompatActivity {
     private CategoriesAdapter categoriesAdapter;
     private CoordinatorLayout coordinatorLayout;
     private RecyclerView recyclerView;
+    private TextView noCats;
     private List<CategoriesPojo> categoryPojoList = new ArrayList<>();
     private String TAG = CategoriesActivity.class.getSimpleName(), apikey="";
     private ProgressDialog pDialog;
@@ -70,13 +72,7 @@ public class CategoriesActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.category_recycle);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.distributorCoordinate);
-
-        //Recycle view starts
-        categoriesAdapter = new CategoriesAdapter(CategoriesActivity.this, categoryPojoList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(categoriesAdapter);
+        noCats = (TextView) findViewById(R.id.no_cats);
 
         com.shamanland.fab.FloatingActionButton fab = (com.shamanland.fab.FloatingActionButton) findViewById(R.id.fabCat);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -85,18 +81,6 @@ public class CategoriesActivity extends AppCompatActivity {
                 android.app.FragmentManager manager = getFragmentManager();
                 DailogAddCategory dailogFragment = new DailogAddCategory();
                 dailogFragment.show(manager,"dailogFrag");
-            }
-        });
-
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout_categories);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                String finalUrl = Constants.CATEGORIES_URL+"?apikey="+apikey;
-                Log.d("final url",finalUrl);
-                categoryPojoList.clear();
-                //Make call to Async
-                new getCategories().execute(finalUrl);
             }
         });
 
@@ -128,6 +112,29 @@ public class CategoriesActivity extends AppCompatActivity {
                 }
             }
         }
+
+        if (categoryPojoList.isEmpty()) {
+            noCats.setVisibility(View.VISIBLE);
+        }
+
+        //Recycle view starts
+        categoriesAdapter = new CategoriesAdapter(CategoriesActivity.this, categoryPojoList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(categoriesAdapter);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout_categories);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                String finalUrl = Constants.CATEGORIES_URL+"?apikey="+apikey;
+                Log.d("final url",finalUrl);
+                categoryPojoList.clear();
+                //Make call to Async
+                new getCategories().execute(finalUrl);
+            }
+        });
     }
 
     private class getCategories extends AsyncTask<String, String, String> {
@@ -224,6 +231,9 @@ public class CategoriesActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            if (categoryPojoList.isEmpty()) {
+                noCats.setVisibility(View.VISIBLE);
+            }
             // Dismiss the progress dialog
             if (pDialog.isShowing())
                 pDialog.dismiss();

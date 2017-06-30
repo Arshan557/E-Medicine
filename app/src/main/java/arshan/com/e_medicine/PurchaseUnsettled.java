@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -37,6 +38,7 @@ public class PurchaseUnsettled extends Fragment {
     private PurchaseUnsettledAdapter purchaseUnsettledAdapter;
     private RecyclerView recyclerView;
     private Button btnSettle;
+    private TextView noUnsettled;
     private List<PurchasesPojo> purchasesPojoList = new ArrayList<>();
     private String TAG = PurchaseUnsettled.class.getSimpleName(), apikey="";
     private ProgressDialog pDialog;
@@ -51,6 +53,7 @@ public class PurchaseUnsettled extends Fragment {
         View view = inflater.inflate(R.layout.purchase_unsettled, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.unsettled_recycle);
         btnSettle = (Button) view.findViewById(R.id.btn_settle);
+        noUnsettled = (TextView) view.findViewById(R.id.no_unsettled);
 
         SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(getActivity());
 
@@ -104,6 +107,10 @@ public class PurchaseUnsettled extends Fragment {
                     }
                 }
             }
+
+        if (purchasesPojoList.isEmpty()) {
+            noUnsettled.setVisibility(View.VISIBLE);
+        }
 
         //Recycle view starts
         purchaseUnsettledAdapter = new PurchaseUnsettledAdapter(getContext(), purchasesPojoList);
@@ -217,6 +224,9 @@ public class PurchaseUnsettled extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            if (purchasesPojoList.isEmpty()) {
+                noUnsettled.setVisibility(View.VISIBLE);
+            }
             if (swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);
             }

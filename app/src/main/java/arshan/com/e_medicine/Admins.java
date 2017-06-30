@@ -1,6 +1,5 @@
 package arshan.com.e_medicine;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -16,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -39,11 +39,10 @@ import arshan.com.e_medicine.Views.CustomProgressDialog;
 public class Admins extends Fragment {
     private AdminsAdapter adminsAdapter;
     private RecyclerView recyclerView;
+    private TextView noAdmins;
     private List<UsersPojo> usersPojoList = new ArrayList<>();
     private String TAG = Admins.class.getSimpleName(), apikey="";
-    private ProgressDialog pDialog;
     public static final String DEFAULT = "";
-    SharedPreferences spGetFirstTime;
     private SwipeRefreshLayout swipeRefreshLayout;
     private CustomProgressDialog customProgressDialog;
 
@@ -53,6 +52,7 @@ public class Admins extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.admins, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.admins_recycle);
+        noAdmins = (TextView) view.findViewById(R.id.no_admins);
 
         SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(getActivity());
 
@@ -106,6 +106,10 @@ public class Admins extends Fragment {
                     }
                 }
             }
+
+        if (usersPojoList.isEmpty()) {
+            noAdmins.setVisibility(View.VISIBLE);
+        }
 
         //Recycle view starts
         adminsAdapter = new AdminsAdapter(getContext(), usersPojoList);
@@ -234,6 +238,9 @@ public class Admins extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            if (usersPojoList.isEmpty()) {
+                noAdmins.setVisibility(View.VISIBLE);
+            }
             if (swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);
             }

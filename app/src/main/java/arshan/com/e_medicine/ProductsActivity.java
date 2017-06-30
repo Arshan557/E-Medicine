@@ -55,6 +55,7 @@ public class ProductsActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private CoordinatorLayout coordinatorLayout;
     private RecyclerView recyclerView;
+    private TextView noProducts;
     private List<ProductsPojo> productsPojoList = new ArrayList<>();
     private ProductsAdapter productsAdapter;
     public static final int progress_bar_type = 0;
@@ -114,6 +115,11 @@ public class ProductsActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.products_recycle);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.productsCoordinate);
+        noProducts = (TextView) findViewById(R.id.no_products);
+
+        if (productsPojoList.isEmpty()) {
+            noProducts.setVisibility(View.VISIBLE);
+        }
 
         boolean mobileNwInfo = false;
 
@@ -396,7 +402,7 @@ public class ProductsActivity extends AppCompatActivity {
 
     private class GetProducts extends AsyncTask<String, String, String> {
 
-        String status, msg = null;
+        String status, msg;
 
         @Override
         protected void onPreExecute() {
@@ -515,6 +521,9 @@ public class ProductsActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            if (productsPojoList.isEmpty()) {
+                noProducts.setVisibility(View.VISIBLE);
+            }
             // Dismiss the progress dialog
             customProgressDialog.cancel();
             if (null != msg)

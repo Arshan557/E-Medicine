@@ -250,6 +250,14 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("status",status);
 
                     if ("ok".equalsIgnoreCase(status)) {
+                        SharedPreferences preferencesUserData = getSharedPreferences("UserData", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editorUserData = preferencesUserData.edit();
+                        editorUserData.clear();
+                        editorUserData.commit();
+                        SharedPreferences preferencesFirstTimeFlag = getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editorFirstTimeFlag = preferencesFirstTimeFlag.edit();
+                        editorFirstTimeFlag.clear();
+                        editorFirstTimeFlag.commit();
                         // Getting JSON Array node
                         JSONArray products = jsonObj.getJSONArray("User");
                         // looping through All News
@@ -334,6 +342,9 @@ public class LoginActivity extends AppCompatActivity {
             if (pDialog.isShowing())
                 pDialog.dismiss();
             if (null != status && !status.isEmpty() && "ok".equalsIgnoreCase(status)) {
+                //Delete SQLite tables
+                SQLiteDatabaseHandler db =new SQLiteDatabaseHandler(LoginActivity.this);
+                db.deleteAllTables();
                 Intent i = new Intent(LoginActivity.this, Home.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("fname",fname);

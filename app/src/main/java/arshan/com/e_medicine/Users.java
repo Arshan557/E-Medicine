@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -37,6 +38,7 @@ import arshan.com.e_medicine.Network.HttpHandler;
 public class Users extends Fragment {
     private UsersAdapter usersAdapter;
     private RecyclerView recyclerView;
+    private TextView noUsers;
     private List<UsersPojo> usersPojoList = new ArrayList<>();
     private String TAG = Users.class.getSimpleName(), apikey="";
     public static final String DEFAULT = "";
@@ -48,6 +50,7 @@ public class Users extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.users, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.users_recycle);
+        noUsers = (TextView) view.findViewById(R.id.no_users);
 
         SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(getActivity());
 
@@ -101,6 +104,10 @@ public class Users extends Fragment {
                         }
                     }
                 }
+
+        if (usersPojoList.isEmpty()) {
+            noUsers.setVisibility(View.VISIBLE);
+        }
 
         //Recycle view starts
         usersAdapter = new UsersAdapter(getContext(), usersPojoList);
@@ -228,6 +235,9 @@ public class Users extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            if (usersPojoList.isEmpty()) {
+                noUsers.setVisibility(View.VISIBLE);
+            }
             if (swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);
             }

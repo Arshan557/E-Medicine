@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -45,6 +46,7 @@ public class DistributorsActivity extends AppCompatActivity {
     private DistributorAdapter distributorAdapter;
     private CoordinatorLayout coordinatorLayout;
     private RecyclerView recyclerView;
+    private TextView noDists;
     private List<DistributorPojo> distributorPojoList = new ArrayList<>();
     private String TAG = DistributorsActivity.class.getSimpleName(), apikey="";
     private ProgressDialog pDialog;
@@ -75,13 +77,7 @@ public class DistributorsActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.distributor_recycle);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.distributorCoordinate);
-
-        //Recycle view starts
-        distributorAdapter = new DistributorAdapter(getApplicationContext(), distributorPojoList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(distributorAdapter);
+        noDists = (TextView) findViewById(R.id.no_dists);
 
         com.shamanland.fab.FloatingActionButton fab = (com.shamanland.fab.FloatingActionButton) findViewById(R.id.fabDist);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -89,18 +85,6 @@ public class DistributorsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(DistributorsActivity.this, AddDistributorActivity.class);
                 startActivity(intent);
-            }
-        });
-
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout_distributors);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                String finalUrl = Constants.DISTRIBUTORS_URL+"?apikey="+apikey;
-                Log.d("final url",finalUrl);
-                distributorPojoList.clear();
-                //Make call to Async
-                new getDistributors().execute(finalUrl);
             }
         });
 
@@ -135,6 +119,29 @@ public class DistributorsActivity extends AppCompatActivity {
                 }
             }
         }
+
+        if (distributorPojoList.isEmpty()) {
+            noDists.setVisibility(View.VISIBLE);
+        }
+
+        //Recycle view starts
+        distributorAdapter = new DistributorAdapter(getApplicationContext(), distributorPojoList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(distributorAdapter);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout_distributors);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                String finalUrl = Constants.DISTRIBUTORS_URL+"?apikey="+apikey;
+                Log.d("final url",finalUrl);
+                distributorPojoList.clear();
+                //Make call to Async
+                new getDistributors().execute(finalUrl);
+            }
+        });
     }
 
     private class getDistributors extends AsyncTask<String, String, String> {
@@ -246,6 +253,9 @@ public class DistributorsActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            if (distributorPojoList.isEmpty()) {
+                noDists.setVisibility(View.VISIBLE);
+            }
             // Dismiss the progress dialog
             if (pDialog.isShowing())
                 pDialog.dismiss();

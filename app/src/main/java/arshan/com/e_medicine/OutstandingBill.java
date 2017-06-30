@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -35,6 +36,7 @@ import arshan.com.e_medicine.Network.HttpHandler;
 public class OutstandingBill extends Fragment {
     private OutstandingBillAdapter outstandingBillAdapter;
     private RecyclerView recyclerView;
+    private TextView noOutstandings;
     private List<PurchasesPojo> purchasesPojoList = new ArrayList<>();
     private Map<String, String> distNameAmountMap = new HashMap<>();
     private String TAG = PurchaseSettled.class.getSimpleName(), apikey="";
@@ -47,6 +49,7 @@ public class OutstandingBill extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.outstanding_bills, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.outstanding_recycle);
+        noOutstandings = (TextView) view.findViewById(R.id.no_outstandings);
 
         SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(getActivity());
 
@@ -103,6 +106,9 @@ public class OutstandingBill extends Fragment {
                     Log.d("Exception", "" + e.getMessage());
                 }
             }
+        }
+        if (purchasesPojoList.isEmpty()) {
+            noOutstandings.setVisibility(View.VISIBLE);
         }
         //Recycle view starts
         outstandingBillAdapter = new OutstandingBillAdapter(getContext(), purchasesPojoList);
@@ -215,6 +221,9 @@ public class OutstandingBill extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            if (purchasesPojoList.isEmpty()) {
+                noOutstandings.setVisibility(View.VISIBLE);
+            }
             if (swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);
             }
