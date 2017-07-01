@@ -119,6 +119,8 @@ public class ProductsActivity extends AppCompatActivity {
 
         if (productsPojoList.isEmpty()) {
             noProducts.setVisibility(View.VISIBLE);
+        } else {
+            noProducts.setVisibility(View.GONE);
         }
 
         boolean mobileNwInfo = false;
@@ -523,6 +525,8 @@ public class ProductsActivity extends AppCompatActivity {
             super.onPostExecute(result);
             if (productsPojoList.isEmpty()) {
                 noProducts.setVisibility(View.VISIBLE);
+            } else {
+                noProducts.setVisibility(View.GONE);
             }
             // Dismiss the progress dialog
             customProgressDialog.cancel();

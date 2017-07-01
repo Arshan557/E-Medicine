@@ -95,6 +95,8 @@ public class PurchaseSettled extends Fragment {
 
         if (purchasesPojoList.isEmpty()) {
             noSettled.setVisibility(View.VISIBLE);
+        } else {
+            noSettled.setVisibility(View.GONE);
         }
 
         //Recycle view starts
@@ -210,6 +212,8 @@ public class PurchaseSettled extends Fragment {
             super.onPostExecute(result);
             if (purchasesPojoList.isEmpty()) {
                 noSettled.setVisibility(View.VISIBLE);
+            } else {
+                noSettled.setVisibility(View.GONE);
             }
             if (swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);

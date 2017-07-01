@@ -109,6 +109,8 @@ public class OutstandingBill extends Fragment {
         }
         if (purchasesPojoList.isEmpty()) {
             noOutstandings.setVisibility(View.VISIBLE);
+        } else {
+            noOutstandings.setVisibility(View.GONE);
         }
         //Recycle view starts
         outstandingBillAdapter = new OutstandingBillAdapter(getContext(), purchasesPojoList);
@@ -223,6 +225,8 @@ public class OutstandingBill extends Fragment {
             super.onPostExecute(result);
             if (purchasesPojoList.isEmpty()) {
                 noOutstandings.setVisibility(View.VISIBLE);
+            } else {
+                noOutstandings.setVisibility(View.GONE);
             }
             if (swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);

@@ -113,7 +113,9 @@ public class CategoriesActivity extends AppCompatActivity {
             }
         }
 
-        if (categoryPojoList.isEmpty()) {
+        if (!categoryPojoList.isEmpty()) {
+            noCats.setVisibility(View.GONE);
+        } else {
             noCats.setVisibility(View.VISIBLE);
         }
 
@@ -231,7 +233,9 @@ public class CategoriesActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            if (categoryPojoList.isEmpty()) {
+            if (!categoryPojoList.isEmpty()) {
+                noCats.setVisibility(View.GONE);
+            } else {
                 noCats.setVisibility(View.VISIBLE);
             }
             // Dismiss the progress dialog

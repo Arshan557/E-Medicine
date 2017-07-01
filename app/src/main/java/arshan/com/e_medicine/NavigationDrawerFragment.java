@@ -33,8 +33,8 @@ public class NavigationDrawerFragment extends Fragment{
     private LinearLayout profile, calcLinear, contactUsLinear, changePwdLinear, rateLinear, aboutUsLinear, logoutLinear, aboutGroup;
     private TextView profileName, tc, contactDev, faq, help, calc, contact, pwd, rate, about, logout;
     private CircleImageView profilePhoto;
-    public static final String DEFAULT = "";
-    String fname = "", lname = "", profilePic = "";
+    public static final String DEFAULT = "N/A";
+    String fname, lname, profilePic = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,9 +63,10 @@ public class NavigationDrawerFragment extends Fragment{
         profilePhoto = (CircleImageView) layout.findViewById(R.id.profilePic);
 
         profileName.setText(fname+" "+lname);
-        if (null != profilePic) {
+        if (null != profilePic && !"N/A".equalsIgnoreCase(profilePic) && !"".equalsIgnoreCase(profilePic))
             Glide.with(NavigationDrawerFragment.this).load(profilePic).into(profilePhoto);
-        }
+        else
+            profilePhoto.setImageResource(R.drawable.defaultpic);
 
         //recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
         profile = (LinearLayout) layout.findViewById(R.id.containerDrawerImage);

@@ -107,6 +107,8 @@ public class Users extends Fragment {
 
         if (usersPojoList.isEmpty()) {
             noUsers.setVisibility(View.VISIBLE);
+        } else {
+            noUsers.setVisibility(View.GONE);
         }
 
         //Recycle view starts
@@ -237,6 +239,8 @@ public class Users extends Fragment {
             super.onPostExecute(result);
             if (usersPojoList.isEmpty()) {
                 noUsers.setVisibility(View.VISIBLE);
+            } else {
+                noUsers.setVisibility(View.GONE);
             }
             if (swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);

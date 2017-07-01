@@ -120,7 +120,9 @@ public class DistributorsActivity extends AppCompatActivity {
             }
         }
 
-        if (distributorPojoList.isEmpty()) {
+        if (!distributorPojoList.isEmpty()) {
+            noDists.setVisibility(View.GONE);
+        } else {
             noDists.setVisibility(View.VISIBLE);
         }
 
@@ -253,7 +255,9 @@ public class DistributorsActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            if (distributorPojoList.isEmpty()) {
+            if (!distributorPojoList.isEmpty()) {
+                noDists.setVisibility(View.GONE);
+            } else {
                 noDists.setVisibility(View.VISIBLE);
             }
             // Dismiss the progress dialog

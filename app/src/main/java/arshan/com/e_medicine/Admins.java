@@ -109,6 +109,8 @@ public class Admins extends Fragment {
 
         if (usersPojoList.isEmpty()) {
             noAdmins.setVisibility(View.VISIBLE);
+        } else {
+            noAdmins.setVisibility(View.GONE);
         }
 
         //Recycle view starts
@@ -240,6 +242,8 @@ public class Admins extends Fragment {
             super.onPostExecute(result);
             if (usersPojoList.isEmpty()) {
                 noAdmins.setVisibility(View.VISIBLE);
+            } else {
+                noAdmins.setVisibility(View.GONE);
             }
             if (swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);

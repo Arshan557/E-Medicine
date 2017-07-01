@@ -82,7 +82,7 @@ public class ProfileActivity extends AppCompatActivity {
         mail.setText(email);
         mbl.setText(mobile);
         phn.setText(phone);
-        if (null != profilePic)
+        if (null != profilePic && !"N/A".equalsIgnoreCase(profilePic) && !"".equalsIgnoreCase(profilePic))
             Glide.with(ProfileActivity.this).load(profilePic).into(pic);
         else
             pic.setImageResource(R.drawable.defaultpic);
