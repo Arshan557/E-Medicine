@@ -96,7 +96,7 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
                                     Log.d("switch",distributorPojo.getActive()+","+distributorPojo.getId()+","+apikey);
                                     if ("1".equalsIgnoreCase(distributorPojo.getActive()))  distributorPojo.setActive("0");
                                     else distributorPojo.setActive("1");
-                                    String finalUrl = Constants.CHANGE_ACTIVATION_URL+"?DID="+distributorPojo.getId()+"&status="+distributorPojo.getActive()+"&apikey="+apikey;
+                                    String finalUrl = Constants.DISTRIBUTORS_ACTIVATION_URL+"?DID="+distributorPojo.getId()+"&status="+distributorPojo.getActive()+"&apikey="+apikey;
                                     Log.d("final url",finalUrl);
                                     new changeActivationStatus(v).execute(finalUrl);
                                 }
@@ -227,7 +227,7 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
     }
 
     private class changeActivationStatus extends AsyncTask<String, String, String> {
-        String status = "", msg = "Error occured";
+        String status, msg;
         private WeakReference vRef;
         View v;
 
@@ -261,20 +261,24 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     status = jsonObj.getString("status");
-                    Log.d("status",status);
                     msg = jsonObj.getString("msg");
+                    Log.d("status and msg",status+"::"+msg);
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
+                    customProgressDialog.cancel();
                     Toast.makeText(context, "Something went wrong. Try again", Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     Log.e(TAG, "Exception " + e.getMessage());
+                    customProgressDialog.cancel();
+                    Toast.makeText(context,"Something went wrong. Please try again", Toast.LENGTH_LONG).show();
                     if (null != msg) {
                         //Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
                     }
                 }
             } else {
                 Log.e(TAG, "Couldn't get json from server.");
-                //Toast.makeText(context,"Something went wrong. Please try again", Toast.LENGTH_LONG).show();
+                customProgressDialog.cancel();
+                Toast.makeText(context,"Something went wrong. Please try again", Toast.LENGTH_LONG).show();
             }
             return null;
         }
@@ -282,11 +286,11 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            customProgressDialog.cancel();
-            if ("ok".equalsIgnoreCase(status)) {
+            if (customProgressDialog.isShowing()) customProgressDialog.cancel();
+            if (null != status && "ok".equalsIgnoreCase(status)) {
                 if ("1".equalsIgnoreCase(distributorPojo.getActive())) Toast.makeText(context, distributorPojo.getName()+" activated", Toast.LENGTH_LONG).show();
                 else Toast.makeText(context, distributorPojo.getName()+" deactivated", Toast.LENGTH_LONG).show();
-            } else if ("error".equalsIgnoreCase(status)) {
+            } else if (!"ok".equalsIgnoreCase(status) && null != msg) {
                 Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
                 if (holder.simpleSwitch.isChecked()) holder.simpleSwitch.setChecked(false);
                 else holder.simpleSwitch.setChecked(true);

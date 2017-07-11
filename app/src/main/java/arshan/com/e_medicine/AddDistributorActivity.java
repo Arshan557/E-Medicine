@@ -54,19 +54,27 @@ public class AddDistributorActivity extends AppCompatActivity {
         phone = (EditText) findViewById(R.id.distPhone);
         password = (EditText) findViewById(R.id.distPassword);
 
+        //Log.d("name", name.getText().toString());
         com.shamanland.fab.FloatingActionButton fab = (com.shamanland.fab.FloatingActionButton) findViewById(R.id.fabAddDist);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String finalUrl = Constants.ADD_DISTRIBUTOR_URL + "?name=" + name.getText().toString() + "&email=" + mail.getText().toString() +
-                        "&username=" + uname.getText().toString() + "&password=" + password.getText().toString() + "&number=" + mobile.getText().toString()
-                        + "&phone=" + phone.getText().toString() + "&apikey=" + apikey+"&image=http://www.provo2.com/health-fitness/wp-content/uploads/2010/11/default-avatar.jpg";
-                Log.d("final url", finalUrl);
-                //Make call to Async
-                new addDistributor().execute(finalUrl);
 
-            }
-        });
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!(name.getText().toString().isEmpty() || uname.getText().toString().isEmpty() || mail.getText().toString().isEmpty()
+                    || mobile.getText().toString().isEmpty() || phone.getText().toString().isEmpty() || password.getText().toString().isEmpty())) {
+                    String finalUrl = Constants.ADD_DISTRIBUTOR_URL + "?name=" + name.getText().toString() + "&email=" + mail.getText().toString() +
+                            "&username=" + uname.getText().toString() + "&password=" + password.getText().toString() + "&number=" + mobile.getText().toString()
+                            + "&phone=" + phone.getText().toString() + "&apikey=" + apikey + "&image=http://www.provo2.com/health-fitness/wp-content/uploads/2010/11/default-avatar.jpg";
+                    Log.d("final url", finalUrl);
+                    //Make call to Async
+                    new addDistributor().execute(finalUrl);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Fill all the details", Toast.LENGTH_LONG).show();
+                    }
+
+                }
+            });
+
     }
 
     private class addDistributor extends AsyncTask<String, String, String> {

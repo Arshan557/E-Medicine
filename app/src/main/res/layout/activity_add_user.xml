@@ -27,8 +27,8 @@
                 android:layout_marginBottom="20dp"
                 android:focusableInTouchMode="true"
                 android:orientation="vertical"
-                android:paddingLeft="24dp"
-                android:paddingRight="24dp"
+                android:paddingLeft="36dp"
+                android:paddingRight="36dp"
                 android:paddingTop="26dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -43,7 +43,7 @@
                     app:border_color="@color/white"
                     app:border_width="1dp" />
 
-                <android.support.design.widget.TextInputLayout
+                <!--<android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -56,9 +56,20 @@
                         android:layout_height="wrap_content"
                         android:hint="First name"
                         android:textColor="@color/aluminum" />
-                </android.support.design.widget.TextInputLayout>
+                </android.support.design.widget.TextInputLayout>-->
 
-                <android.support.design.widget.TextInputLayout
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/firstName"
+                    android:hint="First name"
+                    android:textColor="@color/black"
+                    app:met_floatingLabelTextColor="@color/primary_darker"
+                    app:met_primaryColor="@color/primary_darker"
+                    app:met_underlineColor="@color/primary_darker"
+                    app:met_floatingLabel="highlight"/>
+
+                <!--<android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -71,7 +82,18 @@
                         android:layout_height="wrap_content"
                         android:hint="Last name"
                         android:textColor="@color/aluminum" />
-                </android.support.design.widget.TextInputLayout>
+                </android.support.design.widget.TextInputLayout>-->
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lastName"
+                    android:hint="Last name"
+                    android:textColor="@color/black"
+                    app:met_floatingLabelTextColor="@color/primary_darker"
+                    app:met_primaryColor="@color/primary_darker"
+                    app:met_underlineColor="@color/primary_darker"
+                    app:met_floatingLabel="highlight"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -96,7 +118,7 @@
                         android:prompt="@string/spinner_title" />
                 </LinearLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <!--<android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -109,9 +131,20 @@
                         android:layout_height="wrap_content"
                         android:hint="User name"
                         android:textColor="@color/aluminum" />
-                </android.support.design.widget.TextInputLayout>
+                </android.support.design.widget.TextInputLayout>-->
 
-                <android.support.design.widget.TextInputLayout
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/userUname"
+                    android:hint="User name"
+                    android:textColor="@color/black"
+                    app:met_floatingLabelTextColor="@color/primary_darker"
+                    app:met_primaryColor="@color/primary_darker"
+                    app:met_underlineColor="@color/primary_darker"
+                    app:met_floatingLabel="highlight"/>
+
+                <!--<android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -125,9 +158,20 @@
                         android:hint="E-mail"
                         android:inputType="textEmailAddress"
                         android:textColor="@color/aluminum" />
-                </android.support.design.widget.TextInputLayout>
+                </android.support.design.widget.TextInputLayout>-->
 
-                <android.support.design.widget.TextInputLayout
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/userEmail"
+                    android:hint="E-mail"
+                    android:textColor="@color/black"
+                    app:met_floatingLabelTextColor="@color/primary_darker"
+                    app:met_primaryColor="@color/primary_darker"
+                    app:met_underlineColor="@color/primary_darker"
+                    app:met_floatingLabel="highlight"/>
+
+                <!--<android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -141,9 +185,20 @@
                         android:hint="Password"
                         android:inputType="textPassword"
                         android:textColor="@color/aluminum" />
-                </android.support.design.widget.TextInputLayout>
+                </android.support.design.widget.TextInputLayout>-->
 
-                <android.support.design.widget.TextInputLayout
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/userPassword"
+                    android:hint="Password"
+                    android:textColor="@color/black"
+                    app:met_floatingLabelTextColor="@color/primary_darker"
+                    app:met_primaryColor="@color/primary_darker"
+                    app:met_underlineColor="@color/primary_darker"
+                    app:met_floatingLabel="highlight"/>
+
+                <!--<android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -157,9 +212,20 @@
                         android:hint="Mobile"
                         android:inputType="number"
                         android:textColor="@color/aluminum" />
-                </android.support.design.widget.TextInputLayout>
+                </android.support.design.widget.TextInputLayout>-->
 
-                <android.support.design.widget.TextInputLayout
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/userMobile"
+                    android:hint="Mobile"
+                    android:textColor="@color/black"
+                    app:met_floatingLabelTextColor="@color/primary_darker"
+                    app:met_primaryColor="@color/primary_darker"
+                    app:met_underlineColor="@color/primary_darker"
+                    app:met_floatingLabel="highlight"/>
+
+                <!--<android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -173,7 +239,18 @@
                         android:hint="Phone"
                         android:inputType="number"
                         android:textColor="@color/aluminum" />
-                </android.support.design.widget.TextInputLayout>
+                </android.support.design.widget.TextInputLayout>-->
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/userPhone"
+                    android:hint="Phone"
+                    android:textColor="@color/black"
+                    app:met_floatingLabelTextColor="@color/primary_darker"
+                    app:met_primaryColor="@color/primary_darker"
+                    app:met_underlineColor="@color/primary_darker"
+                    app:met_floatingLabel="highlight"/>
 
                 <View
                     android:id="@+id/justView"
@@ -191,7 +268,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/profilesave"
-        app:floatingActionButtonColor="@color/bg_screen3"
+        app:floatingActionButtonColor="@color/primary_dark"
         app:floatingActionButtonSize="normal" />
 
 </android.support.design.widget.CoordinatorLayout>

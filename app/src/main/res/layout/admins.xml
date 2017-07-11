@@ -59,6 +59,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/adddistributor"
-        app:floatingActionButtonColor="@color/bg_screen3"
+        app:floatingActionButtonColor="@color/primary_dark"
         app:floatingActionButtonSize="normal" />-->
 </android.support.design.widget.CoordinatorLayout>

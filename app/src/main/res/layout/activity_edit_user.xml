@@ -27,8 +27,8 @@
                 android:layout_height="wrap_content"
                 android:focusableInTouchMode="true"
                 android:orientation="vertical"
-                android:paddingLeft="24dp"
-                android:paddingRight="24dp"
+                android:paddingLeft="36dp"
+                android:paddingRight="36dp"
                 android:paddingTop="26dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -43,7 +43,7 @@
                     app:border_color="@color/white"
                     app:border_width="1dp" />
 
-                <android.support.design.widget.TextInputLayout
+                <!--<android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dp"
@@ -54,13 +54,24 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/aluminum" />
-                </android.support.design.widget.TextInputLayout>
+                </android.support.design.widget.TextInputLayout>-->
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/user_name"
+                    android:hint="Name"
+                    android:textColor="@color/black"
+                    app:met_floatingLabelTextColor="@color/primary_darker"
+                    app:met_primaryColor="@color/primary_darker"
+                    app:met_underlineColor="@color/primary_darker"
+                    app:met_floatingLabel="highlight"/>
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="20dp" />
+                    android:layout_height="10dp" />
 
-                <android.support.design.widget.TextInputLayout
+                <!--<android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dp"
@@ -71,13 +82,24 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/aluminum" />
-                </android.support.design.widget.TextInputLayout>
+                </android.support.design.widget.TextInputLayout>-->
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/user_uname"
+                    android:hint="User name"
+                    android:textColor="@color/black"
+                    app:met_floatingLabelTextColor="@color/primary_darker"
+                    app:met_primaryColor="@color/primary_darker"
+                    app:met_underlineColor="@color/primary_darker"
+                    app:met_floatingLabel="highlight"/>
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="20dp" />
+                    android:layout_height="10dp" />
 
-                <android.support.design.widget.TextInputLayout
+                <!--<android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dp"
@@ -89,13 +111,24 @@
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
                         android:textColor="@color/aluminum" />
-                </android.support.design.widget.TextInputLayout>
+                </android.support.design.widget.TextInputLayout>-->
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/user_email"
+                    android:hint="E-mail"
+                    android:textColor="@color/black"
+                    app:met_floatingLabelTextColor="@color/primary_darker"
+                    app:met_primaryColor="@color/primary_darker"
+                    app:met_underlineColor="@color/primary_darker"
+                    app:met_floatingLabel="highlight"/>
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="20dp" />
+                    android:layout_height="10dp" />
 
-                <android.support.design.widget.TextInputLayout
+                <!--<android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dp"
@@ -107,13 +140,24 @@
                         android:layout_height="wrap_content"
                         android:inputType="number"
                         android:textColor="@color/aluminum" />
-                </android.support.design.widget.TextInputLayout>
+                </android.support.design.widget.TextInputLayout>-->
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/user_mobile"
+                    android:hint="Mobile"
+                    android:textColor="@color/black"
+                    app:met_floatingLabelTextColor="@color/primary_darker"
+                    app:met_primaryColor="@color/primary_darker"
+                    app:met_underlineColor="@color/primary_darker"
+                    app:met_floatingLabel="highlight"/>
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="20dp" />
+                    android:layout_height="10dp" />
 
-                <android.support.design.widget.TextInputLayout
+                <!--<android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dp"
@@ -125,7 +169,18 @@
                         android:layout_height="wrap_content"
                         android:inputType="number"
                         android:textColor="@color/aluminum" />
-                </android.support.design.widget.TextInputLayout>
+                </android.support.design.widget.TextInputLayout>-->
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/user_phone"
+                    android:hint="Phone"
+                    android:textColor="@color/black"
+                    app:met_floatingLabelTextColor="@color/primary_darker"
+                    app:met_primaryColor="@color/primary_darker"
+                    app:met_underlineColor="@color/primary_darker"
+                    app:met_floatingLabel="highlight"/>
 
                 <View
                     android:id="@+id/justView"
@@ -155,7 +210,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/profilesave"
-        app:floatingActionButtonColor="@color/bg_screen3"
+        app:floatingActionButtonColor="@color/primary_dark"
         app:floatingActionButtonSize="normal" />
 
     <com.shamanland.fab.FloatingActionButton
@@ -165,7 +220,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/profileedit"
-        app:floatingActionButtonColor="@color/bg_screen3"
+        app:floatingActionButtonColor="@color/primary_dark"
         app:floatingActionButtonSize="normal" />
 
     <com.shamanland.fab.FloatingActionButton

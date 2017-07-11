@@ -88,27 +88,34 @@ public class AddUserActivity extends AppCompatActivity implements AdapterView.On
         userType.setAdapter(userTypeAdapter);
 
         com.shamanland.fab.FloatingActionButton fab = (com.shamanland.fab.FloatingActionButton) findViewById(R.id.fabAddUser);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String finalUrl = Constants.USERS_ADD_URL +
-                        "?fname=" + fname.getText().toString() +
-                        "&lname=" + lname.getText().toString()  +
-                        "&uname=" + uname.getText().toString()  +
-                        "&pass=" + password.getText().toString() +
-                        "&gen=" + genderString +
-                        "&email=" + mail.getText().toString() +
-                        "&phone=" + phone.getText().toString() +
-                        "&mobile=" + mobile.getText().toString() +
-                        "&utype=" + userTypeString +
-                        "&apikey=" + apikey +
-                        "&img=http://www.provo2.com/health-fitness/wp-content/uploads/2010/11/default-avatar.jpg";
-                Log.d("final url", finalUrl);
-                //Make call to Async
-                new addUser().execute(finalUrl);
 
-            }
-        });
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!(fname.getText().toString().isEmpty() || lname.getText().toString().isEmpty() || uname.getText().toString().isEmpty() || mail.getText().toString().isEmpty()
+                            || mobile.getText().toString().isEmpty() || phone.getText().toString().isEmpty() || password.getText().toString().isEmpty())) {
+                    String finalUrl = Constants.USERS_ADD_URL +
+                            "?fname=" + fname.getText().toString() +
+                            "&lname=" + lname.getText().toString() +
+                            "&uname=" + uname.getText().toString() +
+                            "&pass=" + password.getText().toString() +
+                            "&gen=" + genderString +
+                            "&email=" + mail.getText().toString() +
+                            "&phone=" + phone.getText().toString() +
+                            "&mobile=" + mobile.getText().toString() +
+                            "&utype=" + userTypeString +
+                            "&apikey=" + apikey +
+                            "&img=http://www.provo2.com/health-fitness/wp-content/uploads/2010/11/default-avatar.jpg";
+                    Log.d("final url", finalUrl);
+                    //Make call to Async
+                    new addUser().execute(finalUrl);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Fill all the details", Toast.LENGTH_LONG).show();
+                }
+
+                }
+            });
+
     }
 
     private class addUser extends AsyncTask<String, String, String> {

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,6 +22,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import arshan.com.e_medicine.Constants.Constants;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -117,13 +123,36 @@ public class NavigationDrawerFragment extends Fragment{
             public void onClick(View view) {
                 mDrawerLayout.closeDrawers();
                 Log.d("SDK",android.os.Build.VERSION.SDK);
+                    /*Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_MAIN);
+                    intent.addCategory(Intent.CATEGORY_APP_CALCULATOR);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);*/
+
+                ArrayList<HashMap<String,Object>> items =new ArrayList<HashMap<String,Object>>();
+
+                final PackageManager pm = getContext().getPackageManager();
+                List<PackageInfo> packs = pm.getInstalledPackages(0);
+                for (PackageInfo pi : packs) {
+                    if( pi.packageName.toString().toLowerCase().contains("calc")){
+                        HashMap<String, Object> map = new HashMap<String, Object>();
+                        map.put("appName", pi.applicationInfo.loadLabel(pm));
+                        map.put("packageName", pi.packageName);
+                        items.add(map);
+                    }
+                }
+                if(items.size()>=1) {
+                    String packageName = (String) items.get(0).get("packageName");
+                    Intent i = pm.getLaunchIntentForPackage(packageName);
+                    if (i != null)
+                        startActivity(i);
+                } else {
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_MAIN);
                     intent.addCategory(Intent.CATEGORY_APP_CALCULATOR);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    /*intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                    intent.setComponent(new ComponentName("com.android.calculator2", "com.android.calculator2.Calculator"));*/
                     startActivity(intent);
+                }
             }
         });
         contactUsLinear.setOnClickListener(new View.OnClickListener() {
