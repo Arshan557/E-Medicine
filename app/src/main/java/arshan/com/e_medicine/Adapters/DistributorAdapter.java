@@ -25,8 +25,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import arshan.com.e_medicine.Constants.Constants;
+import arshan.com.e_medicine.Database.SQLiteDatabaseHandler;
+import arshan.com.e_medicine.DistributorsActivity;
 import arshan.com.e_medicine.EditDistributorActivity;
 import arshan.com.e_medicine.Models.DistributorPojo;
+import arshan.com.e_medicine.Models.DistributorsSQLite;
 import arshan.com.e_medicine.Network.HttpHandler;
 import arshan.com.e_medicine.R;
 import arshan.com.e_medicine.Views.CustomProgressDialog;
@@ -41,6 +44,7 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
     private DistributorsClickListener distributorsClickListener;
     private CustomProgressDialog customProgressDialog;
     DistributorPojo distributorPojo;
+    DistributorsSQLite distributorsSQLite;
     private Context context;
     DistributorViewHolder holder;
 
@@ -92,11 +96,12 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,
                                                     int which) {
+                                    String stat = "";
                                     //Toast.makeText(getContext(),"Yes is clicked",Toast.LENGTH_LONG).show();
                                     Log.d("switch",distributorPojo.getActive()+","+distributorPojo.getId()+","+apikey);
-                                    if ("1".equalsIgnoreCase(distributorPojo.getActive()))  distributorPojo.setActive("0");
-                                    else distributorPojo.setActive("1");
-                                    String finalUrl = Constants.DISTRIBUTORS_ACTIVATION_URL+"?DID="+distributorPojo.getId()+"&status="+distributorPojo.getActive()+"&apikey="+apikey;
+                                    if ("1".equalsIgnoreCase(distributorPojo.getActive()))  stat = "0";
+                                    else stat = "1";
+                                    String finalUrl = Constants.DISTRIBUTORS_ACTIVATION_URL+"?DID="+distributorPojo.getId()+"&status="+stat+"&apikey="+apikey;
                                     Log.d("final url",finalUrl);
                                     new changeActivationStatus(v).execute(finalUrl);
                                 }
@@ -263,6 +268,16 @@ public class DistributorAdapter extends RecyclerView.Adapter<DistributorAdapter.
                     status = jsonObj.getString("status");
                     msg = jsonObj.getString("msg");
                     Log.d("status and msg",status+"::"+msg);
+                    if (null != status && "ok".equalsIgnoreCase(status)) {
+                        if ("1".equalsIgnoreCase(distributorPojo.getActive())) {
+                            distributorPojo.setActive("0");
+                        } else {
+                            distributorPojo.setActive("1");
+                        }
+                        //Updating SQLite table
+                        SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(context);
+                        db.updateDistributor(distributorPojo);
+                    }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
                     customProgressDialog.cancel();

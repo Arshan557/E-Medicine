@@ -29,6 +29,7 @@ import java.util.List;
 
 import arshan.com.e_medicine.Adapters.AdminsAdapter;
 import arshan.com.e_medicine.Constants.Constants;
+import arshan.com.e_medicine.Database.SQLiteDatabaseHandler;
 import arshan.com.e_medicine.Models.UsersPojo;
 import arshan.com.e_medicine.Network.HttpHandler;
 import arshan.com.e_medicine.Views.CustomProgressDialog;
@@ -88,7 +89,7 @@ public class Admins extends Fragment {
             if (null != user) {
                 usersPojoList.clear();
                 for (int i = 0; i <= user.size() - 1; i++) {
-                    String log = "Fname: " + user.get(i).getFname() + " ,Lname: " + user.get(i).getLname() + "type: " + user.get(i).getUsertype();
+                    String log = "Fname: " + user.get(i).getFname() + " ,status: " + user.get(i).getIsActive() + " ,type: " + user.get(i).getUsertype();
                     Log.d("Admins: ", log);
                     try {
                         if ("2".equalsIgnoreCase(user.get(i).getUsertype())) {

@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import arshan.com.e_medicine.Constants.Constants;
+import arshan.com.e_medicine.Database.SQLiteDatabaseHandler;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class NavigationDrawerFragment extends Fragment{

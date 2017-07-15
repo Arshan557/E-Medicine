@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import arshan.com.e_medicine.Constants.Constants;
+import arshan.com.e_medicine.Database.SQLiteDatabaseHandler;
 import arshan.com.e_medicine.EditUserActivity;
 import arshan.com.e_medicine.Models.UsersPojo;
 import arshan.com.e_medicine.Network.HttpHandler;
@@ -93,11 +94,12 @@ public class AdminsAdapter extends RecyclerView.Adapter<AdminsAdapter.AdminsView
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,
                                                     int which) {
+                                    String stat = "";
                                     //Toast.makeText(getContext(),"Yes is clicked",Toast.LENGTH_LONG).show();
                                     Log.d("switch",usersPojo.getIsActive()+","+usersPojo.getId()+","+apikey);
-                                    if ("1".equalsIgnoreCase(usersPojo.getIsActive()))  usersPojo.setIsActive("0");
-                                    else usersPojo.setIsActive("1");
-                                    String finalUrl = Constants.USERS_ACTIVATION_URL+"?UID="+usersPojo.getId()+"&status="+usersPojo.getIsActive()+"&apikey="+apikey;
+                                    if ("1".equalsIgnoreCase(usersPojo.getIsActive()))  stat = "0";
+                                    else stat = "1";
+                                    String finalUrl = Constants.USERS_ACTIVATION_URL+"?UID="+usersPojo.getId()+"&status="+stat+"&apikey="+apikey;
                                     Log.d("final url",finalUrl);
                                     new changeActivationStatus(v).execute(finalUrl);
                                 }
@@ -226,6 +228,13 @@ public class AdminsAdapter extends RecyclerView.Adapter<AdminsAdapter.AdminsView
                     status = jsonObj.getString("status");
                     msg = jsonObj.getString("msg");
                     Log.d("status and msg",status+"::"+msg);
+                    if (null != status && "ok".equalsIgnoreCase(status)) {
+                        if ("1".equalsIgnoreCase(usersPojo.getIsActive()))  usersPojo.setIsActive("0");
+                        else usersPojo.setIsActive("1");
+                        //Updating SQLite table
+                        SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(context);
+                        db.updateUser(usersPojo);
+                    }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
                     customProgressDialog.cancel();
@@ -281,6 +290,10 @@ public class AdminsAdapter extends RecyclerView.Adapter<AdminsAdapter.AdminsView
             this.holder = holder;
             holder.adminName.setText(usersPojo.getFname()+" "+usersPojo.getLname());
             holder.adminPic.setImageBitmap(usersPojo.getPic());
+        if ("1".equalsIgnoreCase(usersPojo.getIsActive()))
+            holder.simpleSwitch.setChecked(true);
+        else
+            holder.simpleSwitch.setChecked(false);
     }
 
     @Override

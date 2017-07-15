@@ -31,7 +31,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
     private Toolbar toolbar;
-    private EditText fname, lname, mail, mbl, phn;
+    public EditText fname, lname, mail, mbl, phn;
+    public String fn, ln, ml, mb, pn;
     private CircleImageView pic;
     String firstname, lastname, profilePic, email, mobile, phone, apiKey, id = "";
     public static final String DEFAULT = "N/A";
@@ -121,10 +122,14 @@ public class ProfileActivity extends AppCompatActivity {
                 fabEdit.setVisibility(View.VISIBLE);
                 fabSave.setVisibility(View.GONE);
 
-                if (!(firstname.equalsIgnoreCase(fname.getText().toString())
-                        && lastname.equalsIgnoreCase(lname.getText().toString())
-                        && mobile.equalsIgnoreCase(mbl.getText().toString())
-                        && phone.equalsIgnoreCase(phn.getText().toString()))) {
+                fn = fname.getText().toString();
+                ln = lname.getText().toString();
+                mb = mbl.getText().toString();
+                pn = phn.getText().toString();
+                if (!(firstname.equalsIgnoreCase(fn)
+                        && lastname.equalsIgnoreCase(ln)
+                        && mobile.equalsIgnoreCase(mb)
+                        && phone.equalsIgnoreCase(pn))) {
                     String finalUrl = Constants.PROFILE_EDIT_URL+"?fname="+fname.getText().toString()+"&lname="+lname.getText().toString()
                             +"&phone="+phn.getText().toString()+"&mobile="+mbl.getText().toString()+"&id="+id+"&apikey="+apiKey;
                     Log.d("final url", finalUrl);
@@ -194,7 +199,17 @@ public class ProfileActivity extends AppCompatActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     status = jsonObj.getString("status");
                     msg = jsonObj.getString("msg");
-                    Log.d("status",status);
+                    Log.d("status and msg::",status+" , "+msg);
+                    if (null != status && "ok".equalsIgnoreCase(status)) {
+                        //Shared preferences
+                        SharedPreferences sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("fname", fn);
+                        editor.putString("mobile", mb);
+                        editor.putString("lname", ln);
+                        editor.putString("phone", pn);
+                        editor.commit();
+                    }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
                     runOnUiThread(new Runnable() {
@@ -226,6 +241,7 @@ public class ProfileActivity extends AppCompatActivity {
             super.onPostExecute(result);
             // Dismiss the progress dialog
             customProgressDialog.cancel();
+            if (null != msg && !"".equalsIgnoreCase(msg))
             Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
         }
     }

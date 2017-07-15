@@ -1,4 +1,4 @@
-package arshan.com.e_medicine;
+package arshan.com.e_medicine.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import arshan.com.e_medicine.Models.CategoriesSQLite;
+import arshan.com.e_medicine.Models.DistributorPojo;
 import arshan.com.e_medicine.Models.DistributorsSQLite;
 import arshan.com.e_medicine.Models.ProductsSQLite;
 import arshan.com.e_medicine.Models.PurchasesPojo;
@@ -71,7 +72,7 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 
-	void deleteAllTables() {
+	public void deleteAllTables() {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCTS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_DISTRIBUTORS);
@@ -87,7 +88,7 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 	 * All CRUD(Create, Read, Update, Delete) Operations
 	 */
 
-	void addProduct(ProductsSQLite productsSQLite) {
+	public void addProduct(ProductsSQLite productsSQLite) {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
@@ -115,7 +116,7 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		}
 	}
 
-	void addDistributor(DistributorsSQLite distributorsSQLite) {
+	public void addDistributor(DistributorsSQLite distributorsSQLite) {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
@@ -148,7 +149,7 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		}
 	}
 
-	void addCategory(CategoriesSQLite categoriesSQLite) {
+	public void addCategory(CategoriesSQLite categoriesSQLite) {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
@@ -172,7 +173,7 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		}
 	}
 
-	void addPurchase(PurchasesPojo purchasesPojo) {
+	public void addPurchase(PurchasesPojo purchasesPojo) {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
@@ -205,7 +206,7 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		}
 	}
 
-	void addUser(UsersPojo usersPojo) {
+	public void addUser(UsersPojo usersPojo) {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
@@ -241,6 +242,28 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 		} catch (Exception e) {
 			Log.d("Exception", ""+e.getLocalizedMessage());
 		}
+	}
+
+	public void updateUser(UsersPojo usersPojo) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put("isActive", usersPojo.getIsActive());
+
+		// updating row
+		db.update(TABLE_USERS, values, "id" + " = ?",
+				new String[] { String.valueOf(usersPojo.getId()) });
+
+	}
+
+	public void updateDistributor(DistributorPojo distributorPojo) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put("isActive", distributorPojo.getActive());
+
+		// updating row
+		db.update(TABLE_DISTRIBUTORS, values, "id" + " = ?",
+				new String[] { String.valueOf(distributorPojo.getId()) });
+
 	}
 
 	// Getting single product

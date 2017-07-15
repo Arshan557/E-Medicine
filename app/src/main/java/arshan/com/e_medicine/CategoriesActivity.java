@@ -33,6 +33,7 @@ import java.util.List;
 
 import arshan.com.e_medicine.Adapters.CategoriesAdapter;
 import arshan.com.e_medicine.Constants.Constants;
+import arshan.com.e_medicine.Database.SQLiteDatabaseHandler;
 import arshan.com.e_medicine.Models.CategoriesPojo;
 import arshan.com.e_medicine.Models.CategoriesSQLite;
 import arshan.com.e_medicine.Network.HttpHandler;
