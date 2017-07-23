@@ -65,6 +65,10 @@ public class PurchaseActivity extends AppCompatActivity {
         if (null != sharedPreferences) {
             apikey = sharedPreferences.getString("apikey", DEFAULT);
         }
+        SharedPreferences preferencesInvoiceList = getSharedPreferences("invoiceList", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editorInvoiceList = preferencesInvoiceList.edit();
+        editorInvoiceList.clear();
+        editorInvoiceList.commit();
 
         String firstTimeFlag;
         spGetFirstTime = getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
@@ -266,11 +270,11 @@ public class PurchaseActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_purchase, menu);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         MenuItem search = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(search);
+        //SearchView searchView = (SearchView) MenuItemCompat.getActionView(search);
         MenuItem refresh = menu.findItem(R.id.action_refresh);
         MenuItem addBill = menu.findItem(R.id.action_addbill);
-        searchView.setSearchableInfo( searchManager.getSearchableInfo(getComponentName()));
-        searchView.setQueryHint(getResources().getString(R.string.search_hint));
+        //searchView.setSearchableInfo( searchManager.getSearchableInfo(getComponentName()));
+        //searchView.setQueryHint(getResources().getString(R.string.search_hint));
 
         addBill.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override

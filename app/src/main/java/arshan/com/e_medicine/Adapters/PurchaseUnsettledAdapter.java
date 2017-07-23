@@ -1,8 +1,10 @@
 package arshan.com.e_medicine.Adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +13,11 @@ import android.widget.Filter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import arshan.com.e_medicine.Models.PurchasesPojo;
 import arshan.com.e_medicine.R;
@@ -24,7 +29,9 @@ public class PurchaseUnsettledAdapter extends RecyclerView.Adapter<PurchaseUnset
     private List<PurchasesPojo> unsettledPurchaseList = new ArrayList<>();;
     private UnsettledPurchaseClickListener unsettledPurchaseClickListener;
     private Context context;
+    PurchasesPojo purchasesPojo;
     PurchaseUnSettledViewHolder holder;
+    Set<String> invoiceList = new HashSet<>();
 
     private static final String TAG = "PurchaseUnsettledAdapter";
 
@@ -42,16 +49,30 @@ public class PurchaseUnsettledAdapter extends RecyclerView.Adapter<PurchaseUnset
             linearLayout = (LinearLayout) view.findViewById(R.id.mainLinear);
 
             invoice.setTypeface(cat_names_font);
-            // Getting data from Shared preferences
-            /*SharedPreferences sharedPreferences = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
-            if (null != sharedPreferences) {
-                apikey = sharedPreferences.getString("apikey", "");
-            }*/
+            SharedPreferences preferencesInvoiceList = context.getSharedPreferences("invoiceList", Context.MODE_PRIVATE);
+            final SharedPreferences.Editor editorInvoiceList = preferencesInvoiceList.edit();
 
             view.setOnClickListener(this);
             invoice.setOnClickListener(this);
             amount.setOnClickListener(this);
-            checkBox.setOnClickListener(this);
+            checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    purchasesPojo = unsettledPurchaseList.get(getPosition());
+                    if (checkBox.isChecked()) {
+                        invoiceList.add(purchasesPojo.getInvoiceNumber());
+
+                    } else {
+                        invoiceList.remove(purchasesPojo.getInvoiceNumber());
+                    }
+                    Log.d("getInvoiceList",""+invoiceList);
+                    editorInvoiceList.clear();
+                    editorInvoiceList.commit();
+                    editorInvoiceList.putStringSet("invoiceList", invoiceList);
+                    editorInvoiceList.commit();
+                }
+            });
+            //Log.d("getInvoiceList",""+purchasesPojo.getInvoiceList());
         }
 
         @Override

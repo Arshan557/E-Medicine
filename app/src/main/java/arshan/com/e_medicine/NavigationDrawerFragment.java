@@ -216,6 +216,10 @@ public class NavigationDrawerFragment extends Fragment{
                                 SharedPreferences.Editor editorFirstTimeFlag = preferencesFirstTimeFlag.edit();
                                 editorFirstTimeFlag.clear();
                                 editorFirstTimeFlag.commit();
+                                SharedPreferences preferencesInvoiceList = getContext().getSharedPreferences("invoiceList", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editorInvoiceList = preferencesInvoiceList.edit();
+                                editorInvoiceList.clear();
+                                editorInvoiceList.commit();
 
                                 //Delete SQLite tables
                                 SQLiteDatabaseHandler db =new SQLiteDatabaseHandler(getContext());

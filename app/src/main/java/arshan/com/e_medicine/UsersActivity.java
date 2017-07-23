@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -283,11 +284,11 @@ public class UsersActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_user, menu);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         MenuItem search = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(search);
+        //SearchView searchView = (SearchView) MenuItemCompat.getActionView(search);
         MenuItem refresh = menu.findItem(R.id.action_refresh);
         MenuItem addUser = menu.findItem(R.id.action_adduser);
-        searchView.setSearchableInfo( searchManager.getSearchableInfo(getComponentName()));
-        searchView.setQueryHint(getResources().getString(R.string.search_hint));
+        //searchView.setSearchableInfo( searchManager.getSearchableInfo(getComponentName()));
+        //searchView.setQueryHint(getResources().getString(R.string.search_hint));
 
         addUser.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -314,7 +315,7 @@ public class UsersActivity extends AppCompatActivity {
                             recyclerView.setLayoutManager(mLayoutManager);
                             recyclerView.setAdapter(categoriesAdapter);
                         }
-                        categoriesAdapter.getFilter().filter(newText);
+                        userA.getFilter().filter(newText);
                         recyclerView.invalidate();
                         return true;
                     }

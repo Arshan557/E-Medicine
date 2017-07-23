@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import arshan.com.e_medicine.Adapters.PurchaseUnsettledAdapter;
 import arshan.com.e_medicine.Constants.Constants;
@@ -63,31 +64,26 @@ public class PurchaseUnsettled extends Fragment {
         if (null != sharedPreferences) {
             apikey = sharedPreferences.getString("apikey", DEFAULT);
         }
-
         btnSettle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getContext(), PurchaseSettledUpActivity.class);
-                getContext().startActivity(i);
-            }
-        });
+                @Override
+                public void onClick(View view) {
+                    SharedPreferences preferencesInvoiceList = getContext().getSharedPreferences("invoiceList", Context.MODE_PRIVATE);
+                    final Set<String> invoiceSet = preferencesInvoiceList.getStringSet("invoiceList", null);
+                    Log.d("invoiceList: ", ""+invoiceSet);
+                    if (null != invoiceSet && !invoiceSet.isEmpty()) {
+                        ArrayList<String> invoiceList = new ArrayList<String>();
+                        for (String il : invoiceSet) {
+                            invoiceList.add(il);
+                        }
+                        Intent i = new Intent(getContext(), PurchaseSettledUpActivity.class);
+                        i.putStringArrayListExtra("invoice_list", invoiceList);
+                        getContext().startActivity(i);
+                    } else {
+                        Toast.makeText(getContext(), "Select atleast one invoice to settled up", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
 
-        /*String firstTimeFlag;
-        spGetFirstTime = getContext().getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
-        firstTimeFlag = spGetFirstTime.getString("PurchaseFirstTimeFlag", "");
-        Log.d("firstTimeFlag", firstTimeFlag);
-        if (!"N".equalsIgnoreCase(firstTimeFlag)) {
-            spGetFirstTime = getContext().getSharedPreferences("FirstTimeFlag", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = spGetFirstTime.edit();
-            editor.putString("PurchaseFirstTimeFlag", "N");
-            editor.commit();
-
-            String finalUrl = Constants.PURCHASE_LIST_URL+"?apikey="+apikey;
-            Log.d("final url",finalUrl);
-            purchasesPojoList.clear();
-            //Make call to Async
-            new getUnsettledPurchases().execute(finalUrl);
-        } else {*/
             // Reading all purchases
             Log.d("Reading: ", "Reading all purchases..");
             List<PurchasesPojo> purchases = db.getAllPurchases();

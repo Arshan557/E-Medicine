@@ -251,6 +251,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("status",status);
 
                     if ("ok".equalsIgnoreCase(status)) {
+                        //clearing shared preferences and SQLite data
                         SharedPreferences preferencesUserData = getSharedPreferences("UserData", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editorUserData = preferencesUserData.edit();
                         editorUserData.clear();
@@ -259,6 +260,13 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences.Editor editorFirstTimeFlag = preferencesFirstTimeFlag.edit();
                         editorFirstTimeFlag.clear();
                         editorFirstTimeFlag.commit();
+                        SharedPreferences preferencesInvoiceList = getSharedPreferences("invoiceList", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editorInvoiceList = preferencesInvoiceList.edit();
+                        editorInvoiceList.clear();
+                        editorInvoiceList.commit();
+                        //Delete SQLite tables
+                        SQLiteDatabaseHandler db =new SQLiteDatabaseHandler(LoginActivity.this);
+                        db.deleteAllTables();
                         // Getting JSON Array node
                         JSONArray products = jsonObj.getJSONArray("User");
                         // looping through All News

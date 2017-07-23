@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -31,6 +32,7 @@ public class PurchaseSettledUpActivity extends AppCompatActivity implements Adap
     static final int DATE_PICKER_ID = 1111;
     List<String> paymentList = new ArrayList<String>();
     List<String> bankList = new ArrayList<String>();
+    ArrayList<String> invoice_list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,9 @@ public class PurchaseSettledUpActivity extends AppCompatActivity implements Adap
         final Drawable upArrow = getResources().getDrawable(R.mipmap.back);
         //upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
+        invoice_list = getIntent().getStringArrayListExtra("invoice_list");
+        Log.d("invoice_list",""+invoice_list);
 
         chequeNum = (EditText) findViewById(R.id.cheque_num);
         paymentDate = (EditText) findViewById(R.id.paymentDate);

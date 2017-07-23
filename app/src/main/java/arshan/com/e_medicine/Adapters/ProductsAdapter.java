@@ -71,6 +71,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             bmp.setOnClickListener(this);
             qty.setOnClickListener(this);
             mrp.setOnClickListener(this);
+            rupee.setOnClickListener(this);
             undoButton.setOnClickListener(this);
         }
 
@@ -146,10 +147,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             // we need to show the "undo" state of the row
             holder.itemView.setBackgroundColor(Color.RED);
             holder.name.setVisibility(View.GONE);
-            holder.available.setVisibility(View.GONE);;
+            holder.available.setVisibility(View.GONE);
             holder.bmp.setVisibility(View.GONE);
             holder.qty.setVisibility(View.GONE);
             holder.mrp.setVisibility(View.GONE);
+            holder.rupee.setVisibility(View.GONE);
             holder.undoButton.setText("UNDO");
             holder.undoButton.setVisibility(View.VISIBLE);
             holder.undoButton.setOnClickListener(new View.OnClickListener() {
@@ -168,10 +170,12 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             // we need to show the "normal" state
             holder.itemView.setBackgroundColor(Color.WHITE);
             holder.name.setText(product.getItemname());
+            holder.available.setVisibility(View.VISIBLE);
             holder.bmp.setImageBitmap(product.getBmp());
             holder.qty.setText(product.getQty());
             holder.mrp.setText(product.getMrp());
-            holder.undoButton.setVisibility(View.VISIBLE);
+            holder.rupee.setVisibility(View.VISIBLE);
+            holder.undoButton.setVisibility(View.GONE);
             holder.undoButton.setOnClickListener(null);
         }
 

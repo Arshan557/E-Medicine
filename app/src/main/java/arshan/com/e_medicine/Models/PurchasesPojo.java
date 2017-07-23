@@ -1,5 +1,8 @@
 package arshan.com.e_medicine.Models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Arshan on 19-Jun-2017.
  */

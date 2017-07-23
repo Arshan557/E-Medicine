@@ -271,7 +271,7 @@
         <activity
             android:name=".PurchaseSettledUpActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="Add Purchase"
+            android:label="Settle amount"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark">
             <meta-data
