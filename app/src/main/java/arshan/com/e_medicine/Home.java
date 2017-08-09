@@ -68,9 +68,17 @@ public class Home extends AppCompatActivity {
         boolean hasPermissionToCall = (ContextCompat.checkSelfPermission(Home.this,
                 android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED);
 
-        if (!hasPermissionToGallery && !hasPermissionToCall) {
+        boolean hasPermissionToCalendar = (ContextCompat.checkSelfPermission(Home.this,
+                android.Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED);
+
+        boolean hasPermissionToCalendar2 = (ContextCompat.checkSelfPermission(Home.this,
+                android.Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED);
+
+        if (!hasPermissionToGallery && !hasPermissionToCall && !hasPermissionToCalendar && !hasPermissionToCalendar2) {
             ActivityCompat.requestPermissions(Home.this,
-                    new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.CAMERA, android.Manifest.permission.CALL_PHONE},
+                    new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                            android.Manifest.permission.CAMERA, android.Manifest.permission.CALL_PHONE,
+                            android.Manifest.permission.READ_CALENDAR, android.Manifest.permission.WRITE_CALENDAR},
                     REQUEST_GALLERY);
         }
         /*if (!hasPermissionToCall) {

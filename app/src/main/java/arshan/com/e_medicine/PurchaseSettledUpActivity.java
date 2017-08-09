@@ -1,14 +1,17 @@
 package arshan.com.e_medicine;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -30,8 +33,10 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import arshan.com.e_medicine.Constants.Constants;
@@ -40,6 +45,8 @@ import arshan.com.e_medicine.Models.DistributorPojo;
 import arshan.com.e_medicine.Models.DistributorsSQLite;
 import arshan.com.e_medicine.Network.HttpHandler;
 import arshan.com.e_medicine.Views.CustomProgressDialog;
+
+import static com.loopj.android.http.AsyncHttpClient.log;
 
 public class PurchaseSettledUpActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private Toolbar toolbar;
@@ -53,6 +60,7 @@ public class PurchaseSettledUpActivity extends AppCompatActivity implements Adap
     public static final String DEFAULT = "", TAG = "PurchaseSettledUp";
     private CustomProgressDialog customProgressDialog;
     private String apikey = "", bankListString = "HDFC", paymentListString = "Cash";
+    private Long currentDateInMillis, selectedDateInMillis;
     static final int DATE_PICKER_ID = 1111;
     List<String> paymentList = new ArrayList<String>();
     List<String> bankList = new ArrayList<String>();
@@ -115,6 +123,16 @@ public class PurchaseSettledUpActivity extends AppCompatActivity implements Adap
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
         paymentDate.setText(showDate(year, month+1, day));
+
+        /*try {
+            //String eventTime = "2017-08-09 21:32:00 IST";
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+            Date evenDate = formatter.parse(showDate(year, month + 1, day) + " 01:00:00 IST");
+            currentDateInMillis = evenDate.getTime();
+            Log.d("Exception", "" + currentDateInMillis);
+        } catch (Exception e) {
+            Log.d("Exception", "" + e.getLocalizedMessage());
+        }*/
 
         dateIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,6 +202,7 @@ public class PurchaseSettledUpActivity extends AppCompatActivity implements Adap
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     status = jsonObj.getString("status");
+                    msg = jsonObj.getString("msg");
                     Log.d("status",status);
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -220,6 +239,20 @@ public class PurchaseSettledUpActivity extends AppCompatActivity implements Adap
             if (customProgressDialog.isShowing()) customProgressDialog.cancel();
             if (null != msg && "ok".equalsIgnoreCase(status)) {
                 Toast.makeText(PurchaseSettledUpActivity.this, ""+msg, Toast.LENGTH_LONG).show();
+                long dateInMillis = 0;
+                try {
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+                    formatter.setLenient(false);
+                    String eventTime = paymentDate.getText().toString() + " 10:05:00 IST";
+                    //String eventTime = "2017-08-09 21:32:00 IST";
+                    Log.d("eventTime", ""+eventTime);
+                    Date evenDate = formatter.parse(eventTime);
+                    dateInMillis = evenDate.getTime();
+                } catch (Exception e) {
+                    Log.d("Exception", ""+e.getLocalizedMessage());
+                }
+                long eventId = addEventToCalender("Purchase settle", "Settle your Purchase with "+paymentListString, bankListString, 1, dateInMillis, true, false);
+                Log.d("eventId", ""+eventId);
             } else if ((!"ok".equalsIgnoreCase(status) || null == status) && null != msg) {
                 Toast.makeText(PurchaseSettledUpActivity.this, msg, Toast.LENGTH_LONG).show();
             }
@@ -232,18 +265,16 @@ public class PurchaseSettledUpActivity extends AppCompatActivity implements Adap
         //date.setText(new StringBuilder().append(day).append("/").append(month).append("/").append(year));
         if (month < 10) {
             mnth = "0" + String.valueOf(month);
-            month = Integer.parseInt(mnth);
         } else {
             mnth = String.valueOf(month);
         }
         if (day < 10) {
             dy = "0" + month;
-            day = Integer.parseInt(dy);
         } else {
             dy = String.valueOf(day);
         }
-        return (new StringBuilder().append(year).append("/")
-                .append(mnth).append("/").append(dy));
+        return (new StringBuilder().append(year).append("-")
+                .append(mnth).append("-").append(dy));
     }
 
     @Override
@@ -264,25 +295,129 @@ public class PurchaseSettledUpActivity extends AppCompatActivity implements Adap
         public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
             String mnth = "00", dy = "00";
             year  = selectedYear;
-            month = selectedMonth;
+            month = selectedMonth+1;
             day   = selectedDay;
             if (month < 10) {
                 mnth = "0" + String.valueOf(month);
-                month = Integer.parseInt(mnth);
             } else {
                 mnth = String.valueOf(month);
             }
             if (day < 10) {
-                dy = "0" + month;
-                day = Integer.parseInt(dy);
+                dy = "0" + day;
             } else {
                 dy = String.valueOf(day);
             }
             // Show selected date
             paymentDate.setText(new StringBuilder().append(year)
-                    .append("/").append(mnth).append("/").append(dy));
+                    .append("-").append(mnth).append("-").append(dy));
         }
     };
+
+    private long addEventToCalender(String title,
+                                   String desc, String place, int status, long startDate,
+                                          boolean needReminder, boolean needMailService) {
+        /***************** Event: add event *******************/
+        long eventID = -1;
+        try {
+            String eventUriString = "content://com.android.calendar/events";
+            ContentValues eventValues = new ContentValues();
+            eventValues.put("calendar_id", 1); // id, We need to choose from
+            // our mobile for primary its 1
+            eventValues.put("title", title);
+            eventValues.put("description", desc);
+            eventValues.put("eventLocation", place);
+
+            long endDate = startDate + 1000 * 10 * 10; // For next 10min
+            eventValues.put("dtstart", startDate);
+            eventValues.put("dtend", endDate);
+
+            // values.put("allDay", 1); //If it is bithday alarm or such
+            // kind (which should remind me for whole day) 0 for false, 1
+            // for true
+            eventValues.put("eventStatus", status); // This information is
+            // sufficient for most
+            // entries tentative (0),
+            // confirmed (1) or canceled
+            // (2):
+            eventValues.put("eventTimezone", "UTC/GMT +5:30");
+            /*
+             * Comment below visibility and transparency column to avoid
+             * java.lang.IllegalArgumentException column visibility is invalid
+             * error
+             */
+            // eventValues.put("allDay", 1);
+            // eventValues.put("visibility", 0); // visibility to default (0),
+            // confidential (1), private
+            // (2), or public (3):
+            // eventValues.put("transparency", 0); // You can control whether
+            // an event consumes time
+            // opaque (0) or transparent (1).
+
+            eventValues.put("hasAlarm", 1); // 0 for false, 1 for true
+
+            Uri eventUri = PurchaseSettledUpActivity.this
+                    .getContentResolver()
+                    .insert(Uri.parse(eventUriString), eventValues);
+            eventID = Long.parseLong(eventUri.getLastPathSegment());
+
+            if (needReminder) {
+                /***************** Event: Reminder(with alert) Adding reminder to event ***********        ********/
+
+                String reminderUriString = "content://com.android.calendar/reminders";
+                ContentValues reminderValues = new ContentValues();
+                reminderValues.put("event_id", eventID);
+                reminderValues.put("minutes", 5); // Default value of the
+                // system. Minutes is a integer
+                reminderValues.put("method", 1); // Alert Methods: Default(0),
+                // Alert(1), Email(2),SMS(3)
+
+                Uri reminderUri = PurchaseSettledUpActivity.this
+                        .getContentResolver()
+                        .insert(Uri.parse(reminderUriString), reminderValues);
+            }
+
+/***************** Event: Meeting(without alert) Adding Attendies to the meeting *******************/
+
+            if (needMailService) {
+                String attendeuesesUriString = "content://com.android.calendar/attendees";
+                /********
+                 * To add multiple attendees need to insert ContentValues
+                 * multiple times
+                 ***********/
+                ContentValues attendeesValues = new ContentValues();
+                attendeesValues.put("event_id", eventID);
+                attendeesValues.put("attendeeName", "xxxxx"); // Attendees name
+                attendeesValues.put("attendeeEmail", "yyyy@gmail.com");// Attendee Email
+                attendeesValues.put("attendeeRelationship", 0); // Relationship_Attendee(1),
+                // Relationship_None(0),
+                // Organizer(2),
+                // Performer(3),
+                // Speaker(4)
+                attendeesValues.put("attendeeType", 0); // None(0), Optional(1),
+                // Required(2),
+                // Resource(3)
+                attendeesValues.put("attendeeStatus", 0); // NOne(0),
+                // Accepted(1),
+                // Decline(2),
+                // Invited(3),
+                // Tentative(4)
+
+                Uri eventsUri = Uri.parse("content://calendar/events");
+                Uri url = PurchaseSettledUpActivity.this
+                        .getContentResolver()
+                        .insert(eventsUri, attendeesValues);
+
+                // Uri attendeuesesUri = curActivity.getApplicationContext()
+                // .getContentResolver()
+                // .insert(Uri.parse(attendeuesesUriString), attendeesValues);
+            }
+        } catch (Exception ex) {
+            Log.d("Exception",""+ex.getLocalizedMessage());
+        }
+
+        return eventID;
+
+    }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
