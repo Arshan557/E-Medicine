@@ -1,21 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/addDistributorCoordinate"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="arshan.com.e_medicine.AddProductActivity">
+    android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/app_bar"
-        layout="@layout/app_bar" />
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="arshan.com.e_medicine.AddProductActivity">
 
-    <TextView
+        <include
+            android:id="@+id/app_bar"
+            layout="@layout/app_bar" />
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/app_bar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical"
+                android:paddingLeft="36dp"
+                android:paddingRight="36dp"
+                android:paddingTop="26dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/distPic"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="4dp"
+                    android:paddingBottom="8dp"
+                    android:src="@drawable/defaultpic"
+                    app:border_color="@color/white"
+                    app:border_width="1dp" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/prodName"
+                    android:hint="Product name"
+                    android:textColor="@color/black"
+                    app:met_floatingLabelTextColor="@color/primary_darker"
+                    app:met_primaryColor="@color/primary_darker"
+                    app:met_underlineColor="@color/primary_darker"
+                    app:met_floatingLabel="highlight"/>
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/barCode"
+                    android:hint="Bar code"
+                    android:textColor="@color/black"
+                    app:met_floatingLabelTextColor="@color/primary_darker"
+                    app:met_primaryColor="@color/primary_darker"
+                    app:met_underlineColor="@color/primary_darker"
+                    app:met_floatingLabel="highlight"/>
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/mfd"
+                    android:hint="Manufactured date"
+                    android:textColor="@color/black"
+                    app:met_floatingLabelTextColor="@color/primary_darker"
+                    app:met_primaryColor="@color/primary_darker"
+                    app:met_underlineColor="@color/primary_darker"
+                    app:met_floatingLabel="highlight"/>
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/mrp"
+                    android:hint="Price"
+                    android:textColor="@color/black"
+                    app:met_floatingLabelTextColor="@color/primary_darker"
+                    app:met_primaryColor="@color/primary_darker"
+                    app:met_underlineColor="@color/primary_darker"
+                    app:met_floatingLabel="highlight"/>
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/quantity"
+                    android:hint="Quantity"
+                    android:textColor="@color/black"
+                    app:met_floatingLabelTextColor="@color/primary_darker"
+                    app:met_primaryColor="@color/primary_darker"
+                    app:met_underlineColor="@color/primary_darker"
+                    app:met_floatingLabel="highlight"/>
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/measure"
+                    android:hint="Measure"
+                    android:textColor="@color/black"
+                    app:met_floatingLabelTextColor="@color/primary_darker"
+                    app:met_primaryColor="@color/primary_darker"
+                    app:met_underlineColor="@color/primary_darker"
+                    app:met_floatingLabel="highlight"/>
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/stock"
+                    android:hint="Stock"
+                    android:textColor="@color/black"
+                    app:met_floatingLabelTextColor="@color/primary_darker"
+                    app:met_primaryColor="@color/primary_darker"
+                    app:met_underlineColor="@color/primary_darker"
+                    app:met_floatingLabel="highlight"/>
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/maxD"
+                    android:hint="Max. Discount"
+                    android:textColor="@color/black"
+                    app:met_floatingLabelTextColor="@color/primary_darker"
+                    app:met_primaryColor="@color/primary_darker"
+                    app:met_underlineColor="@color/primary_darker"
+                    app:met_floatingLabel="highlight"/>
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/expDate"
+                    android:hint="Expiration date"
+                    android:textColor="@color/black"
+                    app:met_floatingLabelTextColor="@color/primary_darker"
+                    app:met_primaryColor="@color/primary_darker"
+                    app:met_underlineColor="@color/primary_darker"
+                    app:met_floatingLabel="highlight"/>
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/batch"
+                    android:hint="Batch"
+                    android:textColor="@color/black"
+                    app:met_floatingLabelTextColor="@color/primary_darker"
+                    app:met_primaryColor="@color/primary_darker"
+                    app:met_underlineColor="@color/primary_darker"
+                    app:met_floatingLabel="highlight"/>
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/color"
+                    android:hint="Color"
+                    android:textColor="@color/black"
+                    app:met_floatingLabelTextColor="@color/primary_darker"
+                    app:met_primaryColor="@color/primary_darker"
+                    app:met_underlineColor="@color/primary_darker"
+                    app:met_floatingLabel="highlight"/>
+
+                <View
+                    android:id="@+id/justView"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp" />
+
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+    <com.shamanland.fab.FloatingActionButton
+        android:id="@+id/fabAddProduct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Under Construcion"
-        android:textStyle="bold"
-        android:layout_centerInParent="true"
-        android:textColor="@color/white"
-        android:textSize="20dp"/>
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/addicon"
+        app:floatingActionButtonColor="@color/primary_dark"
+        app:floatingActionButtonSize="normal" />
 
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

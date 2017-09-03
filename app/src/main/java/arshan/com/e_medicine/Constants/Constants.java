@@ -28,5 +28,6 @@ public class Constants {
         public static final String USERS_ADD_URL = "https://myinvent.000webhostapp.com/mobile/UserAdd";
         public static final String USERS_ACTIVATION_URL = "https://myinvent.000webhostapp.com/mobile/UsersStatus";
         public static final String PURCHASE_SETTLE_URL = "https://myinvent.000webhostapp.com/mobile/PurchaseSettle";
+        public static final String PRODUCT_ADD_URL = "https://myinvent.000webhostapp.com/mobile/ProductAdd";
 
 }

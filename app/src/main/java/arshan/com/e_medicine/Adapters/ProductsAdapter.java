@@ -31,7 +31,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     private List<ProductsPojo> productsList = new ArrayList<>();;
     private ProductsClickListener productsClickListener;
     private Context context;
-    List<ProductsPojo> itemsPendingRemoval = new ArrayList<>();;
+    List<ProductsPojo> itemsPendingRemoval = new ArrayList<>();
     private static final int PENDING_REMOVAL_TIMEOUT = 3000; // 3sec
     private Handler handler = new Handler(); // hanlder for running delayed runnables
     HashMap<ProductsPojo, Runnable> pendingRunnables = new HashMap<>(); // map of items to pending runnables, so we can cancel a removal if need be

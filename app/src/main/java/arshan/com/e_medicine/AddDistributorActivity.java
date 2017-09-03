@@ -26,7 +26,7 @@ public class AddDistributorActivity extends AppCompatActivity {
     private EditText name, uname, mail, mobile, phone, password;
     private CircleImageView pic;
     public static final String DEFAULT = "";
-    private String apikey = "", TAG = DistributorsActivity.class.getSimpleName();
+    private String apikey = "", TAG = AddDistributorActivity.class.getSimpleName();
     private ProgressDialog pDialog;
 
     @Override
